@@ -64,7 +64,7 @@ collections:
         hint: "When this post should no longer be displayed"
 
     # SERVICE LISTINGS - COLLECTION CONFIG
-    - name: "service_listings"
+  - name: "service_listings"
     label: "Service Listings"
     label_singular: "Service Listing"
     folder: "data/services"
