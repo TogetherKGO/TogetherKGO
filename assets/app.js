@@ -27,7 +27,7 @@ window.__APP = (function () {
       el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load food resources. Please refresh the page.</li>';
     }
   }
-}
+  }
 
   /* ------------------------------
             INIT MAP
