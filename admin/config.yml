@@ -23,11 +23,11 @@ collections:
         widget: "relation"
         collection: "service_listings"
         search_fields: ["name"]
-        value_field: "id"          # stores the unique id from each service JSON
-        display_fields: ["name"]   # shows organization name in dropdown
+        value_field: "id"          # stores the unique id from service JSON
+        display_fields: ["name"]   # shows the organization name in dropdown
         required: true
         hint: "Select an existing service or create a new one"
-        create: true               # allows creating a new service directly from this field
+        create: true               # allows creating a new service directly
       - label: "Post Title"
         name: "title"
         widget: "string"
@@ -63,23 +63,23 @@ collections:
         required: false
         hint: "When this post should no longer be displayed"
 
-  # SERVICE LISTINGS - ONE FILE PER SERVICE
+  # SERVICE LISTINGS - NEW COLLECTION FOR ORGANIZATIONS
   - name: "service_listings"
     label: "Service Listings"
     label_singular: "Service Listing"
     folder: "data/services"
     create: true
-    slug: "{{id}}"
+    slug: "{{name | slugify}}"    # generates a valid filename from 'name'
     extension: "json"
     format: "json"
     identifier_field: "name"
     summary: "{{name}} - {{type}}"
     fields:
-      - label: "ID"
+      - label: "Unique ID"
         name: "id"
         widget: "string"
         required: true
-        hint: "Unique identifier (e.g., fb1, fb2)"
+        hint: "Unique identifier used in posts (e.g., NathanLloyd becomes NL1). You can check the repo to see what exists"
       - label: "Organization Name"
         name: "name"
         widget: "string"
@@ -117,12 +117,14 @@ collections:
             value_type: "float"
             step: 0.0001
             required: true
+            hint: "Use Google Maps to find coordinates (e.g., 43.7659)"
           - label: "Longitude"
             name: "lng"
             widget: "number"
             value_type: "float"
             step: 0.0001
             required: true
+            hint: "For Toronto area, this should be negative (e.g., -79.1969)"
       - label: "Days Open"
         name: "days"
         widget: "select"
@@ -140,19 +142,23 @@ collections:
         name: "hours"
         widget: "string"
         required: true
+        hint: "e.g., Mon-Fri: 9am-5pm or Tuesday: 10am-3pm"
       - label: "Phone Number"
         name: "phone"
         widget: "string"
         required: true
+        hint: "Main contact number (e.g., 416-XXX-XXXX)"
       - label: "Email Address"
         name: "email"
         widget: "string"
         required: false
+        hint: "Contact email (optional)"
       - label: "Website"
         name: "website"
         widget: "string"
         required: false
-      - label: "Services/Tags"
+        hint: "Organization website URL (optional)"
+      - label: "Services / Tags"
         name: "tags"
         widget: "select"
         multiple: true
@@ -172,15 +178,19 @@ collections:
         name: "additional_info"
         widget: "text"
         required: false
+        hint: "Any other relevant information (accessibility, languages, special programs, etc.)"
       - label: "Contact Person Name"
         name: "contact_name"
         widget: "string"
         required: false
+        hint: "For internal use only - person who submitted this listing"
       - label: "Contact Person Email"
         name: "contact_email"
         widget: "string"
         required: false
+        hint: "For internal use only"
       - label: "Contact Person Phone"
         name: "contact_phone"
         widget: "string"
         required: false
+        hint: "For internal use only"
