@@ -1,0 +1,22 @@
+{
+  "id": "fb3",
+  "name": "West Hill Community Support Program / Friends of Jesus Christ Food Bank",
+  "type": "food_bank",
+  "address": "4234 Lawrence Ave E #8, Scarborough, ON M1E 2S5",
+  "location": {
+    "lat": 43.7689,
+    "lng": -79.1975
+  },
+  "days": [
+    "Tue"
+  ],
+  "hours": "Tuesday 9:00 AM–12:30 PM",
+  "phone": "416-282-1313",
+  "website": "http://westhillcommunitysupport.ca",
+  "description": "This organization provides essential services to combat food insecurity and offers direct access to food for all community members in need.",
+  "tags": [
+    "food_bank",
+    "food_security",
+    "community_support"
+  ]
+}

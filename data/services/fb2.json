@@ -1,0 +1,27 @@
+{
+  "id": "fb2",
+  "name": "Scarborough Centre for Healthy Communities (SCHC)",
+  "type": "food_bank",
+  "address": "4100 Lawrence Ave E, Scarborough, ON M1E 2S2",
+  "location": {
+    "lat": 43.7667,
+    "lng": -79.1955
+  },
+  "days": [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri"
+  ],
+  "hours": "Mon-Fri: 9am-5pm",
+  "phone": "416-847-4147",
+  "email": "info@schcontario.ca",
+  "website": "https://schcontario.ca/",
+  "description": "SCHC provides accessible, equitable, and transformational health and social service choices to enhance the well-being of diverse communities.",
+  "tags": [
+    "food_bank",
+    "health_services",
+    "social_services"
+  ]
+}

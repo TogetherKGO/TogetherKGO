@@ -1,7 +1,7 @@
 {
+  "id": "fb5",
   "name": "Curran Hall Community Centre",
-  "phone": "416-396-5156",
-  "hours": "Mon-Wed: 9am-5pm",
+  "type": "community_center",
   "address": "277 Orton Park Rd, Scarborough, ON M1G 3T4",
   "location": {
     "lat": 43.78,
@@ -12,11 +12,12 @@
     "Tue",
     "Wed"
   ],
+  "hours": "Mon-Wed: 9am-5pm",
+  "phone": "416-396-5156",
+  "description": "Community Center",
   "tags": [
     "community_support",
     "youth_programs",
     "social_services"
-  ],
-  "type": "community_center",
-  "description": "Community Center"
+  ]
 }
