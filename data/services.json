@@ -16,15 +16,15 @@
     ],
     "hours": "Mon-Thu: 10am-6pm",
     "phone": "416-208-9889",
-    "email": "info@thestorefront.org",
-    "website": "https://thestorefront.org/",
     "description": "The East Scarborough Storefront harnesses the power of collaboration to support people and build community in one of the most diverse and marginalized neighbourhoods in East Scarborough.",
     "tags": [
       "organization",
       "food_bank",
       "community_support",
       "diverse_community"
-    ]
+    ],
+    "email": "info@thestorefront.org",
+    "website": "https://thestorefront.org/"
   },
   {
     "id": "fb2",
@@ -44,14 +44,14 @@
     ],
     "hours": "Mon-Fri: 9am-5pm",
     "phone": "416-847-4147",
-    "email": "info@schcontario.ca",
-    "website": "https://schcontario.ca/",
     "description": "SCHC provides accessible, equitable, and transformational health and social service choices to enhance the well-being of diverse communities.",
     "tags": [
       "food_bank",
       "health_services",
       "social_services"
-    ]
+    ],
+    "email": "info@schcontario.ca",
+    "website": "https://schcontario.ca/"
   },
   {
     "id": "fb3",
@@ -67,13 +67,13 @@
     ],
     "hours": "Tuesday 9:00 AM–12:30 PM",
     "phone": "416-282-1313",
-    "website": "http://westhillcommunitysupport.ca",
     "description": "This organization provides essential services to combat food insecurity and offers direct access to food for all community members in need.",
     "tags": [
       "food_bank",
       "food_security",
       "community_support"
-    ]
+    ],
+    "website": "http://westhillcommunitysupport.ca"
   },
   {
     "id": "fb4",
@@ -93,15 +93,15 @@
     ],
     "hours": "Mon-Fri 7am-6pm",
     "phone": "416-281-0262",
-    "email": "info@esbgc.ca",
-    "website": "https://www.esbgc.ca/",
     "description": "A trusted partner in building successful families within the community. Provides a safe and supportive environment for children, youth, and families.",
     "tags": [
       "food_bank",
       "youth_programs",
       "family_support",
       "community_support"
-    ]
+    ],
+    "email": "info@esbgc.ca",
+    "website": "https://www.esbgc.ca/"
   },
   {
     "id": "fb5",
