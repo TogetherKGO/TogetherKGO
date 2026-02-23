@@ -1,7 +1,7 @@
 {
+  "id": "fb6",
   "name": "SOSO World Ministries",
-  "phone": "647-330-2254",
-  "hours": "Mon: 9am-5pm",
+  "type": "food_bank",
   "address": "400 McCowan Rd Toronto, ON, M1J 1J5",
   "location": {
     "lat": 43.741087,
@@ -10,11 +10,12 @@
   "days": [
     "Mon"
   ],
+  "hours": "Mon: 9am-5pm",
+  "phone": "647-330-2254",
+  "description": "Food Bank",
   "tags": [
     "food_bank",
     "family_support",
     "food_security"
-  ],
-  "type": "food_bank",
-  "description": "Food Bank"
+  ]
 }

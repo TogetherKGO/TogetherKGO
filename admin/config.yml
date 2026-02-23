@@ -8,7 +8,7 @@ public_folder: "/assets/images/posts"
 publish_mode: editorial_workflow
 
 collections:
-  # COMMUNITY POSTS - ORIGINAL, NO CHANGES
+  # COMMUNITY POSTS
   - name: "community_posts"
     label: "Community Posts"
     label_singular: "Community Post"
@@ -18,14 +18,16 @@ collections:
     extension: "json"
     format: "json"
     fields:
-      - label: "Food Bank"
+      - label: "Organization / Service"
         name: "foodBankId"
-        widget: "select"
-        options:
-          - { label: "East Scarborough Storefront", value: "fb1" }
-          - { label: "Scarborough Centre for Healthy Communities", value: "fb2" }
-          - { label: "West Hill Community Support Program", value: "fb3" }
-          - { label: "Boys & Girls Club of East Scarborough", value: "fb4" }
+        widget: "relation"
+        collection: "service_listings"
+        search_fields: ["name"]
+        value_field: "id"          # stores the unique id from each service JSON
+        display_fields: ["name"]   # shows organization name in dropdown
+        required: true
+        hint: "Select an existing service or create a new one"
+        create: true               # allows creating a new service directly from this field
       - label: "Post Title"
         name: "title"
         widget: "string"
@@ -61,24 +63,28 @@ collections:
         required: false
         hint: "When this post should no longer be displayed"
 
-  # SERVICE LISTINGS - NEW COLLECTION FOR ORGANIZATIONS
+  # SERVICE LISTINGS - ONE FILE PER SERVICE
   - name: "service_listings"
     label: "Service Listings"
     label_singular: "Service Listing"
     folder: "data/services"
     create: true
-    slug: "{{slug}}"
+    slug: "{{id}}"
     extension: "json"
     format: "json"
     identifier_field: "name"
     summary: "{{name}} - {{type}}"
     fields:
+      - label: "ID"
+        name: "id"
+        widget: "string"
+        required: true
+        hint: "Unique identifier (e.g., fb1, fb2)"
       - label: "Organization Name"
         name: "name"
         widget: "string"
         required: true
         hint: "Full name of the organization"
-      
       - label: "Organization Type"
         name: "type"
         widget: "select"
@@ -91,19 +97,16 @@ collections:
           - { label: "Youth Programs", value: "youth_programs" }
           - { label: "Family Support", value: "family_support" }
           - { label: "General Organization", value: "organization" }
-      
       - label: "Description"
         name: "description"
         widget: "text"
         required: true
         hint: "Describe the services your organization provides"
-      
       - label: "Full Address"
         name: "address"
         widget: "string"
         required: true
         hint: "Include street, city, province, postal code"
-      
       - label: "Location Coordinates"
         name: "location"
         widget: "object"
@@ -114,15 +117,12 @@ collections:
             value_type: "float"
             step: 0.0001
             required: true
-            hint: "Use Google Maps to find coordinates (e.g., 43.7659)"
           - label: "Longitude"
             name: "lng"
             widget: "number"
             value_type: "float"
             step: 0.0001
             required: true
-            hint: "For Toronto area, this should be negative (e.g., -79.1969)"
-      
       - label: "Days Open"
         name: "days"
         widget: "select"
@@ -136,31 +136,22 @@ collections:
           - { label: "Friday", value: "Fri" }
           - { label: "Saturday", value: "Sat" }
           - { label: "Sunday", value: "Sun" }
-      
       - label: "Operating Hours"
         name: "hours"
         widget: "string"
         required: true
-        hint: "e.g., Mon-Fri: 9am-5pm or Tuesday: 10am-3pm"
-      
       - label: "Phone Number"
         name: "phone"
         widget: "string"
         required: true
-        hint: "Main contact number (e.g., 416-XXX-XXXX)"
-      
       - label: "Email Address"
         name: "email"
         widget: "string"
         required: false
-        hint: "Contact email (optional)"
-      
       - label: "Website"
         name: "website"
         widget: "string"
         required: false
-        hint: "Organization website URL (optional)"
-      
       - label: "Services/Tags"
         name: "tags"
         widget: "select"
@@ -177,27 +168,19 @@ collections:
           - { label: "Housing Support", value: "housing_support" }
           - { label: "Food Security", value: "food_security" }
           - { label: "Diverse Community", value: "diverse_community" }
-      
       - label: "Additional Information"
         name: "additional_info"
         widget: "text"
         required: false
-        hint: "Any other relevant information (accessibility, languages, special programs, etc.)"
-      
       - label: "Contact Person Name"
         name: "contact_name"
         widget: "string"
         required: false
-        hint: "For internal use only - person who submitted this listing"
-      
       - label: "Contact Person Email"
         name: "contact_email"
         widget: "string"
         required: false
-        hint: "For internal use only"
-      
       - label: "Contact Person Phone"
         name: "contact_phone"
         widget: "string"
         required: false
-        hint: "For internal use only"

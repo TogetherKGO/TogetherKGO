@@ -1,0 +1,27 @@
+{
+  "id": "fb1",
+  "name": "East Scarborough Storefront",
+  "type": "organization",
+  "address": "4040 Lawrence Ave E, Scarborough, ON M1E 2R6",
+  "location": {
+    "lat": 43.7659,
+    "lng": -79.1969
+  },
+  "days": [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu"
+  ],
+  "hours": "Mon-Thu: 10am-6pm",
+  "phone": "416-208-9889",
+  "email": "info@thestorefront.org",
+  "website": "https://thestorefront.org/",
+  "description": "The East Scarborough Storefront harnesses the power of collaboration to support people and build community in one of the most diverse and marginalized neighbourhoods in East Scarborough.",
+  "tags": [
+    "organization",
+    "food_bank",
+    "community_support",
+    "diverse_community"
+  ]
+}
