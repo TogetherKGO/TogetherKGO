@@ -25,9 +25,16 @@ collections:
         search_fields: ["name"]
         value_field: "id"          # stores the unique id from service JSON
         display_fields: ["name"]   # shows the organization name in dropdown
-        required: true
-        hint: "Select an existing service or create a new one"
-        create: true               # allows creating a new service directly
+        required: true             # optional now that one
+        hint: "Select an existing service, or select other and enter below."
+
+      # If a service/organization is not available
+      - label: "If not listed, enter new service"
+        name: "foodBankOther"
+        widget: "string"
+        required: false
+        hint: "Type the organization/service name if it is not in the list above."
+
       - label: "Post Title"
         name: "title"
         widget: "string"
