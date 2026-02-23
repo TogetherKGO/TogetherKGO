@@ -18,14 +18,13 @@ collections:
     extension: "json"
     format: "json"
     fields:
-      - label: "Food Bank"
+      - label: "Organization / Service"
         name: "foodBankId"
-        widget: "select"
-        options:
-          - { label: "East Scarborough Storefront", value: "fb1" }
-          - { label: "Scarborough Centre for Healthy Communities", value: "fb2" }
-          - { label: "West Hill Community Support Program", value: "fb3" }
-          - { label: "Boys & Girls Club of East Scarborough", value: "fb4" }
+        widget: "relation"
+        collection: "service_listings"
+        search_fields: ["name"]
+        value_field: "id" #<--- store the unique 'id' from services.json
+        display_fields: ["name"]  #<--- show the organizations name from services.json
       - label: "Post Title"
         name: "title"
         widget: "string"
