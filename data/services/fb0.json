@@ -1,0 +1,14 @@
+{
+  "id": "fb0",
+  "name": "Other (enter manually if not listed)",
+  "type": "placeholder",
+  "address": "",
+  "location": { "lat": 0, "lng": 0 },
+  "days": [],
+  "hours": "",
+  "phone": "",
+  "email": "",
+  "website": "",
+  "description": "",
+  "tags": []
+}

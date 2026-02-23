@@ -23,11 +23,18 @@ collections:
         widget: "relation"
         collection: "service_listings"
         search_fields: ["name"]
-        value_field: "id"          # stores the unique id from each service JSON
-        display_fields: ["name"]   # shows organization name in dropdown
-        required: true
-        hint: "Select an existing service or create a new one"
-        create: true               # allows creating a new service directly from this field
+        value_field: "id"          # stores the unique id from service JSON
+        display_fields: ["name"]   # shows the organization name in dropdown
+        required: true             # optional now that one
+        hint: "Select an existing service, or select other and enter below."
+
+      # If a service/organization is not available
+      - label: "If not listed, enter new service"
+        name: "foodBankOther"
+        widget: "string"
+        required: false
+        hint: "Type the organization/service name if it is not in the list above."
+
       - label: "Post Title"
         name: "title"
         widget: "string"
@@ -63,28 +70,33 @@ collections:
         required: false
         hint: "When this post should no longer be displayed"
 
-  # SERVICE LISTINGS - ONE FILE PER SERVICE
+    # SERVICE LISTINGS - COLLECTION CONFIG
   - name: "service_listings"
     label: "Service Listings"
     label_singular: "Service Listing"
     folder: "data/services"
     create: true
-    slug: "{{id}}"
+    slug: "{{name | slugify}}"   # generates filename based on name
     extension: "json"
     format: "json"
     identifier_field: "name"
     summary: "{{name}} - {{type}}"
     fields:
-      - label: "ID"
-        name: "id"
-        widget: "string"
-        required: true
-        hint: "Unique identifier (e.g., fb1, fb2)"
+    # 1️⃣ Name first so slug works and create-new works
       - label: "Organization Name"
         name: "name"
         widget: "string"
         required: true
         hint: "Full name of the organization"
+
+      # 2️⃣ Optional unique ID, auto-generated if left blank
+      - label: "Unique ID"
+        name: "id"
+        widget: "string"
+        required: false
+        hint: "Optional. Auto-generated on save if left blank"
+
+      # 3️⃣ Type of organization
       - label: "Organization Type"
         name: "type"
         widget: "select"
@@ -97,16 +109,21 @@ collections:
           - { label: "Youth Programs", value: "youth_programs" }
           - { label: "Family Support", value: "family_support" }
           - { label: "General Organization", value: "organization" }
+
+      # 4️⃣ Description
       - label: "Description"
         name: "description"
         widget: "text"
         required: true
         hint: "Describe the services your organization provides"
+
+      # 5️⃣ Address & coordinates
       - label: "Full Address"
         name: "address"
         widget: "string"
         required: true
         hint: "Include street, city, province, postal code"
+
       - label: "Location Coordinates"
         name: "location"
         widget: "object"
@@ -117,12 +134,16 @@ collections:
             value_type: "float"
             step: 0.0001
             required: true
+            hint: "Use Google Maps to find coordinates"
           - label: "Longitude"
             name: "lng"
             widget: "number"
             value_type: "float"
             step: 0.0001
             required: true
+            hint: "Use Google Maps to find coordinates"
+
+      # 6️⃣ Days & hours
       - label: "Days Open"
         name: "days"
         widget: "select"
@@ -136,22 +157,33 @@ collections:
           - { label: "Friday", value: "Fri" }
           - { label: "Saturday", value: "Sat" }
           - { label: "Sunday", value: "Sun" }
+
       - label: "Operating Hours"
         name: "hours"
         widget: "string"
         required: true
+        hint: "e.g., Mon-Fri: 9am-5pm or Tuesday: 10am-3pm"
+
+      # 7️⃣ Contact info
       - label: "Phone Number"
         name: "phone"
         widget: "string"
         required: true
+        hint: "Main contact number (e.g., 416-XXX-XXXX)"
+
       - label: "Email Address"
         name: "email"
         widget: "string"
         required: false
+        hint: "Contact email (optional)"
+
       - label: "Website"
         name: "website"
         widget: "string"
         required: false
+        hint: "Organization website URL (optional)"
+
+      # 8️⃣ Tags / services
       - label: "Services/Tags"
         name: "tags"
         widget: "select"
@@ -168,19 +200,29 @@ collections:
           - { label: "Housing Support", value: "housing_support" }
           - { label: "Food Security", value: "food_security" }
           - { label: "Diverse Community", value: "diverse_community" }
+
+      # 9️⃣ Additional info (optional)
       - label: "Additional Information"
         name: "additional_info"
         widget: "text"
         required: false
+        hint: "Any other relevant information (accessibility, languages, special programs, etc.)"
+
+      # 10️⃣ Internal contact (optional)
       - label: "Contact Person Name"
         name: "contact_name"
         widget: "string"
         required: false
+        hint: "For internal use only"
+
       - label: "Contact Person Email"
         name: "contact_email"
         widget: "string"
         required: false
+        hint: "For internal use only"
+
       - label: "Contact Person Phone"
         name: "contact_phone"
         widget: "string"
         required: false
+        hint: "For internal use only"
