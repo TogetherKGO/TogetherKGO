@@ -12,22 +12,22 @@ window.__APP = (function () {
      LOAD SERVICES JSON
   ------------------------------ */
   async function loadData() {
-    try {
-      const resp = await fetch("data/services.json");
-      services = await resp.json();
+  try {
+    const resp = await fetch("data/services.json");
+    services = (await resp.json()).filter(s => s.type !== "placeholder"); // exclude placeholders
 
-      // Immediately show results list
-      applyFilters();
+    // Immediately show results list
+    applyFilters();
 
-      // If map is already initialized, draw markers now
-      if (map) renderMarkers(services);
-    } catch (err) {
-      console.error("Failed to load services.json", err);
-      if (el("results")) {
-        el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load food resources. Please refresh the page.</li>';
-      }
+    // If map is already initialized, draw markers now
+    if (map) renderMarkers(services);
+  } catch (err) {
+    console.error("Failed to load services.json", err);
+    if (el("results")) {
+      el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load food resources. Please refresh the page.</li>';
     }
   }
+}
 
   /* ------------------------------
             INIT MAP
