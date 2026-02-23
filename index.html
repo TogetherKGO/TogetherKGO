@@ -1,0 +1,728 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TogetherKGO - Community Food Resources</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <link rel="stylesheet" href="components/navbar.css">
+    <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        color: var(--text-dark);
+        line-height: 1.6;
+    }
+
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, var(--sky-blue) 0%, var(--light-blue) 100%);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 600px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 100"><path d="M 0 50 Q 50 20 100 50 T 200 50 T 300 50 T 400 50 T 500 50 T 600 50 T 700 50 T 800 50 T 900 50 T 1000 50 T 1100 50 T 1200 50 L 1200 100 L 0 100 Z" fill="%23DBEAFE" opacity="0.6"/></svg>') repeat-x;
+        background-size: 200px 100px;
+    }
+
+    .hero-content {
+        padding: 4rem 2rem 4rem 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+    }
+
+    .hero-title {
+        font-size: 5.5rem;
+        font-weight: 900;
+        color: var(--text-dark);
+        line-height: 1;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+    }
+
+    .hero-subtitle {
+        font-size: 2.25rem;
+        color: var(--text-dark);
+        margin-bottom: 2rem;
+        font-weight: 300;
+    }
+
+    .hero-description {
+        font-size: 1.5rem;
+        color: var(--text-dark);
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+        max-width: 650px;
+    }
+
+    .hero-button {
+        background: var(--primary-blue);
+        color: var(--white);
+        padding: 1.25rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-block;
+        align-self: flex-start;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(125, 191, 232, 0.3);
+    }
+
+    .hero-button:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(125, 191, 232, 0.4);
+    }
+
+    .hero-image {
+        position: relative;
+        overflow: hidden;
+        background: #E3F2FD;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: auto;
+        -ms-interpolation-mode: bicubic;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        will-change: transform;
+        max-width: 100%;
+        height: auto;
+        min-height: 100%;
+    }
+
+    /* Features Section */
+    .features {
+        background: var(--white);
+        padding: 5rem 2rem;
+    }
+
+    .features-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: var(--text-light);
+        margin-bottom: 3rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: var(--pale-blue);
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(125, 191, 232, 0.1);
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(125, 191, 232, 0.2);
+        border-color: var(--sky-blue);
+    }
+
+    .feature-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        color: var(--text-light);
+        line-height: 1.7;
+        font-size: 1.05rem;
+    }
+
+    /* Impact Section */
+    .impact {
+        padding: 5rem 2rem;
+        background: var(--pale-blue);
+    }
+
+    .impact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 2.5rem;
+        background: var(--white);
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(125, 191, 232, 0.15);
+        transition: transform 0.3s;
+    }
+
+    .stat-card:hover {
+        transform: scale(1.05);
+    }
+
+    .stat-number {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    /* CTA Section */
+    .cta {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        color: var(--white);
+        padding: 5rem 2rem;
+        text-align: center;
+    }
+
+    .cta-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .cta-title {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+    }
+
+    .cta-description {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.95;
+        line-height: 1.7;
+    }
+
+    .btn-white {
+        background: var(--white);
+        color: var(--primary-blue);
+        padding: 1.25rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-white:hover {
+        background: var(--pale-blue);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Footer */
+    footer {
+        background: var(--text-dark);
+        color: var(--white);
+        padding: 4rem 2rem 1.5rem;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+        margin-bottom: 1.5rem;
+        color: var(--white);
+        font-size: 1.2rem;
+    }
+
+    .footer-section p {
+        opacity: 0.8;
+        line-height: 1.6;
+    }
+
+    .footer-section ul {
+        list-style: none;
+    }
+
+    .footer-section a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: block;
+        margin-bottom: 0.75rem;
+        transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+        color: var(--white);
+    }
+
+    .footer-bottom {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.95rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .hero-title {
+            font-size: 4.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 1000px) {
+        .hero-title {
+            font-size: 3.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.75rem;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+        }
+    }
+
+    @media (max-width: 968px) {
+        .hero {
+            grid-template-columns: 1fr;
+            min-height: auto;
+        }
+
+        .hero-content {
+            padding: 3rem 2rem;
+            max-width: 100%;
+        }
+
+        .hero-image {
+            min-height: 400px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+    }
+    </style>
+    <script>
+        // AGGRESSIVE Google Translate Banner Removal
+        (function() {
+            'use strict';
+            
+            function removeGoogleTranslateUI() {
+                // Remove all Google Translate iframes
+                const iframes = document.querySelectorAll('iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[id^="goog-gt-"]');
+                iframes.forEach(iframe => iframe.remove());
+                
+                // Remove top banner divs
+                const banners = document.querySelectorAll('.goog-te-banner-frame, .skiptranslate, #goog-gt-tt');
+                banners.forEach(banner => banner.remove());
+                
+                // Reset body styling
+                document.body.style.top = '0px';
+                document.body.style.position = 'static';
+                
+                // Remove high z-index fixed elements
+                const fixedElements = document.querySelectorAll('div[style*="position: fixed"]');
+                fixedElements.forEach(el => {
+                    const zIndex = window.getComputedStyle(el).zIndex;
+                    if (zIndex > 1000000) el.remove();
+                });
+            }
+            
+            // Run multiple times
+            removeGoogleTranslateUI();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', removeGoogleTranslateUI);
+            }
+            window.addEventListener('load', removeGoogleTranslateUI);
+            
+            // Watch for new elements
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1) {
+                            if (node.classList && (
+                                node.classList.contains('goog-te-banner-frame') ||
+                                node.classList.contains('skiptranslate') ||
+                                node.id === 'goog-gt-tt'
+                            )) {
+                                node.remove();
+                            }
+                            if (node.tagName === 'IFRAME' && 
+                                (node.className.includes('goog-te') || node.id.includes('goog-gt'))) {
+                                node.remove();
+                            }
+                        }
+                    });
+                });
+            });
+            
+            function startObserver() {
+                if (!document.body) return;
+                observer.observe(document.body, { childList: true, subtree: true });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', startObserver);
+            } else {
+                startObserver();
+            }
+            
+            // Continuous removal for first 5 seconds
+            let checkCount = 0;
+            const interval = setInterval(function() {
+                removeGoogleTranslateUI();
+                checkCount++;
+                if (checkCount > 50) clearInterval(interval);
+            }, 100);
+        })();
+    </script>
+</head>
+<body>
+    <div id="google_translate_element" style="display:none;"></div>
+    <!-- Navigation -->
+    <div id="navbar"></div>
+
+    <script>
+        fetch("components/navbar.html")
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        })
+        .catch(error => console.error("Error loading navbar:", error));
+    </script>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Bringing KGO<br>Together
+            </h1>
+            <div class="hero-subtitle">Networking people and organizations</div>
+            <p class="hero-description">
+                TogetherKGO serves the Kingston-Galloway-Orton community. We are here to connect a fragemented food-ecosystem and support essential services. We find pathways to connect people, resources, and food to reach those in need, providing dignity, hope, and a brighter future for all our neighbors.
+            </p>
+            <a href="find-services.html" class="hero-button">Find Services</a>
+        </div>
+        <div class="hero-image">
+            <img src="assets/__TogetherKGO.H.jpeg" alt="TogetherKGO Placeholder image">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-container">
+            <h2 class="section-title">How We Support Our Community</h2>
+            <p class="section-subtitle">Connecting neighbors with the resources they need, when they need them</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📍</span>
+                    <h3 class="feature-title">Food Service Locator</h3>
+                    <p class="feature-description">
+                        Find services in the Kingston-Galloway-Orton Park area with our easy-to-use interactive map. Get information on hours, services, and how to access support.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📢</span>
+                    <h3 class="feature-title">Community Updates</h3>
+                    <p class="feature-description">
+                        Stay connected with the latest news, events, and programs in our neighborhood. We share important announcements and opportunities to help our community thrive.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📞</span>
+                    <h3 class="feature-title">Contact Information</h3>
+                    <p class="feature-description">
+                        Get direct phone numbers, emails, and websites for all community food resources.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Impact -->
+    <section class="impact">
+        <div class="impact-container">
+            <h2 class="section-title">Our Community Impact</h2>
+            <p class="section-subtitle">Together, we're making a difference in Kingston-Galloway-Orton Park</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Food Services</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Resource Access</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Services</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-container">
+            <h2 class="cta-title">Need Support Today?</h2>
+            <p class="cta-description">
+                Don't wait. Find the food resources and community support you need right now in the Kingston-Galloway-Orton Park neighborhood. We're here to help.
+            </p>
+            <a href="find-services.html" class="btn-white">Find Services Near You</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>TogetherKGO</h3>
+                <p>Building a stronger, more connected Kingston-Galloway-Orton Park community through accessible food resources and support services.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="find-services.html">Find Services</a></li>
+                    <li><a href="community.html">Community Posts</a></li>
+                    <li><a href="https://www.thestorefront.org/">The Storefront</a></li>
+                </ul>
+            </div>
+            <!--<div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#services">Support Services</a></li>
+                    <li><a href="#donate">Donate</a></li>
+                    <li><a href="#partners">Community Partners</a></li>
+                </ul>
+            </div>-->
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: <a href="mailto:togetherkgo@gmail.com">togetherkgo@gmail.com</a></p>
+                <p>Phone: (416) XXX-XXXX</p>
+                <p>Serving the KGO community</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 TogetherKGO | Bringing the Kingston-Galloway-Orton community together.</p>
+        </div>
+    </footer>
+    
+    <!-- Translation Script -->
+    <script type="text/javascript">
+        // Toggle nav dropdown
+        function toggleLanguageMenu(event) {
+            event.preventDefault();
+            const menu = document.getElementById('languageMenu');
+            menu.classList.toggle('show');
+        }
+        
+        // Toggle floating menu
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileNavOverlay');
+            const menu = document.getElementById('mobileNavMenu');
+            overlay.classList.toggle('show');
+            menu.classList.toggle('show');
+            document.body.style.overflow = menu.classList.contains('show') ? 'hidden' : '';
+        }
+        
+        function closeMobileMenu() {
+            const overlay = document.getElementById('mobileNavOverlay');
+            const menu = document.getElementById('mobileNavMenu');
+            overlay.classList.remove('show');
+            menu.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        // Mobile language dropdown toggle
+        function toggleMobileLangDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('mobileLangDropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        // Close mobile language dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileDropdown = document.getElementById('mobileLangDropdown');
+            const mobileLangBtn = document.getElementById('mobileLangBtn');
+            
+            if (mobileDropdown && !mobileDropdown.contains(event.target) && !mobileLangBtn.contains(event.target)) {
+                mobileDropdown.classList.remove('show');
+            }
+        });
+        
+        function toggleFloatingLangMenuCommunity(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('floatingLangMenuCommunity');
+            menu.classList.toggle('show');
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('languageMenu');
+            const floatingMenu = document.getElementById('floatingLangMenuCommunity');
+            const floatingBtn = document.querySelector('.floating-lang-btn');
+            
+            if (navMenu && !event.target.closest('.language-dropdown')) {
+                navMenu.classList.remove('show');
+            }
+            
+            if (floatingMenu && !floatingMenu.contains(event.target) && event.target !== floatingBtn) {
+                floatingMenu.classList.remove('show');
+            }
+        });
+
+        
+        // Google Translate Widget Functions
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                { pageLanguage: 'en', autoDisplay: false },
+                'google_translate_element'
+            );
+        }
+
+        function setGoogTransCookie(lang) {
+            const value = `/en/${lang}`;
+            document.cookie = `googtrans=${value}; path=/`;
+            document.cookie = `googtrans=${value}; path=/; domain=${location.hostname}`;
+        }
+
+        // Translation Functions 
+        function changeLanguage(langCode) {
+            console.log('Changing language to:', langCode);
+
+            // Close all dropdowns
+            const langMenu = document.getElementById('languageMenu');
+            const mobileDropdown = document.getElementById('mobileLangDropdown');
+            const floatingMenu = document.getElementById('floatingLangMenuCommunity');
+            
+            if (langMenu) langMenu.classList.remove('show');
+            if (mobileDropdown) mobileDropdown.classList.remove('show');
+            if (floatingMenu) floatingMenu.classList.remove('show');
+
+            if (langCode === 'en') {
+                if (typeof clearGoogleTranslateCookies === 'function') {
+                    clearGoogleTranslateCookies();
+                }
+                setGoogTransCookie('en');
+            } else {
+                setGoogTransCookie(langCode);
+            }
+
+            // Reload so translation applies cleanly without breaking the page
+            window.location.reload();
+        }
+        
+        // For floating button compatibility
+        function translatePageFloatingCommunity(langCode) {
+            changeLanguage(langCode);
+        }
+        
+        // Clear Google Translate cookies
+        function clearGoogleTranslateCookies() {
+            const cookies = document.cookie.split(';');
+            cookies.forEach(cookie => {
+                const name = cookie.split('=')[0].trim();
+                if (name.includes('googtrans') || name.includes('_ga') || name.includes('_gid')) {
+                    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.translate.google.com;';
+                    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname + ';';
+                }
+            });
+        }
+
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

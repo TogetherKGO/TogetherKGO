@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Submit Community Update - TogetherKGO</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <link rel="stylesheet" href="components/navbar.css">
+<style>
+
+/* ===============================
+   GLOBAL RESET
+================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  background: var(--pale-blue);
+}
+
+/* ===============================
+   PAGE HEADER
+================================= */
+.page-header {
+  background: linear-gradient(135deg, var(--sky-blue) 0%, var(--light-blue) 100%);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.page-header p {
+  font-size: 1.15rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ===============================
+   MAIN CONTAINER / FORM
+================================= */
+.submission-form {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.form-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+.required {
+  color: #EF4444;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--light-blue);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(125, 191, 232, 0.1);
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-hint {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.submit-btn {
+  background: var(--primary-blue);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(125, 191, 232, 0.3);
+}
+
+.submit-btn:hover {
+  background: var(--dark-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(125, 191, 232, 0.4);
+}
+
+/* ===============================
+   INFO BOX
+================================= */
+.info-box {
+  background: var(--white);
+  border-left: 4px solid var(--primary-blue);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-box strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+  font-size: 1.1rem;
+}
+
+.info-box p {
+  color: var(--text-light);
+  margin: 0;
+}
+
+/* ===============================
+   SUCCESS MESSAGE
+================================= */
+.success-message {
+  background: #D1FAE5;
+  border: 2px solid #10B981;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: none;
+  color: #065F46;
+}
+
+.success-message strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ===============================
+   NEXT STEPS
+================================= */
+.next-steps {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.next-steps h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+  font-size: 1.25rem;
+}
+
+.next-steps ol {
+  padding-left: 1.5rem;
+  line-height: 1.8;
+  color: var(--text-light);
+}
+
+.next-steps li {
+  margin-bottom: 0.5rem;
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .submission-form {
+    padding: 0 1rem;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+  }
+}
+</style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <script>
+    fetch("components/navbar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("navbar").innerHTML = data;
+    })
+    .catch(error => console.error("Error loading navbar:", error));
+  </script>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Submit Community Update</h1>
+    <p>Share important updates, events, and notices with the KGO community</p>
+  </div>
+
+  <!-- Main Form Container -->
+  <main class="submission-form">
+    <div class="info-box">
+      <strong>📝 For Food Bank & Organization Staff</strong>
+      <p>Use this form to share updates with the community about your organization's services, special events, or important notices. All submissions will be reviewed by our admin team before appearing on the community board.</p>
+    </div>
+
+    <div class="success-message" id="successMessage">
+      <strong>✅ Success!</strong>
+      <p>Your update has been submitted and is pending approval. It will appear on the community board once reviewed by our admin team.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <!-- Netlify Form -->
+      <form name="community-update" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+        <!-- Hidden fields for Netlify -->
+        <input type="hidden" name="form-name" value="community-update" />
+        <p style="display:none;">
+          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        </p>
+
+        <!-- Organization/Username -->
+        <div class="form-group">
+          <label for="organization">Your Organization / Username <span class="required">*</span></label>
+          <input type="text" id="organization" name="organization" required placeholder="Enter your organization name or username" />
+        </div>
+
+        <!-- Contact Name -->
+        <div class="form-group">
+          <label for="contactName">Your Name <span class="required">*</span></label>
+          <input type="text" id="contactName" name="contactName" required placeholder="Jane Doe" />
+          <div class="form-hint">This is for verification purposes only and won't be displayed publicly</div>
+        </div>
+
+        <!-- Contact Email -->
+        <div class="form-group">
+          <label for="contactEmail">Your Email <span class="required">*</span></label>
+          <input type="email" id="contactEmail" name="contactEmail" required placeholder="jane@organization.org" />
+          <div class="form-hint">We'll use this to contact you if we have questions about your submission</div>
+        </div>
+
+        <!-- Post Type -->
+        <div class="form-group">
+          <label for="postType">Update Type <span class="required">*</span></label>
+          <select id="postType" name="postType" required>
+            <option value="">Select type...</option>
+            <option value="update">General Update</option>
+            <option value="event">Special Event</option>
+            <option value="urgent">Urgent Notice</option>
+            <option value="food_available">Food Available Today</option>
+          </select>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group">
+          <label for="title">Update Title <span class="required">*</span></label>
+          <input type="text" id="title" name="title" required placeholder="Fresh Produce Available Today" maxlength="100" />
+          <div class="form-hint">Keep it short and descriptive (max 100 characters)</div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group">
+          <label for="message">Message <span class="required">*</span></label>
+          <textarea id="message" name="message" required placeholder="We have fresh vegetables and fruits available this afternoon from 2-4pm. First come, first served!"></textarea>
+          <div class="form-hint">Provide details about your update</div>
+        </div>
+
+        <!-- Public Contact Info (optional) -->
+        <div class="form-group">
+          <label for="publicContact">Public Contact Info (Optional)</label>
+          <input type="text" id="publicContact" name="publicContact" placeholder="416-XXX-XXXX or email@organization.org" />
+          <div class="form-hint">This will be displayed publicly if provided (e.g., for event RSVPs)</div>
+        </div>
+
+        <!-- Expires Date (optional) -->
+        <div class="form-group">
+          <label for="expiresDate">Post Expires On (Optional)</label>
+          <input type="date" id="expiresDate" name="expiresDate" />
+          <div class="form-hint">If this update is time-sensitive, choose when it should stop appearing</div>
+        </div>
+
+        <!-- Submission Time (hidden) -->
+        <input type="hidden" id="submissionTime" name="submissionTime" />
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">Submit Update for Approval</button>
+      </form>
+    </div>
+
+    <!-- What Happens Next -->
+    <div class="next-steps">
+      <h4>What happens next?</h4>
+      <ol>
+        <li>Your submission is received and stored securely</li>
+        <li>Our admin team reviews your update (usually within 24 hours)</li>
+        <li>If approved, your post appears on the Community Board</li>
+        <li>Community members can see your update on the website</li>
+      </ol>
+    </div>
+  </main>
+
+  <script>
+    // Set submission time
+    document.getElementById('submissionTime').value = new Date().toISOString();
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+
+      // Submit to Netlify
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString()
+      })
+      .then(() => {
+        // Show success message
+        document.getElementById('successMessage').style.display = 'block';
+        
+        // Reset form
+        form.reset();
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Hide success message after 10 seconds
+        setTimeout(() => {
+          document.getElementById('successMessage').style.display = 'none';
+        }, 10000);
+      })
+      .catch((error) => {
+        alert('Error submitting form. Please try again.');
+        console.error('Form submission error:', error);
+      });
+    }
+  </script>
+  
+<script src="components/translation.js"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+</body>
+</html>

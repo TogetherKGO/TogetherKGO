@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Board - TogetherKGO</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <link rel="stylesheet" href="components/navbar.css">
+ <style>
+
+/* ===============================
+   GLOBAL STYLES
+================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+    background: var(--pale-blue);
+}
+
+
+/* ===============================
+   PAGE HEADER
+================================= */
+.page-header {
+    background: linear-gradient(135deg, var(--sky-blue) 0%, var(--light-blue) 100%);
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.page-header p {
+    font-size: 1.15rem;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ===============================
+   MAIN CONTAINER
+================================= */
+.container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+
+/* ===============================
+   FILTER SECTION
+================================= */
+.filter-section {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--light-blue);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+/* ===============================
+   POSTS GRID
+================================= */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Post Card */
+.post-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.post-card.urgent {
+    border-left-color: #EF4444;
+    background: #FEF2F2;
+}
+
+.post-card.event {
+    border-left-color: #F59E0B;
+    background: #FFFBEB;
+}
+
+.post-card.food_available {
+    border-left-color: #10B981;
+    background: #F0FDF4;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.post-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.post-type {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.post-type.update {
+    background: var(--light-blue);
+    color: var(--dark-blue);
+}
+
+.post-type.urgent {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.post-type.event {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.post-type.food_available {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.post-location {
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.post-message {
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.post-contact {
+    padding-top: 1rem;
+    border-top: 1px solid var(--light-blue);
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* ===============================
+   NO POSTS MESSAGE
+================================= */
+.no-posts {
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-posts h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* ===============================
+   LOADING
+================================= */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+}
+
+/* ===============================
+   FLOATING LANGUAGE BUTTON
+================================= */
+.floating-lang-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #7DBFE8 0%, #5BA3D0 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    transition: all 0.3s;
+}
+
+.floating-lang-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.floating-lang-menu {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    z-index: 9998;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    min-width: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+}
+
+.floating-lang-menu.show {
+    display: block;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.floating-lang-menu a {
+    display: block;
+    padding: 12px 20px;
+    color: #1F2937;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.floating-lang-menu a:hover {
+    background: #E3F2FD;
+    color: #7DBFE8;
+}
+
+.floating-lang-menu a:last-child {
+    border-bottom: none;
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+    <div id="google_translate_element" style="display:none;"></div>
+    <!-- Navigation -->
+    <div id="navbar"></div>
+
+    <script>
+      fetch("components/navbar.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+      })
+      .catch(error => console.error("Error loading navbar:", error));
+    </script>
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Community Board</h1>
+        <p>Stay updated with the latest news, events, and updates from food banks and community organizations in the KGO area.</p>
+    </div>
+
+    <!-- Submit Community Update CTA -->
+    <div class="container" style="margin-bottom: 2rem;">
+        <div style="background: linear-gradient(135deg, #BAE6FD 0%, #E3F2FD 100%); padding: 24px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin: 0 0 12px 0; color: #1F2937;">Have an update to share?</h3>
+            <p style="margin: 0 0 16px 0; color: #6B7280;">Share updates about your services, special events, or important notices with the community.</p>
+            <a href="community-submit.html" style="display: inline-block; background: #BAE6FD; color: #1F2937; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.15);" onmouseover="this.style.background='#7DBFE8'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#BAE6FD'; this.style.transform='translateY(0)'">Submit Community Update</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Filters -->
+        <div class="filter-section">
+            <h2 style="margin-bottom: 1rem;">Filter Posts</h2>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="filterOrganization">Organization</label>
+                    <select id="filterOrganization">
+                        <option value="">All Organizations</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterOrgType">Organization Type</label>
+                    <select id="filterOrgType">
+                        <option value="">All Types</option>
+                        <option value="food_bank">Food Banks</option>
+                        <option value="community_center">Community Centers</option>
+                        <option value="organization">Organizations</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterPostType">Post Type</label>
+                    <select id="filterPostType">
+                        <option value="">All Types</option>
+                        <option value="update">General Update</option>
+                        <option value="event">Special Event</option>
+                        <option value="urgent">Urgent Notice</option>
+                        <option value="food_available">Food Available</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <p>Loading community posts...</p>
+        </div>
+
+        <!-- Posts Grid -->
+        <div id="postsGrid" class="posts-grid" style="display: none;"></div>
+
+        <!-- No Posts Message -->
+        <div id="noPosts" class="no-posts" style="display: none;">
+            <h3>No Posts Available</h3>
+            <p>Check back soon for updates from local food banks and community organizations.</p>
+        </div>
+    </div>
+
+    <script>
+        // Food bank mapping
+        const FOOD_BANKS = {
+            'fb1': 'East Scarborough Storefront',
+            'fb2': 'Scarborough Centre for Healthy Communities',
+            'fb3': 'West Hill Community Support Program',
+            'fb4': 'Boys & Girls Club of East Scarborough'
+        };
+
+        let allPosts = [];
+        let services = [];
+
+        // Load services.json to get organization names
+        async function loadServices() {
+            try {
+                const response = await fetch('data/services.json');
+                services = await response.json();
+                
+                // Populate organization filter dropdown
+                const select = document.getElementById('filterOrganization');
+                services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading services:', error);
+            }
+        }
+
+        // Load posts from data/posts folder
+        async function loadPosts() {
+            console.log('🔄 Starting to load posts...');
+            try {
+                // Use GitHub API to list files in data/posts directory
+                const repoOwner = 'MicArianW';
+                const repoName = 'TogetherKGO-v1';
+                const branch = 'main';
+                const postsPath = 'data/posts';
+                
+                const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${postsPath}?ref=${branch}`;
+                console.log('📡 Fetching from:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                console.log('📥 Response status:', response.status);
+                
+                if (!response.ok) {
+                    console.log('❌ No posts found or error accessing posts folder');
+                    displayPosts([]);
+                    document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+                
+                const files = await response.json();
+                console.log('📁 Files found:', files.length);
+                
+                // Filter for JSON files only
+                const jsonFiles = files.filter(file => file.name.endsWith('.json'));
+                console.log('📄 JSON files:', jsonFiles.length, jsonFiles.map(f => f.name));
+                
+                if (jsonFiles.length === 0) {
+                    console.log('❌ No post files found');
+                    displayPosts([]);
+                    document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+                
+                // Load each post file
+                const postPromises = jsonFiles.map(async (file) => {
+                    try {
+                        console.log('⬇️ Loading:', file.name);
+                        const postResponse = await fetch(file.download_url);
+                        const post = await postResponse.json();
+                        console.log('✅ Loaded post:', post.title);
+                        return post;
+                    } catch (error) {
+                        console.error(`❌ Error loading post ${file.name}:`, error);
+                        return null;
+                    }
+                });
+                
+                allPosts = await Promise.all(postPromises);
+                allPosts = allPosts.filter(post => post !== null);
+                console.log('📦 Total posts loaded:', allPosts.length);
+                
+                // Filter out expired posts
+                const beforeExpiry = allPosts.length;
+                allPosts = allPosts.filter(post => {
+                    if (!post.expiresDate) return true;
+                    const isValid = new Date(post.expiresDate) > new Date();
+                    if (!isValid) {
+                        console.log('⏰ Expired post:', post.title, 'expired on', post.expiresDate);
+                    }
+                    return isValid;
+                });
+                console.log('📋 Posts after expiry filter:', allPosts.length, '(removed:', beforeExpiry - allPosts.length + ')');
+                
+                // Sort by date
+                allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                console.log('🎨 Displaying', allPosts.length, 'posts');
+                displayPosts(allPosts);
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('❌ Error loading posts:', error);
+                displayPosts([]);
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        // Display posts
+        function displayPosts(posts) {
+            console.log('🎨 displayPosts called with', posts.length, 'posts');
+            const grid = document.getElementById('postsGrid');
+            const noPosts = document.getElementById('noPosts');
+
+            if (!grid) {
+                console.error('❌ postsGrid element not found!');
+                return;
+            }
+
+            if (posts.length === 0) {
+                console.log('📭 No posts to display');
+                grid.style.display = 'none';
+                noPosts.style.display = 'block';
+                return;
+            }
+
+            console.log('✅ Rendering', posts.length, 'posts to grid');
+            grid.style.display = 'grid';
+            noPosts.style.display = 'none';
+            grid.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                console.log(`  📌 Post ${index + 1}:`, post.title, '- Type:', post.type, '- Org:', post.foodBankId);
+                const service = services.find(s => s.id === post.foodBankId);
+                const orgName = service ? service.name : (FOOD_BANKS[post.foodBankId] || 'Unknown Organization');
+                const orgType = service ? service.type : 'organization';
+                
+                const card = document.createElement('div');
+                card.className = `post-card ${post.type || 'update'}`;
+                card.dataset.orgType = orgType;
+                
+                const date = new Date(post.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                card.innerHTML = `
+                    <div class="post-header">
+                        <div>
+                            <h3 class="post-title">${post.title}</h3>
+                            <div class="post-meta">
+                                <span class="post-location">${orgName}</span>
+                                <span>•</span>
+                                <span>${date}</span>
+                            </div>
+                        </div>
+                        <span class="post-type ${post.type || 'update'}">${getTypeLabel(post.type)}</span>
+                    </div>
+                    <p class="post-message">${post.message}</p>
+                    ${post.contactInfo ? `<div class="post-contact">📞 Contact: ${post.contactInfo}</div>` : ''}
+                `;
+
+                grid.appendChild(card);
+            });
+            
+            console.log('✅ Successfully rendered', grid.children.length, 'post cards');
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                'update': 'Update',
+                'event': 'Event',
+                'urgent': 'Urgent',
+                'food_available': 'Food Available'
+            };
+            return labels[type] || 'Update';
+        }
+
+        // Filter posts
+        function filterPosts() {
+            const orgFilter = document.getElementById('filterOrganization').value;
+            const orgTypeFilter = document.getElementById('filterOrgType').value;
+            const postTypeFilter = document.getElementById('filterPostType').value;
+
+            let filtered = allPosts;
+
+            // Filter by organization
+            if (orgFilter) {
+                filtered = filtered.filter(post => post.foodBankId === orgFilter);
+            }
+
+            // Filter by organization type
+            if (orgTypeFilter) {
+                filtered = filtered.filter(post => {
+                    const service = services.find(s => s.id === post.foodBankId);
+                    return service && service.type === orgTypeFilter;
+                });
+            }
+
+            // Filter by post type
+            if (postTypeFilter) {
+                filtered = filtered.filter(post => post.type === postTypeFilter);
+            }
+
+            displayPosts(filtered);
+        }
+
+        // Event listeners
+        document.getElementById('filterOrganization').addEventListener('change', filterPosts);
+        document.getElementById('filterOrgType').addEventListener('change', filterPosts);
+        document.getElementById('filterPostType').addEventListener('change', filterPosts);
+
+        // Initialize
+        console.log('🚀 ===== INITIALIZING COMMUNITY PAGE =====');
+        console.log('📍 About to call loadServices().then(loadPosts)');
+        loadServices().then(() => {
+            console.log('✅ loadServices completed, now calling loadPosts');
+            return loadPosts();
+        }).catch(error => {
+            console.error('❌ ERROR in initialization:', error);
+        });
+        console.log('📍 Initialization code executed');
+    </script>
+    
+    
+    <!-- Floating Language Button -->
+    <button class="floating-lang-btn" onclick="toggleFloatingLangMenuCommunity(event)">
+        🌐 Translate
+    </button>
+
+    <div class="floating-lang-menu" id="floatingLangMenuCommunity">
+        <a href="#" onclick="translatePageFloatingCommunity('en')">English</a>
+        <a href="#" onclick="translatePageFloatingCommunity('ta')">தமிழ் (Tamil)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('bn')">বাংলা (Bengali)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('tl')">Tagalog (Filipino)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('gu')">ગુજરાતી (Gujarati)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('ur')">اردو (Urdu)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('fa')">فارسی (Persian/Farsi)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('es')">Español (Spanish)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('fr')">Français (French)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('hi')">हिन्दी (Hindi)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('ar')">العربية (Arabic)</a>
+        <a href="#" onclick="translatePageFloatingCommunity('zh-CN')">中文 (Chinese)</a>
+    </div>
+    
+<script src="components/translation.js"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+[
+  {
+    "id": "fb1",
+    "name": "East Scarborough Storefront",
+    "type": "organization",
+    "address": "4040 Lawrence Ave E, Scarborough, ON M1E 2R6",
+    "location": {
+      "lat": 43.7659,
+      "lng": -79.1969
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "hours": "Mon-Thu: 10am-6pm",
+    "phone": "416-208-9889",
+    "email": "info@thestorefront.org",
+    "website": "https://thestorefront.org/",
+    "description": "The East Scarborough Storefront harnesses the power of collaboration to support people and build community in one of the most diverse and marginalized neighbourhoods in East Scarborough.",
+    "tags": [
+      "organization",
+      "food_bank",
+      "community_support",
+      "diverse_community"
+    ]
+  },
+  {
+    "id": "fb2",
+    "name": "Scarborough Centre for Healthy Communities (SCHC)",
+    "type": "food_bank",
+    "address": "4100 Lawrence Ave E, Scarborough, ON M1E 2S2",
+    "location": {
+      "lat": 43.7667,
+      "lng": -79.1955
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "hours": "Mon-Fri: 9am-5pm",
+    "phone": "416-847-4147",
+    "email": "info@schcontario.ca",
+    "website": "https://schcontario.ca/",
+    "description": "SCHC provides accessible, equitable, and transformational health and social service choices to enhance the well-being of diverse communities.",
+    "tags": [
+      "food_bank",
+      "health_services",
+      "social_services"
+    ]
+  },
+  {
+    "id": "fb3",
+    "name": "West Hill Community Support Program / Friends of Jesus Christ Food Bank",
+    "type": "food_bank",
+    "address": "4234 Lawrence Ave E #8, Scarborough, ON M1E 2S5",
+    "location": {
+      "lat": 43.7689,
+      "lng": -79.1975
+    },
+    "days": [
+      "Tue"
+    ],
+    "hours": "Tuesday 9:00 AM–12:30 PM",
+    "phone": "416-282-1313",
+    "website": "http://westhillcommunitysupport.ca",
+    "description": "This organization provides essential services to combat food insecurity and offers direct access to food for all community members in need.",
+    "tags": [
+      "food_bank",
+      "food_security",
+      "community_support"
+    ]
+  },
+  {
+    "id": "fb4",
+    "name": "Boys & Girls Club of East Scarborough",
+    "type": "food_bank",
+    "address": "100 Galloway Rd, Scarborough, ON M1E 1W7",
+    "location": {
+      "lat": 43.7616,
+      "lng": -79.1979
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "hours": "Mon-Fri 7am-6pm",
+    "phone": "416-281-0262",
+    "email": "info@esbgc.ca",
+    "website": "https://www.esbgc.ca/",
+    "description": "A trusted partner in building successful families within the community. Provides a safe and supportive environment for children, youth, and families.",
+    "tags": [
+      "food_bank",
+      "youth_programs",
+      "family_support",
+      "community_support"
+    ]
+  },
+  {
+    "id": "fb5",
+    "name": "Curran Hall Community Centre",
+    "type": "community_center",
+    "address": "277 Orton Park Rd, Scarborough, ON M1G 3T4",
+    "location": {
+      "lat": 43.78,
+      "lng": -79.21
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed"
+    ],
+    "hours": "Mon-Wed: 9am-5pm",
+    "phone": "416-396-5156",
+    "description": "Community Center",
+    "tags": [
+      "community_support",
+      "youth_programs",
+      "social_services"
+    ]
+  },
+  {
+    "id": "fb6",
+    "name": "SOSO World Ministries",
+    "type": "food_bank",
+    "address": "400 McCowan Rd Toronto, ON, M1J 1J5",
+    "location": {
+      "lat": 43.741087,
+      "lng": -79.23962
+    },
+    "days": [
+      "Mon"
+    ],
+    "hours": "Mon: 9am-5pm",
+    "phone": "647-330-2254",
+    "description": "Food Bank",
+    "tags": [
+      "food_bank",
+      "family_support",
+      "food_security"
+    ]
+  },
+  {
+    "id": "fb7",
+    "name": "Feed Scarborough (Scarborough Food Security Intiative)",
+    "type": "organization",
+    "address": "3595 St Clair Ave E, Scarborough, ON M1K 1L8",
+    "location": {
+      "lat": 43.7176,
+      "lng": -79.25703
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "hours": "Mon-Fri: 10am-4pm, Sat: 10am-1pm",
+    "phone": "416-936-3975",
+    "description": "Food access programs. Food bank",
+    "tags": [
+      "food_bank",
+      "social_services",
+      "food_security"
+    ]
+  },
+  {
+    "id": "fb8",
+    "name": "5N2",
+    "type": "organization",
+    "address": "705 Progress Ave Units 43 & 44, Scarborough, ON M1H 2X1",
+    "location": {
+      "lat": 43.77672,
+      "lng": -79.24603
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "hours": "Mon-Fri: 9am-5pm",
+    "phone": "416-551-0910",
+    "description": "Multi-service provider, Food Bank",
+    "tags": [
+      "food_bank",
+      "community_support",
+      "food_security"
+    ]
+  },
+  {
+    "id": "fb9",
+    "name": "ACSA Community Services",
+    "type": "organization",
+    "address": "1911 Kennedy Rd Unit 105, Scarborough, ON M1P 2L9",
+    "location": {
+      "lat": 43.76745,
+      "lng": -79.28087
+    },
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "hours": "Mon-Fri: 9am-5pm",
+    "phone": "4162926912",
+    "description": "multi-service agency",
+    "tags": [
+      "family_support",
+      "food_bank",
+      "community_support"
+    ]
+  }
+]
