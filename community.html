@@ -398,24 +398,15 @@ body {
     </div>
 
     <script>
-        // Food bank mapping
-        const FOOD_BANKS = {
-            'fb1': 'East Scarborough Storefront',
-            'fb2': 'Scarborough Centre for Healthy Communities',
-            'fb3': 'West Hill Community Support Program',
-            'fb4': 'Boys & Girls Club of East Scarborough'
-        };
-
         let allPosts = [];
         let services = [];
-
         // Load services.json to get organization names
         async function loadServices() {
             try {
                 const response = await fetch('data/services.json');
                 services = await response.json();
                 
-                // Populate organization filter dropdown
+               // Populate organization filter dropdown
                 const select = document.getElementById('filterOrganization');
                 services.forEach(service => {
                     const option = document.createElement('option');
@@ -510,64 +501,73 @@ body {
 
         // Display posts
         function displayPosts(posts) {
-            console.log('🎨 displayPosts called with', posts.length, 'posts');
-            const grid = document.getElementById('postsGrid');
-            const noPosts = document.getElementById('noPosts');
+    console.log('🎨 displayPosts called with', posts.length, 'posts');
+    const grid = document.getElementById('postsGrid');
+    const noPosts = document.getElementById('noPosts');
 
-            if (!grid) {
-                console.error('❌ postsGrid element not found!');
-                return;
-            }
+    if (!grid) {
+        console.error('❌ postsGrid element not found!');
+        return;
+    }
 
-            if (posts.length === 0) {
-                console.log('📭 No posts to display');
-                grid.style.display = 'none';
-                noPosts.style.display = 'block';
-                return;
-            }
+    if (posts.length === 0) {
+        console.log('📭 No posts to display');
+        grid.style.display = 'none';
+        noPosts.style.display = 'block';
+        return;
+    }
 
-            console.log('✅ Rendering', posts.length, 'posts to grid');
-            grid.style.display = 'grid';
-            noPosts.style.display = 'none';
-            grid.innerHTML = '';
+    console.log('✅ Rendering', posts.length, 'posts to grid');
+    grid.style.display = 'grid';
+    noPosts.style.display = 'none';
+    grid.innerHTML = '';
 
-            posts.forEach((post, index) => {
-                console.log(`  📌 Post ${index + 1}:`, post.title, '- Type:', post.type, '- Org:', post.foodBankId);
-                const service = services.find(s => s.id === post.foodBankId);
-                const orgName = service ? service.name : (FOOD_BANKS[post.foodBankId] || 'Unknown Organization');
-                const orgType = service ? service.type : 'organization';
-                
-                const card = document.createElement('div');
-                card.className = `post-card ${post.type || 'update'}`;
-                card.dataset.orgType = orgType;
-                
-                const date = new Date(post.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
+    posts.forEach((post, index) => {
+        console.log(`  📌 Post ${index + 1}:`, post.title, '- Type:', post.type, '- Org:', post.foodBankId);
 
-                card.innerHTML = `
-                    <div class="post-header">
-                        <div>
-                            <h3 class="post-title">${post.title}</h3>
-                            <div class="post-meta">
-                                <span class="post-location">${orgName}</span>
-                                <span>•</span>
-                                <span>${date}</span>
-                            </div>
-                        </div>
-                        <span class="post-type ${post.type || 'update'}">${getTypeLabel(post.type)}</span>
-                    </div>
-                    <p class="post-message">${post.message}</p>
-                    ${post.contactInfo ? `<div class="post-contact">📞 Contact: ${post.contactInfo}</div>` : ''}
-                `;
+        const service = services.find(s => s.id === post.foodBankId);
 
-                grid.appendChild(card);
-            });
-            
-            console.log('✅ Successfully rendered', grid.children.length, 'post cards');
+        // Use value at foodBankOther if ID is "fb0", otherwise service name or fallback
+        let orgName;
+        if (post.foodBankId === "fb0") {
+            orgName = post.foodBankOther;
+        } else {
+            orgName = service ? service.name : 'Unknown Organization';
         }
+
+        const orgType = service ? service.type : 'organization';
+
+        const card = document.createElement('div');
+        card.className = `post-card ${post.type || 'update'}`;
+        card.dataset.orgType = orgType;
+
+        const date = new Date(post.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        card.innerHTML = `
+            <div class="post-header">
+                <div>
+                    <h3 class="post-title">${post.title}</h3>
+                    <div class="post-meta">
+                        <span class="post-location">${orgName}</span>
+                        <span>•</span>
+                        <span>${date}</span>
+                    </div>
+                </div>
+                <span class="post-type ${post.type || 'update'}">${getTypeLabel(post.type)}</span>
+            </div>
+            <p class="post-message">${post.message}</p>
+            ${post.contactInfo ? `<div class="post-contact">📞 Contact: ${post.contactInfo}</div>` : ''}
+        `;
+
+        grid.appendChild(card);
+    });
+
+    console.log('✅ Successfully rendered', grid.children.length, 'post cards');
+    }
 
         function getTypeLabel(type) {
             const labels = {
