@@ -165,6 +165,10 @@
         box-shadow: 0 4px 20px rgba(125, 191, 232, 0.1);
         transition: all 0.3s;
         border: 2px solid transparent;
+        align-items: center;
+        justify-content: center;
+        display:flex;
+        flex-direction: column;
     }
 
     .feature-card:hover {
@@ -184,12 +188,14 @@
         font-weight: bold;
         color: var(--primary-blue);
         margin-bottom: 1rem;
+        text-align: center;
     }
 
     .feature-description {
         color: var(--text-light);
         line-height: 1.7;
         font-size: 1.05rem;
+        text-align: center;
     }
 
     /* Impact Section */
@@ -394,79 +400,7 @@
         }
     }
     </style>
-    <script>
-        // AGGRESSIVE Google Translate Banner Removal
-        (function() {
-            'use strict';
-            
-            function removeGoogleTranslateUI() {
-                // Remove all Google Translate iframes
-                const iframes = document.querySelectorAll('iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[id^="goog-gt-"]');
-                iframes.forEach(iframe => iframe.remove());
-                
-                // Remove top banner divs
-                const banners = document.querySelectorAll('.goog-te-banner-frame, .skiptranslate, #goog-gt-tt');
-                banners.forEach(banner => banner.remove());
-                
-                // Reset body styling
-                document.body.style.top = '0px';
-                document.body.style.position = 'static';
-                
-                // Remove high z-index fixed elements
-                const fixedElements = document.querySelectorAll('div[style*="position: fixed"]');
-                fixedElements.forEach(el => {
-                    const zIndex = window.getComputedStyle(el).zIndex;
-                    if (zIndex > 1000000) el.remove();
-                });
-            }
-            
-            // Run multiple times
-            removeGoogleTranslateUI();
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', removeGoogleTranslateUI);
-            }
-            window.addEventListener('load', removeGoogleTranslateUI);
-            
-            // Watch for new elements
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    mutation.addedNodes.forEach(function(node) {
-                        if (node.nodeType === 1) {
-                            if (node.classList && (
-                                node.classList.contains('goog-te-banner-frame') ||
-                                node.classList.contains('skiptranslate') ||
-                                node.id === 'goog-gt-tt'
-                            )) {
-                                node.remove();
-                            }
-                            if (node.tagName === 'IFRAME' && 
-                                (node.className.includes('goog-te') || node.id.includes('goog-gt'))) {
-                                node.remove();
-                            }
-                        }
-                    });
-                });
-            });
-            
-            function startObserver() {
-                if (!document.body) return;
-                observer.observe(document.body, { childList: true, subtree: true });
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', startObserver);
-            } else {
-                startObserver();
-            }
-            
-            // Continuous removal for first 5 seconds
-            let checkCount = 0;
-            const interval = setInterval(function() {
-                removeGoogleTranslateUI();
-                checkCount++;
-                if (checkCount > 50) clearInterval(interval);
-            }, 100);
-        })();
-    </script>
+       
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
@@ -486,11 +420,11 @@
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">
-                Bringing KGO<br>Together
+                Together KGO
             </h1>
-            <div class="hero-subtitle">Networking people and organizations</div>
+            <div class="hero-subtitle">Strengthening resilient, community-led food security</div>
             <p class="hero-description">
-                TogetherKGO serves the Kingston-Galloway-Orton community. We are here to connect a fragemented food-ecosystem and support essential services. We find pathways to connect people, resources, and food to reach those in need, providing dignity, hope, and a brighter future for all our neighbors.
+                KGO is already known for its strong community connections. TogetherKGO builds on this strength by improving access to resources and strengthening communication across service users, grassroots groups, and nonprofit organizations.
             </p>
             <a href="find-services.html" class="hero-button">Find Services</a>
         </div>
@@ -502,28 +436,28 @@
     <!-- Features Section -->
     <section class="features">
         <div class="features-container">
-            <h2 class="section-title">How We Support Our Community</h2>
-            <p class="section-subtitle">Connecting neighbors with the resources they need, when they need them</p>
+            <h2 class="section-title">How this tool can help us stay connected</h2>
+            <!--<p class="section-subtitle">Connecting neighbors with the resources they need, when they need them</p>-->
             <div class="features-grid">
                 <div class="feature-card">
                     <span class="feature-icon">📍</span>
-                    <h3 class="feature-title">Food Service Locator</h3>
+                    <h3 class="feature-title">Find community resources and supports</h3>
                     <p class="feature-description">
-                        Find services in the Kingston-Galloway-Orton Park area with our easy-to-use interactive map. Get information on hours, services, and how to access support.
+                         Quickly locate programs, services, and supports available in KGO.
                     </p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">📢</span>
-                    <h3 class="feature-title">Community Updates</h3>
+                    <h3 class="feature-title">Discover and build partnerships</h3>
                     <p class="feature-description">
-                        Stay connected with the latest news, events, and programs in our neighborhood. We share important announcements and opportunities to help our community thrive.
+                        Get line-of-sight into what other partners are working on and identify opportunities to collaborate.
                     </p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">📞</span>
-                    <h3 class="feature-title">Contact Information</h3>
+                    <h3 class="feature-title">Share and receive community updates</h3>
                     <p class="feature-description">
-                        Get direct phone numbers, emails, and websites for all community food resources.
+                        Stay informed and contribute updates that help the community stay connected and coordinated.
                     </p>
                 </div>
             </div>
@@ -531,7 +465,7 @@
     </section>
 
     <!-- Community Impact -->
-    <section class="impact">
+    <!--<section class="impact">
         <div class="impact-container">
             <h2 class="section-title">Our Community Impact</h2>
             <p class="section-subtitle">Together, we're making a difference in Kingston-Galloway-Orton Park</p>
@@ -550,7 +484,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>-->
 
     <!-- CTA Section -->
     <section class="cta">
@@ -575,7 +509,7 @@
                 <ul>
                     <li><a href="find-services.html">Find Services</a></li>
                     <li><a href="community.html">Community Posts</a></li>
-                    <li><a href="https://www.thestorefront.org/">The Storefront</a></li>
+                    <li><a href="https://www.thestorefront.org/">The East Scarborough Storefront</a></li>
                 </ul>
             </div>
             <!--<div class="footer-section">
