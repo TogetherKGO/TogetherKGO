@@ -26,7 +26,7 @@ collections:
         value_field: "id"          # stores the unique id from service JSON
         display_fields: ["name"]   # shows the organization name in dropdown
         required: true             # optional now that one
-        hint: "Select an existing service, or select other and enter below."
+        hint: "Select an existing service, or select other and enter manually below."
 
       # If a service/organization is not available
       - label: "If not listed, enter new service"
