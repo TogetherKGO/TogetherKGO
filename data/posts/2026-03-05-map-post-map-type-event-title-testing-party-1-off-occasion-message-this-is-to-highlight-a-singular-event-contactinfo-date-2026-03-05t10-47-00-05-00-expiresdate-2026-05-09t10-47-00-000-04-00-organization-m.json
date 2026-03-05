@@ -1,0 +1,20 @@
+{
+  "post": {
+    "type": "event",
+    "title": "Testing Party (1-off occasion)",
+    "message": "This is to highlight a singular event",
+    "contactInfo": "",
+    "date": "2026-03-05T10:47:00-05:00",
+    "expiresDate": "2026-05-09T10:47:00.000-04:00"
+  },
+  "organization": {
+    "foodBankId": "fb0",
+    "foodBankOther": "Nathan"
+  },
+  "location": {
+    "location": "Address Road 123, Default City, P0B 0X1"
+  },
+  "uniqueEvent": {
+    "eventDate": "2026-03-20T10:48:00.000-04:00"
+  }
+}
