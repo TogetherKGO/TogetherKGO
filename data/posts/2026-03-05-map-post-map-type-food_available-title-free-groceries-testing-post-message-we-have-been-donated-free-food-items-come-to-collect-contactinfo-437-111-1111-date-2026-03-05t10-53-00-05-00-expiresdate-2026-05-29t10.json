@@ -1,0 +1,20 @@
+{
+  "post": {
+    "type": "food_available",
+    "title": "Free Groceries (Testing post)",
+    "message": "We have been donated free food items. Come to collect.",
+    "contactInfo": "437-111-1111",
+    "date": "2026-03-05T10:53:00-05:00",
+    "expiresDate": "2026-05-29T10:53:00.000-04:00"
+  },
+  "organization": {
+    "foodBankId": "fb1"
+  },
+  "location": {
+    "location": "East Scarborough Storefront"
+  },
+  "food": {
+    "timeWindow": "4-6pm",
+    "availableItems": "Tomatoes, Cucumbers, Bread, Butter"
+  }
+}
