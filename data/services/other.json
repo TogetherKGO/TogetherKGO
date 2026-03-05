@@ -1,0 +1,12 @@
+{
+  "organization": {
+    "name": "Other",
+    "id": "fb0",
+    "type": "city_of_tor",
+    "address": "na"
+  },
+  "location": {
+    "lat": 0,
+    "lng": 0
+  }
+}
