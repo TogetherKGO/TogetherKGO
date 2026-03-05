@@ -8,6 +8,10 @@ on:
       - 'data/services/**'
   workflow_dispatch:
 
+concurrency:
+  group: sync-services-${{ github.ref }}   # Cancel previous runs on the same branch
+  cancel-in-progress: true
+
 jobs:
   update-services-json:
     runs-on: ubuntu-latest
