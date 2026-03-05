@@ -1,0 +1,29 @@
+{
+  "organization": {
+    "name": "Nathan",
+    "type": "individual",
+    "tags": [
+      "food_bank",
+      "youth_programs"
+    ],
+    "address": "1234"
+  },
+  "location": {
+    "lat": 0,
+    "lng": 0
+  },
+  "hours": {
+    "tue": {
+      "open": "9",
+      "close": "5"
+    },
+    "fri": {
+      "open": "9",
+      "close": "5"
+    }
+  },
+  "requirements": {
+    "languages_spoken": "English, French",
+    "accessibility_info": "Ramp access"
+  }
+}
