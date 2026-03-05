@@ -1,0 +1,14 @@
+{
+  "post": {
+    "type": "update",
+    "title": "General Update Test",
+    "message": "General update message",
+    "contactInfo": "437-111-0000",
+    "date": "2026-03-05T10:45:00-05:00",
+    "expiresDate": "2026-06-17T10:45:00.000-04:00"
+  },
+  "organization": {
+    "foodBankId": "fb0",
+    "foodBankOther": "Nathan"
+  }
+}
