@@ -81,25 +81,29 @@ jobs:
               }
               
               // Create service object matching your services.json format
+              // Updated block:
               const serviceObj = {
-                id: id,
+                id: listing.id || id,  // Use CMS ID if exists
                 name: listing.name,
                 type: listing.type,
                 address: listing.address,
                 location: {
-                  lat: listing.location.lat,
-                  lng: listing.location.lng
+                  lat: listing.location?.lat || 0,
+                  lng: listing.location?.lng || 0
                 },
-                days: listing.days || [],
-                hours: listing.hours,
-                phone: listing.phone,
-                description: listing.description,
-                tags: listing.tags || []
+                hours: listing.hours || {},   // use hours object instead of old days
+                phone: listing.phone || '',
+                description: listing.description || '',
+                tags: listing.tags || [],
+                email: listing.email || '',
+                website: listing.website || '',
+                languages_spoken: listing.languages_spoken || '',
+                accessibility_info: listing.accessibility_info || '',
+                documents_required: listing.documents_required || '',
+                fees: listing.fees || '',
+                eligibility: listing.eligibility || '',
+                additional_info: listing.additional_info || ''
               };
-              
-              // Add optional fields if they exist
-              if (listing.email) serviceObj.email = listing.email;
-              if (listing.website) serviceObj.website = listing.website;
               
               if (existingIndex >= 0) {
                 // Update existing service
