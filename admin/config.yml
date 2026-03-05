@@ -171,7 +171,7 @@ collections:
   slug: "{{organization.name | slugify}}"   # generates filename based on name
   extension: "json"
   format: "json"
-  identifier_field: "name"
+  identifier_field: "organization.name"
   summary: "{{organization.name}} - {{organization.type}}" #summary shown for CMS
   fields:
     - label: "Organization Information"
