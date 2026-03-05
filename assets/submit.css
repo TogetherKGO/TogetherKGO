@@ -228,7 +228,15 @@ textarea {
     transform: none;
 }
 
-
+/* ==============
+Changing the size of the operating hours text 
+*/
+.day-hours input[type="time"] {
+    font-size: 0.9rem;       /* smaller text */
+    padding: 0.8em 0.0rem;  /* less padding */
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
 
 
 /* Responsive */

@@ -75,68 +75,94 @@
         <div class="form-section">
           <h2>Post Information</h2>
 
-          <!-- Post Type -->
           <div class="form-group">
             <label for="postType">Update Type <span class="required">*</span></label>
             <select id="postType" name="postType" required>
               <option value="">Select type...</option>
               <option value="update">General Update</option>
-              <option value="event">Special Event</option>
               <option value="urgent">Urgent Notice</option>
+              <option value="event">Special Event</option>
+              <option value="recurring_event">Recurring Event</option>
               <option value="food_available">Food Available Today</option>
             </select>
           </div>
 
+          <!-- Conditional Fields -->
 
-          <!--- LOGIC HERE - IF OPTION IS NEW FIELDS.
-          For example -  IF IT IS AN EVENT, well what day is the event? can this be expires on? EXPIRES ON +1 -->
-
-
-          <!-- Title -->
-          <div class="form-group">
+          <!-- Title (all types) -->
+          <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
             <label for="title">Update Title <span class="required">*</span></label>
-            <input type="text" id="title" name="title" required placeholder="Fresh Produce Available Today" maxlength="100" />
-            <div class="form-hint">Keep it short and descriptive (max 100 characters)</div>
+            <input type="text" id="title" name="title" maxlength="100" placeholder="Fresh Produce Available Today" />
+            <div class="form-hint">Short and descriptive (max 100 chars)</div>
           </div>
 
-          <!-- Message -->
-          <div class="form-group">
+          <!-- Message (all types) -->
+          <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
             <label for="message">Message <span class="required">*</span></label>
-            <textarea id="message" name="message" required placeholder="We have fresh vegetables and fruits available this afternoon from 2-4pm. First come, first served!"></textarea>
-            <div class="form-hint">Provide details about your update</div>
+            <textarea id="message" name="message" placeholder="Provide details about your update"></textarea>
+            <div class="form-hint">Details about your update</div>
           </div>
 
-          <!-- Public Contact Info (optional) -->
-          <div class="form-group">
+          <!-- Public Contact Info (update, food_available optional) -->
+          <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
             <label for="publicContact">Public Contact Info (Optional)</label>
-            <input type="text" id="publicContact" name="publicContact" placeholder="416-XXX-XXXX or email@organization.org" />
-            <div class="form-hint">This will be displayed publicly if provided (e.g., for event RSVPs)</div>
+            <input type="text" id="publicContact" name="publicContact" placeholder="Phone or email" />
           </div>
 
-          <!-- Expires Date (required) -->
-          <div class="form-group">
-            <label for="expiresDate">Post Expires On <span class="required">*</span></label>
-            <input type="date" id="expiresDate" name="expiresDate" required />
-            <div class="form-hint">If this update is time-sensitive, choose when it should stop appearing</div>
+          <!-- Location (event, recurring_event, food_available) -->
+          <div class="form-group conditional-field" data-post-type="event,recurring_event,food_available">
+            <label for="location">Location <span class="required">*</span></label>
+            <input type="text" id="location" name="location" placeholder="Enter location" />
           </div>
+
+          <!-- Event Date (event) -->
+          <div class="form-group conditional-field" data-post-type="event">
+            <label for="eventDate">Event Date <span class="required">*</span></label>
+            <input type="date" id="eventDate" name="eventDate" />
+          </div>
+
+          <!-- Recurring Event Dates (recurring_event) -->
+          <div class="form-group conditional-field" data-post-type="recurring_event">
+            <label for="recurringDates">Recurring Dates <span class="required">*</span></label>
+            <input type="text" id="recurringDates" name="recurringDates" placeholder="Every Monday & Thursday, 2-4pm" />
+            <div class="form-hint">List multiple dates or describe recurrence pattern</div>
+          </div>
+
+          <!-- Time Window (food_available) -->
+          <div class="form-group conditional-field" data-post-type="food_available">
+            <label for="timeWindow">Time Window <span class="required">*</span></label>
+            <input type="text" id="timeWindow" name="timeWindow" placeholder="e.g., 2-4pm" />
+          </div>
+
+          <!-- What’s Available (food_available) -->
+          <div class="form-group conditional-field" data-post-type="food_available">
+            <label for="availableItems">What’s Available <span class="required">*</span></label>
+            <input type="text" id="availableItems" name="availableItems" placeholder="e.g., Fresh vegetables, fruits" />
+          </div>
+
+          <!-- Expires Date (all types except optional public contact only) -->
+          <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
+            <label for="expiresDate">Post Expires On <span class="required">*</span></label>
+            <input type="date" id="expiresDate" name="expiresDate" />
+          </div>
+
         </div>
 
-        <!-- Submission Time (hidden) -->
         <input type="hidden" id="submissionTime" name="submissionTime" />
 
-        <!-- Submit Button -->
         <button type="submit" class="submit-btn">Submit Update for Approval</button>
       </form>
-          <!-- What Happens Next -->
-    <div class="next-steps">
-      <h4>What happens next?</h4>
-      <ol>
-        <li>Your submission is received and stored securely</li>
-        <li>Our admin team reviews your update (usually within 24 hours)</li>
-        <li>If approved, your post appears on the Community Board</li>
-        <li>Community members can see your update on the website</li>
-      </ol>
-    </div> 
+
+      <div class="next-steps">
+        <h4>What happens next?</h4>
+        <ol>
+          <li>Your submission is received and stored securely</li>
+          <li>Our admin team reviews your update (usually within 24 hours)</li>
+          <li>If approved, your post appears on the Community Board</li>
+          <li>Community members can see your update on the website</li>
+        </ol>
+      </div>
+
     </div>
   </div>
 
@@ -156,13 +182,44 @@
 
       // Attach submit handler from components/form-utils,js
       const communityForm = document.getElementById('communityUpdateForm');
-      
+
       if (!communityForm) return;
 
       communityForm.addEventListener('submit', function (e) {
         e.preventDefault();
         submitForm(communityForm, 'successMessage');
       });
+
+    });
+  </script>
+
+  <!--- This script handles dynamic fields for submitting events-->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+      const postTypeSelect = document.getElementById('postType');
+      const conditionalFields = document.querySelectorAll('.conditional-field');
+
+      function updateConditionalFields() {
+        const selectedType = postTypeSelect.value;
+
+        conditionalFields.forEach(field => {
+          const types = field.dataset.postType.split(',');
+          if (types.includes(selectedType)) {
+            field.style.display = 'block';
+            field.querySelector('input, textarea').required = true;
+          } else {
+            field.style.display = 'none';
+            field.querySelector('input, textarea').required = false;
+          }
+        });
+      }
+
+      // Initial run (in case form is pre-filled)
+      updateConditionalFields();
+
+      // Update whenever the post type changes
+      postTypeSelect.addEventListener('change', updateConditionalFields);
 
     });
   </script>

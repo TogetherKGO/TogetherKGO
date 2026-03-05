@@ -59,16 +59,15 @@
                     </div>
 
                     <div class="form-group">
+                         <!-- How would you describe this organization?? [organization type]-->
                         <label for="orgType">Organization Type <span class="required">*</span></label>
                         <select id="orgType" name="organization_type" required>
                             <option value="">Select type...</option>
-                            <option value="food_bank">Food Bank</option>
-                            <option value="community_center">Community Center</option>
-                            <option value="social_services">Social Services</option>
-                            <option value="health_services">Health Services</option>
-                            <option value="youth_programs">Youth Programs</option>
-                            <option value="family_support">Family Support</option>
-                            <option value="other">Other</option>
+                            <option value="community_org">Community Organization</option>
+                            <option value="grassroots_org">Grassroots Organization</option>
+                            <option value="city_of_toronto">City of Toronto</option>
+                            <option value="community_institution">Community Institution</option>
+                            <option value="individual">Individual</option>
                         </select>
                     </div>
 
@@ -104,50 +103,67 @@
                         <input type="url" id="website" name="website" placeholder="https://www.yourorganization.org">
                     </div>
                 </div>
-
-                <!-- Operating Hours -->
                 <div class="form-section">
-                    <h2>Operating Hours</h2>
-                    
-                    <div class="form-group">
-                        <label>Days Open <span class="required">*</span></label>
-                        <div class="days-grid">
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="mon" name="days_open" value="Mon">
-                                <label for="mon">Monday</label>
-                            </div>
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="tue" name="days_open" value="Tue">
-                                <label for="tue">Tuesday</label>
-                            </div>
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="wed" name="days_open" value="Wed">
-                                <label for="wed">Wednesday</label>
-                            </div>
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="thu" name="days_open" value="Thu">
-                                <label for="thu">Thursday</label>
-                            </div>
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="fri" name="days_open" value="Fri">
-                                <label for="fri">Friday</label>
-                            </div>
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="sat" name="days_open" value="Sat">
-                                <label for="sat">Saturday</label>
-                            </div>
-                            <div class="day-checkbox">
-                                <input type="checkbox" id="sun" name="days_open" value="Sun">
-                                <label for="sun">Sunday</label>
-                            </div>
-                        </div>
+                <h2>Operating Hours</h2>
+                <div class="form-hint">Specify when your organization is open. Leave days blank if closed.</div>
+
+                <div class="days-grid">
+                    <!-- Monday -->
+                    <div class="form-group day-hours">
+                    <label>Monday</label>
+                    <input type="time" name="hours[mon][open]" placeholder="Open">
+                    <input type="time" name="hours[mon][close]" placeholder="Close">
                     </div>
 
-                    <div class="form-group">
-                        <label for="hours">Operating Hours <span class="required">*</span></label>
-                        <input type="text" id="hours" name="operating_hours" required placeholder="e.g., Mon-Fri: 9am-5pm, Sat: 10am-2pm">
-                        <span class="helper-text">Specify your operating hours (e.g., "Mon-Fri: 9am-5pm" or "Tuesday: 10am-3pm")</span>
+                    <!-- Tuesday -->
+                    <div class="form-group day-hours">
+                    <label>Tuesday</label>
+                    <input type="time" name="hours[tue][open]" placeholder="Open">
+                    <input type="time" name="hours[tue][close]" placeholder="Close">
                     </div>
+
+                    <!-- Wednesday -->
+                    <div class="form-group day-hours">
+                    <label>Wednesday</label>
+                    <input type="time" name="hours[wed][open]" placeholder="Open">
+                    <input type="time" name="hours[wed][close]" placeholder="Close">
+                    </div>
+
+                    <!-- Thursday -->
+                    <div class="form-group day-hours">
+                    <label>Thursday</label>
+                    <input type="time" name="hours[thu][open]" placeholder="Open">
+                    <input type="time" name="hours[thu][close]" placeholder="Close">
+                    </div>
+
+                    <!-- Friday -->
+                    <div class="form-group day-hours">
+                    <label>Friday</label>
+                    <input type="time" name="hours[fri][open]" placeholder="Open">
+                    <input type="time" name="hours[fri][close]" placeholder="Close">
+                    </div>
+
+                    <!-- Saturday -->
+                    <div class="form-group day-hours">
+                    <label>Saturday</label>
+                    <input type="time" name="hours[sat][open]" placeholder="Open">
+                    <input type="time" name="hours[sat][close]" placeholder="Close">
+                    </div>
+
+                    <!-- Sunday -->
+                    <div class="form-group day-hours">
+                    <label>Sunday</label>
+                    <input type="time" name="hours[sun][open]" placeholder="Open">
+                    <input type="time" name="hours[sun][close]" placeholder="Close">
+                    </div>
+
+
+                </div>
+                <!-- Quick-fill buttons -->
+                <div class="form-group buttons">
+                    <button type="button" id="fillNineToFive" class="">Set All to 9am–5pm</button>
+                    <button type="button" id="clearTimes" class="">Clear Times</button>
+                    <div class="form-hint">Quickly fill or clear all operating hours.</div>
                 </div>
 
                 <!-- Services Offered -->
@@ -248,6 +264,34 @@
             });
 
         });
+    </script>
+
+    <script>
+        // Fill operating Hours 9-5 auto
+          document.addEventListener('DOMContentLoaded', () => {
+        const fillButton = document.getElementById('fillNineToFive');
+        const clearButton = document.getElementById('clearTimes');
+
+        const dayHours = document.querySelectorAll('.day-hours');
+
+        fillButton.addEventListener('click', () => {
+        dayHours.forEach(day => {
+            const openInput = day.querySelector('input[name$="[open]"]');
+            const closeInput = day.querySelector('input[name$="[close]"]');
+            if(openInput) openInput.value = "09:00";
+            if(closeInput) closeInput.value = "17:00";
+        });
+        });
+
+        clearButton.addEventListener('click', () => {
+        dayHours.forEach(day => {
+            const openInput = day.querySelector('input[name$="[open]"]');
+            const closeInput = day.querySelector('input[name$="[close]"]');
+            if(openInput) openInput.value = "";
+            if(closeInput) closeInput.value = "";
+        });
+        });
+    });
     </script>
     <script src="components/translation.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
