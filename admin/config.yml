@@ -168,11 +168,11 @@ collections:
   label_singular: "Service Listing"
   folder: "data/services"
   create: true
-  slug: "{{name | slugify}}"   # generates filename based on name
+  slug: "{{organization.name | slugify}}"   # generates filename based on name
   extension: "json"
   format: "json"
   identifier_field: "name"
-  summary: "{{name}} - {{type}}"
+  summary: "{{organization.name}} - {{organization.type}}" #summary shown for CMS
   fields:
     - label: "Organization Information"
       name: "organization"
@@ -211,7 +211,7 @@ collections:
           required: false
           hint: "Describe the services your organization provides"
 
-        # 5️⃣ Address & coordinates
+        # 5️⃣ Address 
         - label: "Full Address"
           name: "address"
           widget: "string"
@@ -278,13 +278,13 @@ collections:
       name: "hours"
       widget: "object"
       fields:
-        - { label: "Monday", name: "mon", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
-        - { label: "Tuesday", name: "tue", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
-        - { label: "Wednesday", name: "wed", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
-        - { label: "Thursday", name: "thu", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
-        - { label: "Friday", name: "fri", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
-        - { label: "Saturday", name: "sat", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
-        - { label: "Sunday", name: "sun", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Monday", name: "mon", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Tuesday", name: "tue", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Wednesday", name: "wed", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Thursday", name: "thu", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Friday", name: "fri", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Saturday", name: "sat", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Sunday", name: "sun", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
 
     # 10️⃣ Accessibility & Languages
     - label: "Requirements, Eligibility, Accessibility, Languages"
