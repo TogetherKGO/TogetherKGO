@@ -1,0 +1,20 @@
+{
+  "post": {
+    "type": "recurring_event",
+    "title": "Get involved in TogetherKGO Testing",
+    "message": "Join nathan for testing each week (fake post for testing)",
+    "date": "2026-03-05T10:51:00-05:00",
+    "expiresDate": "2026-05-02T10:51:00.000-04:00"
+  },
+  "organization": {
+    "foodBankId": "fb1",
+    "foodBankOther": ""
+  },
+  "location": {
+    "location": "meet.google.com/111-fake-link"
+  },
+  "recurringEvent": {
+    "startRecurringDates": "2026-03-06T12:00:00.000-05:00",
+    "recurringDates": "Every Thursday 11-12"
+  }
+}
