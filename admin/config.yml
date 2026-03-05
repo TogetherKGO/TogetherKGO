@@ -14,10 +14,10 @@ collections:
   label_singular: "Community Post"
   folder: "data/posts"
   create: true
-  slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+  slug: "{{year}}-{{month}}-{{day}}-{{post.title | slugify}}" #this determines file names
   extension: "json"
   format: "json"
-  summary: "{{post.title}} — {{post.type}}"
+  summary: "{{post.title}} — {{post.type}}" # this is what admins will see 
 
   fields:
 
@@ -162,7 +162,7 @@ collections:
           field: type
           value: "food_available"
 
-  # !!! ADD SERVICES LISTINGS - COLLECTION CONFIG !!!
+# !!! ADD SERVICES LISTINGS - COLLECTION CONFIG !!!
 - name: "service_listings"
   label: "Service Listings"
   label_singular: "Service Listing"
@@ -174,49 +174,87 @@ collections:
   identifier_field: "name"
   summary: "{{name}} - {{type}}"
   fields:
-  # 1️⃣ Name first so slug works and create-new works
-    - label: "Organization Name"
-      name: "name"
-      widget: "string"
-      required: true
-      hint: "Full name of the organization"
+    - label: "Organization Information"
+      name: "organization"
+      widget: "object"
+      fields:
+      # 1️⃣ Name first so slug works and create-new works
+        - label: "Organization Name"
+          name: "name"
+          widget: "string"
+          required: true
+          hint: "Full name of the organization"
 
-    # 2️⃣ Optional unique ID, auto-generated if left blank
-    - label: "Unique ID"
-      name: "id"
-      widget: "string"
-      required: false
-      hint: "Optional. Auto-generated on save if left blank"
+        # 2️⃣ Optional unique ID, auto-generated if left blank
+        - label: "Unique ID"
+          name: "id"
+          widget: "string"
+          required: false
+          hint: "Optional. Auto-generated on save if left blank"
 
-    # 3️⃣ Type of organization
-    - label: "Organization Type"
-      name: "type"
-      widget: "select"
-      required: true
-      options:
-        - { label: "Food Bank", value: "food_bank" }
-        - { label: "Community Center", value: "community_center" }
-        - { label: "Social Services", value: "social_services" }
-        - { label: "Health Services", value: "health_services" }
-        - { label: "Youth Programs", value: "youth_programs" }
-        - { label: "Family Support", value: "family_support" }
-        - { label: "General Organization", value: "organization" }
+        # 3️⃣ Type of organization
+        - label: "Organization Type"
+          name: "type"
+          widget: "select"
+          required: true
+          options:
+            - { label: "Community Organization", value: "community_org" }
+            - { label: "Grassroots Organization", value: "grassroots_org" }
+            - { label: "City of Toronto", value: "city_of_tor" }
+            - { label: "Community Institution", value: "community_inst" }
+            - { label: "Individual", value: "individual" }
 
-    # 4️⃣ Description
-    - label: "Description"
-      name: "description"
-      widget: "text"
-      required: true
-      hint: "Describe the services your organization provides"
+        # 4️⃣ Description
+        - label: "Description"
+          name: "description"
+          widget: "text"
+          required: false
+          hint: "Describe the services your organization provides"
 
-    # 5️⃣ Address & coordinates
-    - label: "Full Address"
-      name: "address"
-      widget: "string"
-      required: true
-      hint: "Include street, city, province, postal code"
+        # 5️⃣ Address & coordinates
+        - label: "Full Address"
+          name: "address"
+          widget: "string"
+          required: true
+          hint: "Include street, city, province, postal code"
 
-    - label: "Location Coordinates"
+        # 6 Contact info
+        - label: "Phone Number"
+          name: "phone"
+          widget: "string"
+          required: false
+          hint: "Main contact number (e.g., 416-XXX-XXXX)"
+
+        - label: "Email Address"
+          name: "email"
+          widget: "string"
+          required: false
+          hint: "Contact email (optional)"
+
+        - label: "Website"
+          name: "website"
+          widget: "string"
+          required: false
+          hint: "Organization website URL (optional)"
+
+        # 7 Tags / services
+        - label: "Services/Tags"
+          name: "tags"
+          widget: "select"
+          multiple: true
+          required: false
+          options:
+            - { label: "Food Bank", value: "food_bank" }
+            - { label: "Hot Meals", value: "hot_meals" }
+            - { label: "Community Support", value: "community_support" }
+            - { label: "Youth Programs", value: "youth_programs" }
+            - { label: "Family Support", value: "family_support" }
+            - { label: "Health Services", value: "health_services" }
+            - { label: "Social Services", value: "social_services" }
+            - { label: "Housing Support", value: "housing_support" }
+
+    # FOR MAP ASSIGNMENT
+    - label: "For Mapping"
       name: "location"
       widget: "object"
       fields:
@@ -235,86 +273,41 @@ collections:
           required: true
           hint: "Use Google Maps to find coordinates"
 
-    # 6️⃣ Days & hours
-    - label: "Days Open"
-      name: "days"
-      widget: "select"
-      multiple: true
-      required: true
-      options:
-        - { label: "Monday", value: "Mon" }
-        - { label: "Tuesday", value: "Tue" }
-        - { label: "Wednesday", value: "Wed" }
-        - { label: "Thursday", value: "Thu" }
-        - { label: "Friday", value: "Fri" }
-        - { label: "Saturday", value: "Sat" }
-        - { label: "Sunday", value: "Sun" }
-
+    # Operating Days & hours
     - label: "Operating Hours"
       name: "hours"
-      widget: "string"
-      required: true
-      hint: "e.g., Mon-Fri: 9am-5pm or Tuesday: 10am-3pm"
+      widget: "object"
+      fields:
+        - { label: "Monday", name: "mon", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Tuesday", name: "tue", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Wednesday", name: "wed", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Thursday", name: "thu", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Friday", name: "fri", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Saturday", name: "sat", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
+        - { label: "Sunday", name: "sun", widget: "object", fields: [ {label: "Open", name: "open", widget: "string"}, {label: "Close", name: "close", widget: "string"} ] }
 
-    # 7️⃣ Contact info
-    - label: "Phone Number"
-      name: "phone"
-      widget: "string"
-      required: true
-      hint: "Main contact number (e.g., 416-XXX-XXXX)"
-
-    - label: "Email Address"
-      name: "email"
-      widget: "string"
-      required: false
-      hint: "Contact email (optional)"
-
-    - label: "Website"
-      name: "website"
-      widget: "string"
-      required: false
-      hint: "Organization website URL (optional)"
-
-    # 8️⃣ Tags / services
-    - label: "Services/Tags"
-      name: "tags"
-      widget: "select"
-      multiple: true
-      required: false
-      options:
-        - { label: "Food Bank", value: "food_bank" }
-        - { label: "Hot Meals", value: "hot_meals" }
-        - { label: "Community Support", value: "community_support" }
-        - { label: "Youth Programs", value: "youth_programs" }
-        - { label: "Family Support", value: "family_support" }
-        - { label: "Health Services", value: "health_services" }
-        - { label: "Social Services", value: "social_services" }
-        - { label: "Housing Support", value: "housing_support" }
-        - { label: "Food Security", value: "food_security" }
-        - { label: "Diverse Community", value: "diverse_community" }
-
-    # 9️⃣ Additional info (optional)
-    - label: "Additional Information"
-      name: "additional_info"
-      widget: "text"
-      required: false
-      hint: "Any other relevant information (accessibility, languages, special programs, etc.)"
-
-    # 10️⃣ Internal contact (optional)
-    - label: "Contact Person Name"
-      name: "contact_name"
-      widget: "string"
-      required: false
-      hint: "For internal use only"
-
-    - label: "Contact Person Email"
-      name: "contact_email"
-      widget: "string"
-      required: false
-      hint: "For internal use only"
-
-    - label: "Contact Person Phone"
-      name: "contact_phone"
-      widget: "string"
-      required: false
-      hint: "For internal use only"
+    # 10️⃣ Accessibility & Languages
+    - label: "Requirements, Eligibility, Accessibility, Languages"
+      name: "requirements"
+      widget: "object"
+      fields:
+        - label: "Languages Supported"
+          name: "languages_spoken"
+          widget: "string"
+          required: false
+        - label: "Accessibility Information"
+          name: "accessibility_info"
+          widget: "text"
+          required: false
+        - label: "Documents Required"
+          name: "documents_required"
+          widget: "string"
+          required: false
+        - label: "Fees"
+          name: "fees"
+          widget: "string"
+          required: false
+        - label: "Eligibility"
+          name: "eligibility"
+          widget: "text"
+          required: false
