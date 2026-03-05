@@ -103,10 +103,10 @@ jobs:
             };
 
             if (existingIndex >= 0) {
-              console.log(`Updating: ${listing.name} (${id})`);
+              console.log(`Updating: ${listing.organization.name} (${id})`);
               services[existingIndex] = serviceObj;
             } else {
-              console.log(`Adding: ${listing.name} (${id})`);
+              console.log(`Adding: ${listing.organization.name} (${id})`);
               services.push(serviceObj);
             }
 
