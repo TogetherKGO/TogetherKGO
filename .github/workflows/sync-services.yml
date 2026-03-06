@@ -8,9 +8,6 @@ on:
       - 'data/services/**'
   workflow_dispatch:
 
-concurrency:
-  group: sync-services-${{ github.ref }}   # Cancel previous runs on the same branch
-  cancel-in-progress: true
 
 jobs:
   update-services-json:
@@ -131,12 +128,22 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          
-          if git diff --quiet data/services.json; then
-            echo "No changes to services.json"
+          # Stage the file first. This is important because git diff will now compare
+          # the staged version against the last commit.
+          git add data/services.json
+
+          # CHANGED: Using `git diff --cached --quiet` instead of `git diff --quiet data/services.json`
+          # Reason:
+          # - `--cached` checks the STAGED changes (index vs last commit)
+          # - This correctly detects newly created files like services.json
+          # - The previous command sometimes fails to detect new files
+          if git diff --cached --quiet; then
+            # If there are no staged changes, nothing needs to be committed
+            echo "No changes"
           else
-            git add data/services.json
+            # If changes exist (including new files), create a commit
             git commit -m "Auto-update: Sync approved service listings to services.json"
+            
+            # Push the commit back to the repository
             git push
-            echo "✅ services.json updated and deployed!"
           fi
