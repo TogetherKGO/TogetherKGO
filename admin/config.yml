@@ -278,7 +278,7 @@ collections:
       name: "hours"
       widget: "object"
       fields:
-        - { label: "Monday", name: "mon", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+        - { label: "Monday", name: "mon", widget: "object", hint: "If there are multiple open and closes each day please write each time separated by a comma ',', i.e., in open 10:00am,2:00pm and in close 12:00pm,4:00pm", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
         - { label: "Tuesday", name: "tue", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
         - { label: "Wednesday", name: "wed", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
         - { label: "Thursday", name: "thu", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
