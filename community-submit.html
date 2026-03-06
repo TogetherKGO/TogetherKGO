@@ -10,6 +10,10 @@
   <!-- Page -->
   <link rel="stylesheet" href="assets/submit.css">
 
+  <!-- Constants & Populate Forms -->
+  <script src="assets/constants.js"></script>
+  <script src="assets/populateforms.js"></script>
+
 </head>
 
 <body>
@@ -75,15 +79,11 @@
         <div class="form-section">
           <h2>Post Information</h2>
 
+          <!-- Update Type Dropdown (Dynamic) -->
           <div class="form-group">
             <label for="postType">Update Type <span class="required">*</span></label>
             <select id="postType" name="postType" required>
-              <option value="">Select type...</option>
-              <option value="update">General Update</option>
-              <option value="urgent">Urgent Notice</option>
-              <option value="event">Special Event</option>
-              <option value="recurring_event">Recurring Event</option>
-              <option value="food_available">Food Available Today</option>
+              <!-- Options dynamically populated via JS -->
             </select>
           </div>
 

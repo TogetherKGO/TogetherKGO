@@ -7,6 +7,8 @@
     <title>Community Board - TogetherKGO</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <link rel="stylesheet" href="components/navbar.css">
+    <script src="assets/constants.js"></script>
+    <script src="assets/populateforms.js"></script>
  <style>
 
 /* ===============================
@@ -361,25 +363,16 @@ body {
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="filterOrgType">Organization Type</label>
-                    <select id="filterOrgType">
-                        <option value="">All Types</option>
-                            <option value="community_org">Community Organization</option>
-                            <option value="grassroots_org">Grassroots Organization</option>
-                            <option value="city_of_toronto">City of Toronto</option>
-                            <option value="community_institution">Community Institution</option>
-                            <option value="individual">Individual</option>
+                    <label for="orgType">Organization Type</label>
+                    <select id="orgType" data-source="services"></select> <!-- Only load types that actually exist-->
+                        <!-- options will be populated dynamically -->
                     </select>
                 </div>
+
                 <div class="filter-group">
-                    <label for="filterPostType">Post Type</label>
-                    <select id="filterPostType">
-                        <option value="">All Types</option>
-                        <option value="update">General Update</option>
-                        <option value="urgent">Urgent Notice</option>
-                        <option value="event">Special Event</option>
-                        <option value="reccurring_event">Recurring Event</option>
-                        <option value="food_available">Food Available Today</option>
+                    <label for="postType">Post Type</label>
+                    <select id="postType">
+                        <!-- options will be populated dynamically -->
                     </select>
                 </div>
             </div>
@@ -400,233 +393,9 @@ body {
         </div>
     </div>
 
-    <script>
-        let allPosts = [];
-        let services = [];
-        // Load services.json to get organization names
-        async function loadServices() {
-            try {
-                const response = await fetch('data/services.json');
-                services = await response.json();
-                
-               // Populate organization filter dropdown
-                const select = document.getElementById('filterOrganization');
-                services.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.id;
-                    option.textContent = service.name;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error loading services:', error);
-            }
-        }
-
-        // Load posts from data/posts folder
-        async function loadPosts() {
-            console.log('🔄 Starting to load posts...');
-            try {
-                // Use GitHub API to list files in data/posts directory
-                const repoOwner = 'TogetherKGO';
-                const repoName = 'TogetherKGO';
-                const branch = 'main';
-                const postsPath = 'data/posts';
-                
-                const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${postsPath}?ref=${branch}`;
-                console.log('📡 Fetching from:', apiUrl);
-                
-                const response = await fetch(apiUrl);
-                console.log('📥 Response status:', response.status);
-                
-                if (!response.ok) {
-                    console.log('❌ No posts found or error accessing posts folder');
-                    displayPosts([]);
-                    document.getElementById('loading').style.display = 'none';
-                    return;
-                }
-                
-                const files = await response.json();
-                console.log('📁 Files found:', files.length);
-                
-                // Filter for JSON files only
-                const jsonFiles = files.filter(file => file.name.endsWith('.json'));
-                console.log('📄 JSON files:', jsonFiles.length, jsonFiles.map(f => f.name));
-                
-                if (jsonFiles.length === 0) {
-                    console.log('❌ No post files found');
-                    displayPosts([]);
-                    document.getElementById('loading').style.display = 'none';
-                    return;
-                }
-                
-                // Load each post file
-                const postPromises = jsonFiles.map(async (file) => {
-                    try {
-                        console.log('⬇️ Loading:', file.name);
-                        const postResponse = await fetch(file.download_url);
-                        const post = await postResponse.json();
-                        console.log('✅ Loaded post:', post.title);
-                        return post;
-                    } catch (error) {
-                        console.error(`❌ Error loading post ${file.name}:`, error);
-                        return null;
-                    }
-                });
-                
-                allPosts = await Promise.all(postPromises);
-                allPosts = allPosts.filter(post => post !== null);
-                console.log('📦 Total posts loaded:', allPosts.length);
-                
-                // Filter out expired posts
-                const beforeExpiry = allPosts.length;
-                allPosts = allPosts.filter(post => {
-                    if (!post.expiresDate) return true;
-                    const isValid = new Date(post.expiresDate) > new Date();
-                    if (!isValid) {
-                        console.log('⏰ Expired post:', post.title, 'expired on', post.expiresDate);
-                    }
-                    return isValid;
-                });
-                console.log('📋 Posts after expiry filter:', allPosts.length, '(removed:', beforeExpiry - allPosts.length + ')');
-                
-                // Sort by date
-                allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                console.log('🎨 Displaying', allPosts.length, 'posts');
-                displayPosts(allPosts);
-                document.getElementById('loading').style.display = 'none';
-            } catch (error) {
-                console.error('❌ Error loading posts:', error);
-                displayPosts([]);
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
-
-        // Display posts
-        function displayPosts(posts) {
-    console.log('🎨 displayPosts called with', posts.length, 'posts');
-    const grid = document.getElementById('postsGrid');
-    const noPosts = document.getElementById('noPosts');
-
-    if (!grid) {
-        console.error('❌ postsGrid element not found!');
-        return;
-    }
-
-    if (posts.length === 0) {
-        console.log('📭 No posts to display');
-        grid.style.display = 'none';
-        noPosts.style.display = 'block';
-        return;
-    }
-
-    console.log('✅ Rendering', posts.length, 'posts to grid');
-    grid.style.display = 'grid';
-    noPosts.style.display = 'none';
-    grid.innerHTML = '';
-
-    posts.forEach((post, index) => {
-        console.log(`  📌 Post ${index + 1}:`, post.title, '- Type:', post.type, '- Org:', post.foodBankId);
-
-        const service = services.find(s => s.id === post.foodBankId);
-
-        // Use value at foodBankOther if ID is "fb0", otherwise service name or fallback
-        let orgName;
-        if (post.foodBankId === "fb0") {
-            orgName = post.foodBankOther;
-        } else {
-            orgName = service ? service.name : 'Unknown Organization';
-        }
-
-        const orgType = service ? service.type : 'organization';
-
-        const card = document.createElement('div');
-        card.className = `post-card ${post.type || 'update'}`;
-        card.dataset.orgType = orgType;
-
-        const date = new Date(post.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-
-        card.innerHTML = `
-            <div class="post-header">
-                <div>
-                    <h3 class="post-title">${post.title}</h3>
-                    <div class="post-meta">
-                        <span class="post-location">${orgName}</span>
-                        <span>•</span>
-                        <span>${date}</span>
-                    </div>
-                </div>
-                <span class="post-type ${post.type || 'update'}">${getTypeLabel(post.type)}</span>
-            </div>
-            <p class="post-message">${post.message}</p>
-            ${post.contactInfo ? `<div class="post-contact">📞 Contact: ${post.contactInfo}</div>` : ''}
-        `;
-
-        grid.appendChild(card);
-    });
-
-    console.log('✅ Successfully rendered', grid.children.length, 'post cards');
-    }
-
-        function getTypeLabel(type) {
-            const labels = {
-                'update': 'Update',
-                'event': 'Event',
-                'urgent': 'Urgent',
-                'food_available': 'Food Available'
-            };
-            return labels[type] || 'Update';
-        }
-
-        // Filter posts
-        function filterPosts() {
-            const orgFilter = document.getElementById('filterOrganization').value;
-            const orgTypeFilter = document.getElementById('filterOrgType').value;
-            const postTypeFilter = document.getElementById('filterPostType').value;
-
-            let filtered = allPosts;
-
-            // Filter by organization
-            if (orgFilter) {
-                filtered = filtered.filter(post => post.foodBankId === orgFilter);
-            }
-
-            // Filter by organization type
-            if (orgTypeFilter) {
-                filtered = filtered.filter(post => {
-                    const service = services.find(s => s.id === post.foodBankId);
-                    return service && service.type === orgTypeFilter;
-                });
-            }
-
-            // Filter by post type
-            if (postTypeFilter) {
-                filtered = filtered.filter(post => post.type === postTypeFilter);
-            }
-
-            displayPosts(filtered);
-        }
-
-        // Event listeners
-        document.getElementById('filterOrganization').addEventListener('change', filterPosts);
-        document.getElementById('filterOrgType').addEventListener('change', filterPosts);
-        document.getElementById('filterPostType').addEventListener('change', filterPosts);
-
-        // Initialize
-        console.log('🚀 ===== INITIALIZING COMMUNITY PAGE =====');
-        console.log('📍 About to call loadServices().then(loadPosts)');
-        loadServices().then(() => {
-            console.log('✅ loadServices completed, now calling loadPosts');
-            return loadPosts();
-        }).catch(error => {
-            console.error('❌ ERROR in initialization:', error);
-        });
-        console.log('📍 Initialization code executed');
-    </script>
+    <!---Community Board JS-->
+    <!-- Load JS after DOM elements exist -->
+    <script src="assets/community-board.js" defer></script>
     
     
     <!-- Floating Language Button -->
