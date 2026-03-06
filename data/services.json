@@ -1,0 +1,94 @@
+[
+  {
+    "id": "co1",
+    "name": "Agincourt Community Church",
+    "type": "community_org",
+    "address": "3080 Birchmount Rd, Scarborough, ON, M1W 3K3, Canada",
+    "location": {
+      "lat": 43.803620559735805,
+      "lng": -793092452187294
+    },
+    "hours": {
+      "mon": {
+        "open": "1:00pm",
+        "close": "3:00pm"
+      },
+      "tue": {
+        "open": "10:00am-12:00pm",
+        "close": "1:00pm-3:00pm"
+      },
+      "thu": {
+        "open": "10:00am-12:00pm",
+        "close": "1:00pm-3:00pm"
+      },
+      "wed": {
+        "open": "1:00pm-3:00pm",
+        "close": "1:00pm-3:00pm"
+      }
+    },
+    "phone": "(416) 497-7520 ext 271",
+    "description": "Emergency food service, hours are by appointment only.",
+    "tags": [
+      "food_bank"
+    ],
+    "email": "agincourtcc.info@salvationarmy.ca ",
+    "website": " https://www.agincourtcommunitychurch.com/",
+    "languages_spoken": "",
+    "accessibility_info": "",
+    "documents_required": "",
+    "fees": "",
+    "eligibility": " Open to those in catchment area- Postal codes beginning with M1S, M1T, M1V, M1W\n",
+    "additional_info": ""
+  },
+  {
+    "id": "gr1",
+    "name": "Caribbean Connections",
+    "type": "grassroots_org",
+    "address": "East Scarborough Storefront, 4040 Lawrence Ave E., Scarborough, ON M1E 2R6",
+    "location": {
+      "lat": 43.76603254774588,
+      "lng": -7919867678249186
+    },
+    "hours": {
+      "thu": {
+        "open": "2.30pm",
+        "close": "4.00pm"
+      }
+    },
+    "phone": "416-208-9889",
+    "description": "",
+    "tags": [
+      "hot_meals"
+    ],
+    "email": "",
+    "website": "https://www.thestorefront.org/ ",
+    "languages_spoken": "",
+    "accessibility_info": "",
+    "documents_required": "",
+    "fees": "",
+    "eligibility": "Available to anyone in need of a meal",
+    "additional_info": ""
+  },
+  {
+    "id": "fb0",
+    "name": "Other",
+    "type": "placeholder",
+    "address": "na",
+    "location": {
+      "lat": 0,
+      "lng": 0
+    },
+    "hours": {},
+    "phone": "",
+    "description": "",
+    "tags": [],
+    "email": "",
+    "website": "",
+    "languages_spoken": "",
+    "accessibility_info": "",
+    "documents_required": "",
+    "fees": "",
+    "eligibility": "",
+    "additional_info": ""
+  }
+]
