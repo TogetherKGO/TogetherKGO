@@ -181,8 +181,11 @@ window.__APP = (function () {
         ${contactInfo.length > 0 ? '<div class="subtle" style="margin-top: 6px;">' + contactInfo.join(' • ') + '</div>' : ''}
       `;
 
-      // Click result -> center map and open info window
+      // Click result -> scroll to top, center map, open info window
       li.onclick = () => {
+        // Smooth scroll to top of page
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         if (map) {
           map.panTo(it.location);
           map.setZoom(15);
