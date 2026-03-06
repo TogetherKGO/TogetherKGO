@@ -30,9 +30,9 @@ collections:
         name: "foodBankId"
         widget: "relation"
         collection: "service_listings"
-        search_fields: ["name"]
-        value_field: "id"
-        display_fields: ["name"]
+        search_fields: ["organization.name"] #same data ref changes
+        value_field: "organization.id"
+        display_fields: ["organization.name"]
         required: true
         hint: "Select an existing service if available."
 
