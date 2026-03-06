@@ -1,4 +1,4 @@
-// TogetherKGO - Food Resources App
+// TogetherKGO - Find Resources App
 window.__APP = (function () {
   let map,
     markers = [],
@@ -24,7 +24,7 @@ window.__APP = (function () {
   } catch (err) {
     console.error("Failed to load services.json", err);
     if (el("results")) {
-      el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load food resources. Please refresh the page.</li>';
+      el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load resources. Please refresh the page.</li>';
     }
   }
   }
@@ -294,8 +294,8 @@ window.__APP = (function () {
 
     shareBtn.onclick = async () => {
       const shareData = {
-        title: 'TogetherKGO - Food Resources',
-        text: 'Find food banks and community resources in the Kingston-Galloway-Orton Park area',
+        title: 'TogetherKGO - Find Resources',
+        text: 'Find community resources in the Kingston-Galloway-Orton Park area',
         url: window.location.href
       };
 
