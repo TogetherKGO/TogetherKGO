@@ -1,4 +1,4 @@
-// TogetherKGO - Food Resources App
+// TogetherKGO - Find Resources App
 window.__APP = (function () {
   let map,
     markers = [],
@@ -24,7 +24,7 @@ window.__APP = (function () {
   } catch (err) {
     console.error("Failed to load services.json", err);
     if (el("results")) {
-      el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load food resources. Please refresh the page.</li>';
+      el("results").innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">Unable to load resources. Please refresh the page.</li>';
     }
   }
   }
@@ -72,6 +72,80 @@ window.__APP = (function () {
   }
 
   /* ------------------------------
+   Helper to format hours object
+  ------------------------------*/
+
+function formatHours(hoursObj) {
+  if (!hoursObj) return "Contact for hours";
+
+  const daysOrder = ["mon","tue","wed","thu","fri","sat","sun"];
+  const dayNames = {
+    mon: "Monday",
+    tue: "Tuesday",
+    wed: "Wednesday",
+    thu: "Thursday",
+    fri: "Friday",
+    sat: "Saturday",
+    sun: "Sunday"
+  };
+
+  // Step 1: Normalize hours per day
+  const dayTimes = daysOrder
+    .filter(d => hoursObj[d] && (hoursObj[d].open || hoursObj[d].close))
+    .map(d => {
+      const opens = (hoursObj[d].open || "").split(",").map(s => s.trim()).filter(Boolean);
+      const closes = (hoursObj[d].close || "").split(",").map(s => s.trim()).filter(Boolean);
+
+      const ranges = [];
+      const len = Math.max(opens.length, closes.length);
+      for (let i = 0; i < len; i++) {
+        const o = opens[i] || "";
+        const c = closes[i] || "";
+        if (o && c) ranges.push(`${o}-${c}`);
+        else if (o) ranges.push(o);
+        else if (c) ranges.push(c);
+      }
+
+      return { day: d, times: ranges.join(" & ") }; // join multiple ranges with &
+    });
+
+  if (!dayTimes.length) return "Contact for hours";
+
+  // Step 2: Group days with identical times
+  const grouped = [];
+  let lastTimes = null;
+  let daysGroup = [];
+
+  dayTimes.forEach(({ day, times }, idx) => {
+    if (times === lastTimes) {
+      daysGroup.push(day);
+    } else {
+      if (daysGroup.length > 0) {
+        grouped.push({ days: [...daysGroup], times: lastTimes });
+      }
+      lastTimes = times;
+      daysGroup = [day];
+    }
+
+    if (idx === dayTimes.length - 1) {
+      grouped.push({ days: [...daysGroup], times: lastTimes });
+    }
+  });
+
+  // Step 3: Format grouped days
+  return grouped
+    .map(g => {
+      const dayLabels = g.days.map(d => dayNames[d]);
+      let dayStr = "";
+      if (dayLabels.length === 1) dayStr = dayLabels[0];
+      else if (dayLabels.length === 2) dayStr = dayLabels.join(" and ");
+      else dayStr = dayLabels.slice(0, -1).join(", ") + " and " + dayLabels.slice(-1);
+      return `${dayStr}: ${g.times}`;
+    })
+    .join(" • ");
+}
+
+  /* ------------------------------
         RENDER MARKERS
   ------------------------------ */
   function renderMarkers(items) {
@@ -106,7 +180,7 @@ window.__APP = (function () {
             <div style="margin: 8px 0;">
               <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 12px; font-size: 12px;">${item.type.replace('_', ' ')}</span>
             </div>
-            <div style="margin: 8px 0; color: #555;"><strong>Hours:</strong> ${item.hours || "Contact for hours"}</div>
+            <div class="subtle"><strong>Hours:</strong> ${item.hours ? formatHours(item.hours) : "Contact for hours"}</div>
             ${contactInfo.length > 0 ? '<div style="margin: 10px 0; padding-top: 8px; border-top: 1px solid #ddd;">' + contactInfo.join('') + '</div>' : ''}
             <div style="margin-top: 10px;">
               <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(item.address)}" 
@@ -177,12 +251,18 @@ window.__APP = (function () {
             .map((t) => `<span class="badge">${t.replace('_', ' ')}</span>`)
             .join("")}
         </div>
-        <div class="subtle"><strong>Hours:</strong> ${it.hours || "Contact for hours"}</div>
+        <div class="subtle"><strong>Hours:</strong> ${it.hours ? formatHours(it.hours) : "Contact for hours"}</div>
         ${contactInfo.length > 0 ? '<div class="subtle" style="margin-top: 6px;">' + contactInfo.join(' • ') + '</div>' : ''}
       `;
 
-      // Click result -> center map and open info window
+      // Click result -> scroll to top, center map, open info window
       li.onclick = () => {
+        // Smooth scroll to top of page
+        const mapEl = document.getElementById("map");
+        if (mapEl) {
+          mapEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
         if (map) {
           map.panTo(it.location);
           map.setZoom(15);
@@ -294,8 +374,8 @@ window.__APP = (function () {
 
     shareBtn.onclick = async () => {
       const shareData = {
-        title: 'TogetherKGO - Food Resources',
-        text: 'Find food banks and community resources in the Kingston-Galloway-Orton Park area',
+        title: 'TogetherKGO - Find Resources',
+        text: 'Find community resources in the Kingston-Galloway-Orton Park area',
         url: window.location.href
       };
 

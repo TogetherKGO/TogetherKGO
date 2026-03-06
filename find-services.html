@@ -14,6 +14,9 @@
     <script src="config.js"></script>
 
     <!-- App scripts -->
+    <script src="assets/constants.js"></script>
+    <script src="assets/populateforms.js"></script>
+
     <script defer src="assets/i18n.js"></script>
     <script defer src="assets/app.js"></script>
   </head>
@@ -34,17 +37,12 @@
 
           <div class="grid2">
             <div>
-              <label class="label" for="type">Type</label>
+              <label class="label" for="type">Organization Type</label>
               <select id="type">
                 <option value="">Any</option>
-                <option value="food_bank">Food Bank</option>
-                <option value="organization">Organization</option>
-                <option value="community_meal">Community Meal</option>
-                <option value="pantry">Pantry</option>
-                <option value="market">Market</option>
-                <option value="delivery">Delivery</option>
               </select>
             </div>
+          
 
             <div>
               <label class="label" for="openDay">Day Open</label>
@@ -60,6 +58,7 @@
               </select>
             </div>
           </div>
+          
 
           <!-- RADIUS FEATURE COMMENTED OUT (UI Hidden, but field kept for JavaScript compatibility)
           <div>
@@ -75,6 +74,10 @@
           <!-- 
           </div>
           -->
+          <label class="label" for="service">Services Offered</label>
+          <select id="service">
+            <option value="">Any</option>
+          </select>
 
           <div class="actions">
             <button id="applyBtn" class="primary">Apply Filters</button>

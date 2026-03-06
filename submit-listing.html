@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="components/navbar.css">
     <!-- Page -->
     <link rel="stylesheet" href="assets/submit.css">
+
+    <script src="assets/constants.js"></script>
+    <script src="assets/populateforms.js"></script>
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
@@ -59,15 +62,10 @@
                     </div>
 
                     <div class="form-group">
-                         <!-- How would you describe this organization?? [organization type]-->
+                        <!-- How would you describe this organization?? [organization type]-->
                         <label for="orgType">Organization Type <span class="required">*</span></label>
                         <select id="orgType" name="organization_type" required>
-                            <option value="">Select type...</option>
-                            <option value="community_org">Community Organization</option>
-                            <option value="grassroots_org">Grassroots Organization</option>
-                            <option value="city_of_toronto">City of Toronto</option>
-                            <option value="community_institution">Community Institution</option>
-                            <option value="individual">Individual</option>
+                            <!-- options will be populated dynamically -->
                         </select>
                     </div>
 
