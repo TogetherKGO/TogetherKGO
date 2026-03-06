@@ -5,8 +5,8 @@
     "type": "community_org",
     "address": "3080 Birchmount Rd, Scarborough, ON, M1W 3K3, Canada",
     "location": {
-      "lat": 43.803620559735805,
-      "lng": -793092452187294
+      "lat": 43.803367614746094,
+      "lng": -79.30874633789062
     },
     "hours": {
       "mon": {
@@ -26,7 +26,7 @@
         "close": "3:00pm"
       }
     },
-    "phone": "(416) 497-7520 ext 271",
+    "phone": "416 497-7520 ext 271",
     "description": "Emergency food service, hours are by appointment only.",
     "tags": [
       "food_bank"
@@ -46,13 +46,13 @@
     "type": "grassroots_org",
     "address": "East Scarborough Storefront, 4040 Lawrence Ave E., Scarborough, ON M1E 2R6",
     "location": {
-      "lat": 43.76603254774588,
-      "lng": -7919867678249186
+      "lat": 43.7658846,
+      "lng": -79.1980406
     },
     "hours": {
       "thu": {
-        "open": "2.30pm",
-        "close": "4.00pm"
+        "open": "2:30pm",
+        "close": "4:00pm"
       }
     },
     "phone": "416-208-9889",
@@ -71,33 +71,24 @@
   },
   {
     "id": "fb0",
-    "type": "food_bank",
+    "name": "Other",
+    "type": "placeholder",
+    "address": "na",
     "location": {
       "lat": 0,
       "lng": 0
     },
-    "days": [],
-    "hours": "",
+    "hours": {},
     "phone": "",
     "description": "",
-    "tags": []
-  },
-  {
-    "id": "fb1",
-    "type": "food_bank",
-    "location": {
-      "lat": 43.7658846,
-      "lng": -79.1980406
-    },
-    "days": [],
-    "hours": {
-      "thu": {
-        "open": "2.30pm",
-        "close": "4.00pm"
-      }
-    },
-    "phone": "",
-    "description": "",
-    "tags": []
+    "tags": [],
+    "email": "",
+    "website": "",
+    "languages_spoken": "",
+    "accessibility_info": "",
+    "documents_required": "",
+    "fees": "",
+    "eligibility": "",
+    "additional_info": ""
   }
 ]
