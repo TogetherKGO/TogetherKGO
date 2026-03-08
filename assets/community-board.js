@@ -6,8 +6,49 @@
 // Compatible with constants.js / populateforms.js
 // ================================
 
+// Account for post types holding different information
+function parsePost(raw) {
+  const type = raw.post?.type || "update";
+
+  const base = {
+    type: type,
+    title: raw.post?.title || "Untitled",
+    message: raw.post?.message || "",
+    date: raw.post?.date || null,
+    expiresDate: raw.post?.expiresDate || null,
+    contactInfo: raw.post?.contactInfo || "",
+    foodBankId: raw.organization?.foodBankId || "fb0",
+    orgOther: raw.organization?.foodBankOther || "",
+    location: raw.location?.location || null,
+    rawData: raw // keep original for type-specific access
+  };
+
+  // Add type-specific fields
+  switch(type) {
+    case "recurring_event":
+      base.recurringDates = raw.recurringEvent?.recurringDates || "";
+      base.startRecurringDates = raw.recurringEvent?.startRecurringDates || null;
+      break;
+
+    case "event":
+      base.eventDate = raw.uniqueEvent?.eventDate || null;
+      break;
+
+    case "food_available":
+      base.timeWindow = raw.food?.timeWindow || "";
+      base.availableItems = raw.food?.availableItems || "";
+      break;
+
+    // For 'update' and 'urgent', no extra fields needed (at this time, but can edit later)
+  }
+
+  return base;
+}
+
+
 let allPosts = [];
 let services = [];
+
 
 // --------------------
 // Populate dynamic Services dropdown (filterOrganization)
@@ -75,13 +116,15 @@ async function loadPosts() {
             }
         });
 
-        allPosts = (await Promise.all(postPromises)).filter(p => p !== null);
+        allPosts = (await Promise.all(postPromises))
+        .filter(p => p !== null)
+        .map(parsePost);
 
-        // Filter out expired posts
+        // Filter expired posts
         allPosts = allPosts.filter(post => !post.expiresDate || new Date(post.expiresDate) > new Date());
 
         // Sort newest first
-        allPosts.sort((a,b)=> new Date(b.date) - new Date(a.date));
+        allPosts.sort((a,b) => new Date(b.date) - new Date(a.date));
 
         displayPosts(allPosts);
         document.getElementById("loading").style.display = "none";
@@ -97,67 +140,88 @@ async function loadPosts() {
 // Display posts in grid
 // --------------------
 function displayPosts(posts) {
-    const grid = document.getElementById("postsGrid");
-    const noPosts = document.getElementById("noPosts");
+  const grid = document.getElementById("postsGrid");
+  const noPosts = document.getElementById("noPosts");
 
-    if (!grid) return;
+  if (!grid) return;
 
-    if (!posts || posts.length === 0) {
-        grid.style.display = "none";
-        noPosts.style.display = "block";
-        return;
+  if (!posts.length) {
+    grid.style.display = "none";
+    noPosts.style.display = "block";
+    return;
+  }
+
+  grid.innerHTML = "";
+  grid.style.display = "grid";
+  noPosts.style.display = "none";
+
+  // Define colors for each post type
+  const typeColors = {
+    update: "#4CAF50",           // green
+    urgent: "#f44336",           // red
+    event: "#2196F3",            // blue
+    recurring_event: "#FF9800",  // orange
+    food_available: "#9C27B0"    // purple
+  };
+
+  posts.forEach(post => {
+    const service = services.find(s => s.id === post.foodBankId);
+    const orgName = post.foodBankId === "fb0" ? post.orgOther : (service ? service.name : "Unknown Organization");
+
+    const dateText = post.date ? new Date(post.date).toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric"}) : "Date not available";
+
+    let html = `
+      <div class="post-header">
+        <div>
+          <h3 class="post-title">${post.title}</h3>
+          <div class="post-meta">
+            <span class="post-location">${orgName}</span>
+            <span>•</span>
+            <span>${dateText}</span>
+          </div>
+        </div>
+        <span class="post-type ${post.type}">${getTypeLabel(post.type)}</span>
+      </div>
+      <p class="post-message">${post.message}</p>
+    `;
+
+    // Add type-specific info
+    if (post.type === "recurring_event" && post.recurringDates) {
+      html += `<div class="post-recurring">📅 Recurs: ${post.recurringDates}</div>`;
     }
 
-    grid.innerHTML = "";
-    grid.style.display = "grid";
-    noPosts.style.display = "none";
+    if (post.type === "event" && post.eventDate) {
+      html += `<div class="post-event-date">📅 Event Date: ${new Date(post.eventDate).toLocaleString()}</div>`;
+    }
 
-    posts.forEach((post, index) => {
-        const service = services.find(s => s.id === post.foodBankId);
-        let orgName = post.foodBankId === "fb0" ? post.foodBankOther : (service ? service.name : "Unknown Organization");
-        const orgType = service ? service.type : "organization";
+    if (post.type === "food_available") {
+      if (post.timeWindow) html += `<div>🕒 Time: ${post.timeWindow}</div>`;
+      if (post.availableItems) html += `<div>🍎 Available: ${post.availableItems}</div>`;
+    }
 
-        const date = new Date(post.date).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
+    if (post.contactInfo) {
+      html += `<div class="post-contact">📞 Contact: ${post.contactInfo}</div>`;
+    }
 
-        const card = document.createElement("div");
-        card.className = `post-card ${post.type || "update"}`;
-        card.dataset.orgType = orgType;
+    const card = document.createElement("div");
+    card.className = `post-card ${post.type}`;
+    card.dataset.orgType = service ? service.type : "organization";
+    card.innerHTML = html;
 
-        card.innerHTML = `
-            <div class="post-header">
-                <div>
-                    <h3 class="post-title">${post.title}</h3>
-                    <div class="post-meta">
-                        <span class="post-location">${orgName}</span>
-                        <span>•</span>
-                        <span>${date}</span>
-                    </div>
-                </div>
-                <span class="post-type ${post.type || "update"}">${getTypeLabel(post.type)}</span>
-            </div>
-            <p class="post-message">${post.message}</p>
-            ${post.contactInfo ? `<div class="post-contact">📞 Contact: ${post.contactInfo}</div>` : ""}
-        `;
+    // Apply dynamic color
+    const color = typeColors[post.type] || "#ccc"; // default gray if type unknown
+    card.style.borderLeft = `4px solid ${color}`;
+    card.style.backgroundColor = `${color}20`; // light transparent background
 
-        grid.appendChild(card);
-    });
+    grid.appendChild(card);
+  });
 }
 
 // --------------------
-// Map post type to label
+// Using the constants
 // --------------------
 function getTypeLabel(type) {
-    const labels = {
-        "update": "Update",
-        "event": "Event",
-        "urgent": "Urgent",
-        "food_available": "Food Available"
-    };
-    return labels[type] || "Update";
+  return CONSTANTS.UPDATE_TYPES[type] || "Update";
 }
 
 // --------------------
@@ -165,18 +229,47 @@ function getTypeLabel(type) {
 // --------------------
 function filterPosts() {
     const orgFilter = document.getElementById("filterOrganization")?.value;
-    const orgTypeFilter = document.getElementById("filterOrgType")?.value;
-    const postTypeFilter = document.getElementById("filterPostType")?.value;
+    const orgTypeFilter = document.getElementById("orgType")?.value;
+    const postTypeFilter = document.getElementById("postType")?.value;
 
-    let filtered = allPosts;
+    // Start with all posts
+    let filtered = [...allPosts];
 
-    if (orgFilter) filtered = filtered.filter(p => p.foodBankId === orgFilter);
-    if (orgTypeFilter) filtered = filtered.filter(p => {
-        const service = services.find(s => s.id === p.foodBankId);
-        return service && service.type === orgTypeFilter;
-    });
-    if (postTypeFilter) filtered = filtered.filter(p => p.type === postTypeFilter);
+    // Filter by organization
+    if (orgFilter) {
+        filtered = filtered.filter(p => p.foodBankId === orgFilter);
+    }
 
+    // Filter by organization type
+    if (orgTypeFilter) {
+        filtered = filtered.filter(p => {
+            const service = services.find(s => s.id === p.foodBankId);
+
+            // Determine the org type
+            let orgType;
+            if (!service || service.type === "placeholder") {
+                // Treat missing service or placeholder as "Individual"
+                orgType = "individual";
+            } else {
+                orgType = service.type;
+            }
+
+            //console.log(`Post "${p.title}" | orgType="${orgType}" | filter="${orgTypeFilter}"`);
+            // Keep the post if it matches the selected filter
+            return orgType === orgTypeFilter;
+        });
+    }
+
+    // Filter by post type
+    if (postTypeFilter) {
+        filtered = filtered.filter(p => {
+            const matches = p.type === postTypeFilter;
+            //console.log(`Post "${p.title}" | type="${p.type}" | matches filter="${matches}"`);
+            return matches;
+        });
+    }
+
+    // Display the posts, grid will hide automatically if empty
     displayPosts(filtered);
 }
 
@@ -184,7 +277,7 @@ function filterPosts() {
 // Event listeners for filters
 // --------------------
 function setupFilters() {
-    ["filterOrganization", "filterOrgType", "filterPostType"].forEach(id => {
+    ["filterOrganization", "orgType", "postType"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener("change", filterPosts);
     });
