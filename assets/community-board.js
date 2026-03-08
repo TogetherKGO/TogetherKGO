@@ -155,6 +155,15 @@ function displayPosts(posts) {
   grid.style.display = "grid";
   noPosts.style.display = "none";
 
+  // Define colors for each post type
+  const typeColors = {
+    update: "#4CAF50",           // green
+    urgent: "#f44336",           // red
+    event: "#2196F3",            // blue
+    recurring_event: "#FF9800",  // orange
+    food_available: "#9C27B0"    // purple
+  };
+
   posts.forEach(post => {
     const service = services.find(s => s.id === post.foodBankId);
     const orgName = post.foodBankId === "fb0" ? post.orgOther : (service ? service.name : "Unknown Organization");
@@ -199,6 +208,11 @@ function displayPosts(posts) {
     card.dataset.orgType = service ? service.type : "organization";
     card.innerHTML = html;
 
+    // Apply dynamic color
+    const color = typeColors[post.type] || "#ccc"; // default gray if type unknown
+    card.style.borderLeft = `4px solid ${color}`;
+    card.style.backgroundColor = `${color}20`; // light transparent background
+
     grid.appendChild(card);
   });
 }
@@ -218,7 +232,8 @@ function filterPosts() {
     const orgTypeFilter = document.getElementById("orgType")?.value;
     const postTypeFilter = document.getElementById("postType")?.value;
 
-    let filtered = [...allPosts]; // clone original posts
+    // Start with all posts
+    let filtered = [...allPosts];
 
     // Filter by organization
     if (orgFilter) {
@@ -226,24 +241,35 @@ function filterPosts() {
     }
 
     // Filter by organization type
-    console.log("Testing" + orgTypeFilter)
     if (orgTypeFilter) {
         filtered = filtered.filter(p => {
-            if (p.foodBankId === "fb0") {
-                // For "Other" organizations
-                return orgTypeFilter === "Individual";  
+            const service = services.find(s => s.id === p.foodBankId);
+
+            // Determine the org type
+            let orgType;
+            if (!service || service.type === "placeholder") {
+                // Treat missing service or placeholder as "Individual"
+                orgType = "individual";
+            } else {
+                orgType = service.type;
             }
-            const service = services.find(s => s.id === p.foodBankId); //
-            //service?.type"type": "community_org" -> CONST to front end.
-            return service?.type === orgTypeFilter;
+
+            //console.log(`Post "${p.title}" | orgType="${orgType}" | filter="${orgTypeFilter}"`);
+            // Keep the post if it matches the selected filter
+            return orgType === orgTypeFilter;
         });
     }
 
     // Filter by post type
     if (postTypeFilter) {
-        filtered = filtered.filter(p => p.type === postTypeFilter);
+        filtered = filtered.filter(p => {
+            const matches = p.type === postTypeFilter;
+            //console.log(`Post "${p.title}" | type="${p.type}" | matches filter="${matches}"`);
+            return matches;
+        });
     }
 
+    // Display the posts, grid will hide automatically if empty
     displayPosts(filtered);
 }
 
@@ -251,7 +277,7 @@ function filterPosts() {
 // Event listeners for filters
 // --------------------
 function setupFilters() {
-    ["filterOrganization", "filterOrgType", "filterPostType"].forEach(id => {
+    ["filterOrganization", "orgType", "postType"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener("change", filterPosts);
     });

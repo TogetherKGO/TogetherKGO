@@ -8,8 +8,7 @@ window.CONSTANTS = {
     family_support: "Family Support",
     health_services: "Health Services",
     social_services: "Social Services",
-    housing_support: "Housing Support",
-    testing: "Testy"
+    housing_support: "Housing Support"
   },
 
   ORGANIZATION_TYPES: {
@@ -17,8 +16,7 @@ window.CONSTANTS = {
     grassroots_org: "Grassroots Organization",
     city_of_toronto: "City of Toronto",
     community_institution: "Community Institution",
-    individual: "Individual",
-    testing: "testing"
+    individual: "Individual"
   },
 
   UPDATE_TYPES: {
@@ -26,8 +24,7 @@ window.CONSTANTS = {
     urgent: "Urgent Notice",
     event: "Special Event",
     recurring_event: "Recurring Event",
-    food_available: "Food Available Today",
-    testing: "testing"
+    food_available: "Food Available Today"
   },
 
   DAYS: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
