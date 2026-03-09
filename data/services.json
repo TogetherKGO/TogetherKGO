@@ -90,23 +90,5 @@
     "fees": "",
     "eligibility": "",
     "additional_info": ""
-  },
-  {
-    "id": "fb1",
-    "type": "food_bank",
-    "location": {
-      "lat": 43.7658846,
-      "lng": -79.1980406
-    },
-    "days": [],
-    "hours": {
-      "thu": {
-        "open": "2:30pm",
-        "close": "4:00pm"
-      }
-    },
-    "phone": "",
-    "description": "",
-    "tags": []
   }
 ]

@@ -140,12 +140,12 @@ jobs:
 
             const listing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-            if (!listing.organization?.name) {
-              console.log(`Skipping ${file}: missing name`);
-              return;
-            }
+            if (!listing.organization || !listing.organization.name) {
+            console.log(`Skipping ${file}: missing organization.name`);
+            return;
+          }
 
-            let id = listing.organization?.id;
+            let id = listing.organization.id;
 
             if (!id) {
               maxId++;
@@ -306,13 +306,12 @@ jobs:
 
             const listing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-            if (!listing.organization?.name) {
-              console.log(`Skipping ${file}: missing name`);
-              return;
-            }
+            if (!listing.organization || !listing.organization.name) {
+            console.log(`Skipping ${file}: missing organization.name`);
+            return;
+          }
 
-            let id = listing.organization?.id;
-
+            let id = listing.organization.id;
             if (!id) {
               maxId++;
               id = `fb${maxId}`;
