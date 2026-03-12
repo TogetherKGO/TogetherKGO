@@ -123,4 +123,8 @@ window.__RESOURCES_APP = (function () {
     }
   
     return {};
+<<<<<<< HEAD
   })();
+=======
+  })();
+>>>>>>> d1e6bc9 (Add resources page script and update resources.html to use resources-app.js)
