@@ -24,16 +24,8 @@
                 <!-- Find Supports & Services -->
                 <div class="find-section">
                     <h1 class="find-heading"><a href="find-services.html">Find Supports <br>&amp; Services</a></h1>
-                    <div class="tags">
-                        <a href="find-services.html?tag=food-support" class="tag">Food Support</a>
-                        <a href="find-services.html?tag=community-pantry" class="tag">Community Pantry</a>
-                        <a href="find-services.html?tag=meal-program" class="tag">Meal Program</a>
-                        <a href="find-services.html?tag=community-market" class="tag">Community Market</a>
-                        <a href="find-services.html?tag=employment" class="tag">Employment</a>
-                        <a href="find-services.html?tag=housing" class="tag">Housing</a>
-                        <a href="find-services.html?tag=community-health" class="tag">Community Health</a>
-                        <a href="find-services.html?tag=youth" class="tag">Youth</a>
-                        <a href="find-services.html?tag=newcomer" class="tag">Newcomer</a>
+                    <div class="tags" id="serviceTags">
+                        <!-- Populated from constants.js -->
                     </div>
                 </div>
 
@@ -41,23 +33,10 @@
                 <nav class="nav-links-home">
                     <a href="community.html">Community Board</a>
                     <a href="resources.html">Resources</a>
-                    <div class="lang-wrapper">
-                        <a href="#" class="lang-trigger" onclick="toggleLanguageMenu(event); return false;">Languages</a>
-                        <div id="languageMenu" class="lang-dropdown">
-                            <div class="lang-dropdown-inner">
-                                <a href="#" onclick="changeLanguage('en'); return false;">English</a>
-                                <a href="#" onclick="changeLanguage('ta'); return false;">தமிழ் (Tamil)</a>
-                                <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
-                                <a href="#" onclick="changeLanguage('tl'); return false;">Tagalog</a>
-                                <a href="#" onclick="changeLanguage('gu'); return false;">ગુજરાதી (Gujarati)</a>
-                                <a href="#" onclick="changeLanguage('ur'); return false;">اردو (Urdu)</a>
-                                <a href="#" onclick="changeLanguage('fa'); return false;">فارسی (Farsi)</a>
-                                <a href="#" onclick="changeLanguage('es'); return false;">Español</a>
-                                <a href="#" onclick="changeLanguage('fr'); return false;">Français</a>
-                                <a href="#" onclick="changeLanguage('hi'); return false;">हिन्दी (Hindi)</a>
-                                <a href="#" onclick="changeLanguage('ar'); return false;">العربية (Arabic)</a>
-                                <a href="#" onclick="changeLanguage('zh-CN'); return false;">中文 (Chinese)</a>
-                            </div>
+                    <div class="lang-section">
+                        <span class="lang-label">Languages</span>
+                        <div class="tags lang-tags" id="languageTags">
+                            <!-- Populated from constants.js -->
                         </div>
                     </div>
                     <a href="find-services.html">About &amp; FAQ</a>
@@ -69,20 +48,44 @@
         </div>
     </div>
 
+    <!-- Load constants first -->
+    <script src="assets/constants.js"></script>
+
+    <!-- Build tags from constants -->
+    <script>
+        // Render service tags from constants
+        (function() {
+            var container = document.getElementById('serviceTags');
+            var tags = window.CONSTANTS.HOME_TAGS;
+            Object.keys(tags).forEach(function(key) {
+                var a = document.createElement('a');
+                a.href = 'find-services.html?tag=' + key;
+                a.className = 'tag';
+                a.textContent = tags[key];
+                container.appendChild(a);
+            });
+        })();
+
+        // Render language tags from constants
+        (function() {
+            var container = document.getElementById('languageTags');
+            var langs = window.CONSTANTS.LANGUAGES;
+            Object.keys(langs).forEach(function(code) {
+                var a = document.createElement('a');
+                a.href = '#';
+                a.className = 'tag tag-lang';
+                a.textContent = langs[code];
+                a.onclick = function(e) {
+                    e.preventDefault();
+                    changeLanguage(code);
+                };
+                container.appendChild(a);
+            });
+        })();
+    </script>
+
     <!-- Translation Script -->
     <script>
-        function toggleLanguageMenu(event) {
-            event.preventDefault();
-            document.getElementById('languageMenu').classList.toggle('show');
-        }
-
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('languageMenu');
-            if (menu && !menu.contains(event.target) && !event.target.closest('.lang-wrapper')) {
-                menu.classList.remove('show');
-            }
-        });
-
         function googleTranslateElementInit() {
             new google.translate.TranslateElement(
                 { pageLanguage: 'en', autoDisplay: false },
@@ -91,13 +94,12 @@
         }
 
         function setGoogTransCookie(lang) {
-            const value = `/en/${lang}`;
-            document.cookie = `googtrans=${value}; path=/`;
-            document.cookie = `googtrans=${value}; path=/; domain=${location.hostname}`;
+            const value = '/en/' + lang;
+            document.cookie = 'googtrans=' + value + '; path=/';
+            document.cookie = 'googtrans=' + value + '; path=/; domain=' + location.hostname;
         }
 
         function changeLanguage(langCode) {
-            document.getElementById('languageMenu').classList.remove('show');
             if (langCode === 'en') {
                 clearGoogleTranslateCookies();
                 setGoogTransCookie('en');
@@ -108,8 +110,8 @@
         }
 
         function clearGoogleTranslateCookies() {
-            document.cookie.split(';').forEach(cookie => {
-                const name = cookie.split('=')[0].trim();
+            document.cookie.split(';').forEach(function(cookie) {
+                var name = cookie.split('=')[0].trim();
                 if (name.includes('googtrans') || name.includes('_ga') || name.includes('_gid')) {
                     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.translate.google.com;';
