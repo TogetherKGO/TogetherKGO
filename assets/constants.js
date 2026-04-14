@@ -1,5 +1,9 @@
 window.CONSTANTS = {
 
+  /* ---------------------------------------------------
+     SERVICE TAGS – used by find-services.html filters
+     Keys must match tags[] in data/services.json
+  --------------------------------------------------- */
   TAG_LABELS: {
     food_bank: "Food Bank",
     hot_meals: "Hot Meals",
@@ -9,6 +13,43 @@ window.CONSTANTS = {
     health_services: "Health Services",
     social_services: "Social Services",
     housing_support: "Housing Support"
+  },
+
+  /* ---------------------------------------------------
+     HOME TAGS – displayed on the homepage hero
+     key = URL param passed to find-services.html
+     label = display text
+  --------------------------------------------------- */
+  HOME_TAGS: {
+    food_support: "Food Support",
+    community_pantry: "Community Pantry",
+    meal_program: "Meal Program",
+    community_market: "Community Market",
+    employment: "Employment",
+    housing: "Housing",
+    community_health: "Community Health",
+    youth: "Youth",
+    newcomer: "Newcomer"
+  },
+
+  /* ---------------------------------------------------
+     LANGUAGES – displayed on the homepage
+     key = Google Translate language code
+     label = display text
+  --------------------------------------------------- */
+  LANGUAGES: {
+    en: "English",
+    ta: "தமிழ் (Tamil)",
+    bn: "বাংলা (Bengali)",
+    tl: "Tagalog",
+    gu: "ગુજરાતી (Gujarati)",
+    ur: "اردو (Urdu)",
+    fa: "فارسی (Farsi)",
+    es: "Español",
+    fr: "Français",
+    hi: "हिन्दी (Hindi)",
+    ar: "العربية (Arabic)",
+    "zh-CN": "中文 (Chinese)"
   },
 
   ORGANIZATION_TYPES: {

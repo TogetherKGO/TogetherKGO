@@ -41,10 +41,9 @@ function populateOrganizationTypes() {
   populateDropdown("orgType", types, "Select type..."); // submit-services form
 }
 
-// Populate Services dropdown (tags)
-// Sorts alphabetically for better UX
+// Populate Services dropdown (tags from homepage)
 function populateServiceDropdown() {
-  const tags = window.CONSTANTS.TAG_LABELS;
+  var tags = window.CONSTANTS.HOME_TAGS;
   populateDropdown("service", tags, "Any");
 }
 

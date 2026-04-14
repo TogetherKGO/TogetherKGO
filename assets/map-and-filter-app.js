@@ -215,66 +215,60 @@ function formatHours(hoursObj) {
        LIST RESULTS
   ------------------------------ */
   function listResults(items) {
-    const ul = el("results");
-    const countEl = el("resultCount");
+    var ul = el("results");
+    var countEl = el("resultCount");
     
     if (!ul) return;
 
     ul.innerHTML = "";
     
     if (countEl) {
-      countEl.textContent = `${items.length} food resource${items.length !== 1 ? 's' : ''} found`;
+      countEl.textContent = "We found " + items.length + " results:";
     }
 
     if (items.length === 0) {
-      ul.innerHTML = '<li style="padding: 20px; text-align: center; color: #888;">No resources match your search criteria. Try adjusting your filters.</li>';
+      ul.innerHTML = '<li class="result-empty">No resources match your search criteria. Try adjusting your filters.</li>';
       return;
     }
 
-    items.forEach((it) => {
-      const li = document.createElement("li");
-      
-      const contactInfo = [];
-      if (it.phone) contactInfo.push(`📞 ${it.phone}`);
-      
-      // Google Maps directions link (green, like website)
-      const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(it.address)}`;
-      contactInfo.push(`<a href="${directionsUrl}" target="_blank" style="color: #22c55e;">🗺️ Directions</a>`);
-      
-      if (it.website) contactInfo.push(`<a href="${it.website}" target="_blank" style="color: #22c55e;">🌐 Website</a>`);
-      
-      li.innerHTML = `
-        <div><strong>${it.name}</strong></div>
-        <div class="subtle">${it.address}</div>
-        <div style="margin: 8px 0;">
-          ${(it.tags || [])
-            .map((t) => `<span class="badge">${t.replace('_', ' ')}</span>`)
-            .join("")}
-        </div>
-        <div class="subtle"><strong>Hours:</strong> ${it.hours ? formatHours(it.hours) : "Contact for hours"}</div>
-        ${contactInfo.length > 0 ? '<div class="subtle" style="margin-top: 6px;">' + contactInfo.join(' • ') + '</div>' : ''}
-      `;
+    items.forEach(function(it, index) {
+      var li = document.createElement("li");
+      li.className = "result-item";
 
-      // Click result -> scroll to top, center map, open info window
-      li.onclick = () => {
-        // Smooth scroll to top of page
-        const mapEl = document.getElementById("map");
-        if (mapEl) {
-          mapEl.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+      var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(it.address);
 
+      var detailsId = "details-" + index;
+
+      li.innerHTML = 
+        '<div class="result-number">' +
+          '<span>' + (index + 1) + '</span>' +
+        '</div>' +
+        '<div class="result-name">' + it.name + '</div>' +
+        '<div class="result-address">' + it.address + '</div>' +
+        '<div class="result-toggle" onclick="document.getElementById(\'' + detailsId + '\').classList.toggle(\'show\'); this.querySelector(\'span\').textContent = document.getElementById(\'' + detailsId + '\').classList.contains(\'show\') ? \'Hide details  −\' : \'Show details  +\'">' +
+          '<span>Show details  +</span>' +
+        '</div>' +
+        '<div class="result-details" id="' + detailsId + '">' +
+          '<div class="result-tags">' +
+            (it.tags || []).map(function(t) { return '<span class="tag">' + t.replace(/_/g, ' ') + '</span>'; }).join('') +
+          '</div>' +
+          '<div class="result-hours"><strong>Hours:</strong> ' + (it.hours ? formatHours(it.hours) : 'Contact for hours') + '</div>' +
+          '<div class="result-contact">' +
+            (it.phone ? '<a class="result-btn" href="tel:' + it.phone + '">📞 ' + it.phone + '</a>' : '') +
+            (it.website ? '<a class="result-btn" href="' + it.website.trim() + '" target="_blank">🌐 Website</a>' : '') +
+            '<a class="result-btn result-btn-green" href="' + directionsUrl + '" target="_blank">🗺️ Directions</a>' +
+          '</div>' +
+        '</div>';
+
+      li.onclick = function(e) {
+        if (e.target.closest('.result-toggle') || e.target.closest('.result-btn')) return;
         if (map) {
           map.panTo(it.location);
           map.setZoom(15);
-          
-          // Find and click the corresponding marker
-          const marker = markers.find(m => 
-            m.getPosition().lat() === it.location.lat && 
-            m.getPosition().lng() === it.location.lng
-          );
-          if (marker) {
-            google.maps.event.trigger(marker, 'click');
-          }
+          var marker = markers.find(function(m) {
+            return m.getPosition().lat() === it.location.lat && m.getPosition().lng() === it.location.lng;
+          });
+          if (marker) google.maps.event.trigger(marker, 'click');
         }
       };
 
@@ -327,10 +321,15 @@ function formatHours(hoursObj) {
         if (!s.hours || !s.hours[day]) return false;
       }
 
-      // Service filter / protect against multiple tags 
+      // Service filter – match against tags OR text search for new HOME_TAGS
       if (service) {
-        const tags = (s.tags || []).map(t => t.trim().toLowerCase());
-        if (!tags.includes(service.toLowerCase())) return false;
+        var tags = (s.tags || []).map(function(t) { return t.trim().toLowerCase(); });
+        var serviceKey = service.toLowerCase();
+        var serviceText = service.replace(/_/g, ' ').toLowerCase();
+        // Try exact tag match first, then text search fallback
+        var tagMatch = tags.includes(serviceKey);
+        var textMatch = text.includes(serviceText);
+        if (!tagMatch && !textMatch) return false;
       }
 
       // Radius filter
@@ -352,15 +351,17 @@ function formatHours(hoursObj) {
        RESET FILTERS
   ------------------------------ */
   function resetFilters() {
-    const qEl = el("q");
-    const typeEl = el("type");
-    const dayEl = el("openDay");
-    const radiusEl = el("radius");
+    var qEl = el("q");
+    var typeEl = el("type");
+    var dayEl = el("openDay");
+    var radiusEl = el("radius");
+    var serviceEl = el("service");
 
     if (qEl) qEl.value = "";
     if (typeEl) typeEl.value = "";
     if (dayEl) dayEl.value = "";
     if (radiusEl) radiusEl.value = "99999";
+    if (serviceEl) serviceEl.value = "";
     
     applyFilters();
   }
@@ -411,12 +412,43 @@ function formatHours(hoursObj) {
   }
 
   /* ------------------------------
+        URL PARAM HANDLING
+  ------------------------------ */
+  function applyUrlParams() {
+    var params = new URLSearchParams(window.location.search);
+    var tag = params.get('tag');
+    if (tag) {
+      var serviceEl = el('service');
+      if (serviceEl) {
+        // Try exact match first, then try replacing hyphens with underscores
+        var tagKey = tag.replace(/-/g, '_');
+        var options = serviceEl.options;
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].value === tagKey || options[i].value === tag) {
+            serviceEl.value = options[i].value;
+            break;
+          }
+        }
+        // If no dropdown match, put tag in search box as text
+        if (!serviceEl.value && el('q')) {
+          el('q').value = tag.replace(/[-_]/g, ' ');
+        }
+      }
+    }
+  }
+
+  /* ------------------------------
               BOOT
   ------------------------------ */
   function boot() {
     setupEvents();
     setupShare();
     loadData();
+    // Apply URL params after a brief delay to let dropdowns populate
+    setTimeout(function() {
+      applyUrlParams();
+      applyFilters();
+    }, 300);
   }
 
   // Only boot if we're on a page with the required elements
