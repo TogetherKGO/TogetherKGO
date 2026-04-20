@@ -6,6 +6,8 @@ window.__APP = (function () {
     center = { lat: 43.7648, lng: -79.1810 }; // KGO area
   let info;
 
+  // Constants to switch views, I didn't want to overwrite all what we had so far, perhaps they are useful in certain situations (mobile view/ customization?)
+  const HOURS_DISPLAY_MODE = "table"; // "table" | "compact" // --- replace these for diff views
   const el = (id) => document.getElementById(id);
 
   /* ------------------------------
@@ -75,75 +77,102 @@ window.__APP = (function () {
    Helper to format hours object
   ------------------------------*/
 
-function formatHours(hoursObj) {
-  if (!hoursObj) return "Contact for hours";
+  function formatHours(hoursObj) {
+    if (!hoursObj) return null;
 
-  const daysOrder = ["mon","tue","wed","thu","fri","sat","sun"];
-  const dayNames = {
-    mon: "Monday",
-    tue: "Tuesday",
-    wed: "Wednesday",
-    thu: "Thursday",
-    fri: "Friday",
-    sat: "Saturday",
-    sun: "Sunday"
-  };
+    const daysOrder = ["mon","tue","wed","thu","fri","sat","sun"];
+    const dayNames = {
+      mon: "Monday",
+      tue: "Tuesday",
+      wed: "Wednesday",
+      thu: "Thursday",
+      fri: "Friday",
+      sat: "Saturday",
+      sun: "Sunday"
+    };
 
-  // Step 1: Normalize hours per day
-  const dayTimes = daysOrder
-    .filter(d => hoursObj[d] && (hoursObj[d].open || hoursObj[d].close))
-    .map(d => {
-      const opens = (hoursObj[d].open || "").split(",").map(s => s.trim()).filter(Boolean);
-      const closes = (hoursObj[d].close || "").split(",").map(s => s.trim()).filter(Boolean);
+    const dayTimes = daysOrder
+      .filter(d => hoursObj[d] && (hoursObj[d].open || hoursObj[d].close))
+      .map(d => {
+        const opens = (hoursObj[d].open || "").split(",").map(s => s.trim()).filter(Boolean);
+        const closes = (hoursObj[d].close || "").split(",").map(s => s.trim()).filter(Boolean);
 
-      const ranges = [];
-      const len = Math.max(opens.length, closes.length);
-      for (let i = 0; i < len; i++) {
-        const o = opens[i] || "";
-        const c = closes[i] || "";
-        if (o && c) ranges.push(`${o}-${c}`);
-        else if (o) ranges.push(o);
-        else if (c) ranges.push(c);
+        const ranges = [];
+        const len = Math.max(opens.length, closes.length);
+
+        for (let i = 0; i < len; i++) {
+          const o = opens[i] || "";
+          const c = closes[i] || "";
+          if (o && c) ranges.push(`${o}-${c}`);
+          else if (o) ranges.push(o);
+          else if (c) ranges.push(c);
+        }
+
+        return { day: d, times: ranges.join(" & ") };
+      });
+
+    if (!dayTimes.length) return null;
+
+    const grouped = [];
+    let lastTimes = null;
+    let daysGroup = [];
+
+    dayTimes.forEach(({ day, times }, idx) => {
+      if (times === lastTimes) {
+        daysGroup.push(day);
+      } else {
+        if (daysGroup.length) grouped.push({ days: [...daysGroup], times: lastTimes });
+        lastTimes = times;
+        daysGroup = [day];
       }
 
-      return { day: d, times: ranges.join(" & ") }; // join multiple ranges with &
-    });
-
-  if (!dayTimes.length) return "Contact for hours";
-
-  // Step 2: Group days with identical times
-  const grouped = [];
-  let lastTimes = null;
-  let daysGroup = [];
-
-  dayTimes.forEach(({ day, times }, idx) => {
-    if (times === lastTimes) {
-      daysGroup.push(day);
-    } else {
-      if (daysGroup.length > 0) {
+      if (idx === dayTimes.length - 1) {
         grouped.push({ days: [...daysGroup], times: lastTimes });
       }
-      lastTimes = times;
-      daysGroup = [day];
-    }
+    });
 
-    if (idx === dayTimes.length - 1) {
-      grouped.push({ days: [...daysGroup], times: lastTimes });
-    }
-  });
+    return grouped.map(g => ({
+      days: g.days,
+      times: g.times
+    }));
+  }
+  function renderHoursCompact(rows) {
+    const dayNames = {
+      mon: "Mon", tue: "Tue", wed: "Wed",
+      thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun"
+    };
 
-  // Step 3: Format grouped days
-  return grouped
-    .map(g => {
-      const dayLabels = g.days.map(d => dayNames[d]);
-      let dayStr = "";
-      if (dayLabels.length === 1) dayStr = dayLabels[0];
-      else if (dayLabels.length === 2) dayStr = dayLabels.join(" and ");
-      else dayStr = dayLabels.slice(0, -1).join(", ") + " and " + dayLabels.slice(-1);
-      return `${dayStr}: ${g.times}`;
-    })
-    .join(" • ");
-}
+    return rows.map(r => {
+      const label = r.days.map(d => dayNames[d]).join(", ");
+      return `${label}: ${r.times}`;
+    }).join(" • ");
+  }
+  function renderHoursTable(rows) {
+    return `
+      <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+        <tbody>
+          ${rows.map(r => `
+            <tr>
+              <td style="padding:4px 8px; font-weight:600; white-space:nowrap;">
+                ${r.days.map(d => d[0].toUpperCase() + d.slice(1)).join(", ")}
+              </td>
+              <td style="padding:4px 8px;">
+                ${r.times}
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  }
+  function renderHours(hoursObj) {
+    const rows = formatHours(hoursObj);
+    if (!rows) return "Contact for hours";
+
+    return HOURS_DISPLAY_MODE === "table"
+      ? renderHoursTable(rows)
+      : renderHoursCompact(rows);
+  }
 
   /* ------------------------------
         RENDER MARKERS
@@ -180,7 +209,9 @@ function formatHours(hoursObj) {
             <div style="margin: 8px 0;">
               <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 12px; font-size: 12px;">${item.type.replace('_', ' ')}</span>
             </div>
-            <div class="subtle"><strong>Hours:</strong> ${item.hours ? formatHours(item.hours) : "Contact for hours"}</div>
+            ${item.description ? `  <div style="margin: 8px 0; color:#444;">     ${item.description}   </div> ` : ''}
+            <div class="subtle"><strong>Hours:</strong> ${item.hours ? renderHours(item.hours) : "Contact for hours"}</div>
+            ${renderAdditionalInfo(item)}
             ${contactInfo.length > 0 ? '<div style="margin: 10px 0; padding-top: 8px; border-top: 1px solid #ddd;">' + contactInfo.join('') + '</div>' : ''}
             <div style="margin-top: 10px;">
               <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(item.address)}" 
@@ -212,6 +243,32 @@ function formatHours(hoursObj) {
   }
 
   /* ------------------------------
+      ADDITIONAL INFO
+  -------------------------------- */
+  function renderAdditionalInfo(item) {
+    const fields = [
+      ["Languages Spoken", item.languages_spoken],
+      ["Accessibility", item.accessibility_info],
+      ["Documents Required", item.documents_required],
+      ["Fees", item.fees],
+      ["Eligibility", item.eligibility],
+      ["Additional Info", item.additional_info]
+    ];
+
+    const rows = fields
+      .filter(([_, val]) => val && val.trim && val.trim() !== "")
+      .map(([label, val]) => `<div><strong>${label}:</strong> ${val}</div>`);
+
+    if (!rows.length) return "";
+
+    return `
+      <div style="margin:10px 0; padding-top:8px; border-top:1px solid #ddd;">
+        ${rows.join("")}
+      </div>
+    `;
+  }
+
+  /* ------------------------------
        LIST RESULTS
   ------------------------------ */
   function listResults(items) {
@@ -236,6 +293,7 @@ function formatHours(hoursObj) {
         '<div class="result-number"><span>' + (index + 1) + '</span></div>' +
         '<div class="result-name notranslate">' + it.name + '</div>' +
         '<div class="result-address notranslate">' + it.address + '</div>' +
+        (it.description ? '<div class="result-description">' + it.description + '</div>'   : '') +
         '<div class="result-toggle" onclick="document.getElementById(\'' + detailsId + '\').classList.toggle(\'show\'); this.querySelector(\'span\').textContent = document.getElementById(\'' + detailsId + '\').classList.contains(\'show\') ? \'Hide details  −\' : \'Show details  +\'">' +
           '<span>Show details  +</span>' +
         '</div>' +
@@ -245,8 +303,10 @@ function formatHours(hoursObj) {
             (it.tags || []).map(function(t) { return '<span class="tag">' + t.replace(/_/g, ' ') + '</span>'; }).join('') +
           '</div>' +
           '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
-          '<div class="result-hours"><strong>Hours:</strong> ' + (it.hours ? formatHours(it.hours) : 'Contact for hours') + '</div>' +
+          '<div class="result-hours"><strong>Hours:</strong> ' + (it.hours ? renderHours(it.hours) : 'Contact for hours') + '</div>' +
           '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
+          
+          renderAdditionalInfo(it) +
           '<div class="result-contact">' +
             (it.phone ? '<a class="result-btn notranslate" href="tel:' + it.phone + '">📞 ' + it.phone + '</a>' : '') +
             (it.website ? '<a class="result-btn" href="' + it.website.trim() + '" target="_blank">🌐 Website</a>' : '') +
