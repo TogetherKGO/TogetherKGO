@@ -3,12 +3,13 @@
     "name": "Caribbean Connections",
     "address": "East Scarborough Storefront, 4040 Lawrence Ave E., Scarborough, ON M1E 2R6",
     "tags": [
-      "hot_meals"
+      "food_support"
     ],
     "id": "gr1",
     "type": "grassroots_org",
     "website": "https://www.thestorefront.org/ ",
-    "phone": "416-208-9889"
+    "phone": "416-208-9889",
+    "description": "Hot Meal Program every Thursday at the East Scarborough Storefront."
   },
   "requirements": {
     "eligibility": "Available to anyone in need of a meal"

@@ -5,325 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Your Listing - TogetherKGO</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-    <!-- Navbar -->
-    <link rel="stylesheet" href="components/navbar.css">
-    <!-- Page -->
+    <link rel="stylesheet" href="assets/styles.css">
     <link rel="stylesheet" href="assets/submit.css">
-
     <script src="assets/constants.js"></script>
     <script src="assets/populateforms.js"></script>
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
-    <!-- Navigation -->
-    <div id="navbar"></div>
 
-    <script>
-        fetch("components/navbar.html")
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById("navbar").innerHTML = data;
-        })
-        .catch(error => console.error("Error loading navbar:", error));
-    </script>
+    <!-- Figma Nav -->
+    <nav class="figma-nav">
+      <a href="index.html" class="nav-logo">Together KGO</a>
+      <a href="index.html" class="nav-home">Home</a>
+    </nav>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <a href="find-services.html" class="tab-inactive">Search</a>
+      <a href="submit-listing.html" class="tab-active">Submit</a>
+    </div>
 
     <!-- Main Content -->
     <div class="main-container">
-        <!-- Success Message -->
+        <!-- Success Message (hidden by default via CSS) -->
         <div class="success-message" id="successMessage">
-            <h3>✅ Thank You for Your Submission!</h3>
-            <p>Your listing has been received and will be reviewed by our team. We'll contact you if we need any additional information.</p>
+            <h3>Thank You for Your Submission!</h3>
+            <p>Your listing has been received and will be reviewed by our team.</p>
         </div>
 
         <!-- Page Header -->
         <div class="page-header">
-            <h1>Submit Your Organization</h1>
             <p>Are you a local organization, community center, or service provider in the Kingston-Galloway-Orton Park area? Join our directory to help connect community members with essential resources.</p>
         </div>
 
         <!-- Submission Form -->
         <div class="form-container">
             <form name="service-listings" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="listingForm">
-                <!-- Netlify Form Fields -->
                 <input type="hidden" name="form-name" value="service-listings">
-                <p style="display: none;">
-                    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-                </p>
+                <p style="display: none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
-                <!-- Core Information -->
+                <!-- Basic Information -->
                 <div class="form-section">
                     <h2>Basic Information</h2>
-                    
-                     <!-- Organization/Username -->
                     <div class="form-group">
-                        <label for="orgName">Organization Name <span class="required">*</span></label>
-                        <input type="text" id="orgName" name="organization_name" required>
+                        <label for="orgName">Organization name*</label>
+                        <span class="helper-text">Required</span>
+                        <input type="text" id="orgName" name="organization_name" required placeholder="Enter your organization name here">
                     </div>
-
                     <div class="form-group">
-                        <!-- How would you describe this organization?? [organization type]-->
-                        <label for="orgType">Organization Type <span class="required">*</span></label>
-                        <select id="orgType" name="organization_type" required>
-                            <!-- options will be populated dynamically -->
-                        </select>
+                        <label for="orgType">Organization type*</label>
+                        <span class="helper-text">Required</span>
+                        <select id="orgType" name="organization_type" required></select>
                     </div>
-
                     <div class="form-group">
-                        <label for="description">Description <span class="required">*</span></label>
-                        <textarea id="description" name="description" required placeholder="Describe the services your organization provides..."></textarea>
+                        <label for="description">Description*</label>
                         <span class="helper-text">Tell us what makes your organization special and how you help the community.</span>
+                        <textarea id="description" name="description"></textarea>
                     </div>
                 </div>
 
-                <!-- Location Information -->
+                <!-- Location & Contact -->
                 <div class="form-section">
                     <h2>Location & Contact</h2>
-                    
                     <div class="form-group">
-                        <label for="address">Full Address <span class="required">*</span></label>
-                        <input type="text" id="address" name="address" required placeholder="123 Street Name, City, ON M1E 2R6">
+                        <label for="address">Full Address*</label>
                         <span class="helper-text">Include street number, street name, city, province, and postal code.</span>
+                        <textarea id="address" name="address" placeholder="123 Street Name, City, ON P05T4L"></textarea>
                     </div>
-
                     <div class="form-group">
-                        <label for="phone">Phone Number <span class="required">*</span></label>
-                        <input type="tel" id="phone" name="phone" required placeholder="416-XXX-XXXX">
+                        <label for="phone">Phone number*</label>
+                        <input type="tel" id="phone" name="phone" placeholder="436-111-1111">
                     </div>
-
                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="info@yourorganization.org">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="email" placeholder="info@yourorganization.ca">
                     </div>
-
                     <div class="form-group">
                         <label for="website">Website</label>
-                        <input type="url" id="website" name="website" placeholder="https://www.yourorganization.org">
+                        <input type="url" id="website" name="website" placeholder="https://www.yourorganization.ca">
                     </div>
                 </div>
+
+                <!-- Operating Hours -->
                 <div class="form-section">
-                <h2>Operating Hours</h2>
-                <div class="form-hint">Specify when your organization is open. Leave days blank if closed.</div>
-
-                <div class="days-grid">
-                    <!-- Monday -->
-                    <div class="form-group day-hours">
-                    <label>Monday</label>
-                    <input type="time" name="hours[mon][open]" placeholder="Open">
-                    <input type="time" name="hours[mon][close]" placeholder="Close">
+                    <h2>Operating Hours</h2>
+                    <div class="form-hint">Specify when your organization is open. Leave days blank if closed.</div>
+                    <div class="days-grid">
+                        <div class="form-group day-hours"><label>Monday</label><input type="text" name="hours[mon][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[mon][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
+                        <div class="form-group day-hours"><label>Tuesday</label><input type="text" name="hours[tue][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[tue][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
+                        <div class="form-group day-hours"><label>Wednesday</label><input type="text" name="hours[wed][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[wed][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
+                        <div class="form-group day-hours"><label>Thursday</label><input type="text" name="hours[thu][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[thu][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
+                        <div class="form-group day-hours"><label>Friday</label><input type="text" name="hours[fri][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[fri][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
+                        <div class="form-group day-hours"><label>Saturday</label><input type="text" name="hours[sat][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[sat][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
+                        <div class="form-group day-hours"><label>Sunday</label><input type="text" name="hours[sun][open]" placeholder="Start Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"><input type="text" name="hours[sun][close]" placeholder="End Time" onfocus="this.type='time'" onblur="if(!this.value)this.type='text'"></div>
                     </div>
-
-                    <!-- Tuesday -->
-                    <div class="form-group day-hours">
-                    <label>Tuesday</label>
-                    <input type="time" name="hours[tue][open]" placeholder="Open">
-                    <input type="time" name="hours[tue][close]" placeholder="Close">
+                    <div class="form-group buttons">
+                        <button type="button" id="fillNineToFive">Set all times to 9am–5pm</button>
+                        <button type="button" id="clearTimes">Clear all times</button>
                     </div>
-
-                    <!-- Wednesday -->
-                    <div class="form-group day-hours">
-                    <label>Wednesday</label>
-                    <input type="time" name="hours[wed][open]" placeholder="Open">
-                    <input type="time" name="hours[wed][close]" placeholder="Close">
-                    </div>
-
-                    <!-- Thursday -->
-                    <div class="form-group day-hours">
-                    <label>Thursday</label>
-                    <input type="time" name="hours[thu][open]" placeholder="Open">
-                    <input type="time" name="hours[thu][close]" placeholder="Close">
-                    </div>
-
-                    <!-- Friday -->
-                    <div class="form-group day-hours">
-                    <label>Friday</label>
-                    <input type="time" name="hours[fri][open]" placeholder="Open">
-                    <input type="time" name="hours[fri][close]" placeholder="Close">
-                    </div>
-
-                    <!-- Saturday -->
-                    <div class="form-group day-hours">
-                    <label>Saturday</label>
-                    <input type="time" name="hours[sat][open]" placeholder="Open">
-                    <input type="time" name="hours[sat][close]" placeholder="Close">
-                    </div>
-
-                    <!-- Sunday -->
-                    <div class="form-group day-hours">
-                    <label>Sunday</label>
-                    <input type="time" name="hours[sun][open]" placeholder="Open">
-                    <input type="time" name="hours[sun][close]" placeholder="Close">
-                    </div>
-
-
-                </div>
-                <!-- Quick-fill buttons -->
-                <div class="form-group buttons">
-                    <button type="button" id="fillNineToFive" class="">Set All to 9am–5pm</button>
-                    <button type="button" id="clearTimes" class="">Clear Times</button>
-                    <div class="form-hint">Quickly fill or clear all operating hours.</div>
                 </div>
 
-                <!-- Services Offered -->
+                <!-- Services Offered – dynamically populated from HOME_TAGS -->
                 <div class="form-section">
                     <h2>Services Offered</h2>
-                    
                     <div class="form-group">
                         <label>What services do you provide? (Select all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_food" name="services" value="food_bank">
-                                <label for="service_food">Food Bank</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_meals" name="services" value="hot_meals">
-                                <label for="service_meals">Hot Meals</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_community" name="services" value="community_support">
-                                <label for="service_community">Community Support</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_youth" name="services" value="youth_programs">
-                                <label for="service_youth">Youth Programs</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_family" name="services" value="family_support">
-                                <label for="service_family">Family Support</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_health" name="services" value="health_services">
-                                <label for="service_health">Health Services</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_social" name="services" value="social_services">
-                                <label for="service_social">Social Services</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_housing" name="services" value="housing_support">
-                                <label for="service_housing">Housing Support</label>
-                            </div>
+                        <div class="checkbox-group" id="serviceCheckboxes">
+                            <!-- Populated from constants.js HOME_TAGS -->
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="additionalInfo">Additional Information</label>
-                        <textarea id="additionalInfo" name="additional_info" placeholder="Any other information you'd like to share (special programs etc.)"></textarea>
+                        <textarea id="additionalInfo" name="additional_info" placeholder="If you offer other services that are not listed above, please describe them here. Otherwise please use this section to provide any additional information."></textarea>
                     </div>
                 </div>
 
-                <!-- Services Offered -->
+                <!-- Accessibility & Restrictions -->
                 <div class="form-section">
-                    <h2>Accessibility and Restrictions</h2>
+                    <h2>Accessibility & Restrictions</h2>
                     <div class="form-group">
                         <label for="languages_spoken">Languages Supported</label>
-                        <input type="text" id="languages_spoken" name="languages_spoken" placeholder="e.g., English, French, Spanish">
+                        <input type="text" id="languages_spoken" name="languages_spoken" placeholder="e.g., English, French, Spanish...">
                     </div>
-
                     <div class="form-group">
                         <label for="accessibility_info">Accessibility Information</label>
-                        <textarea id="accessibility_info" name="accessibility_info" placeholder="e.g., wheelchair accessible, designated parking, partially accessible (tight corners), tactile paving, accessible washrooms, elevator, sign language support, etc. or type ''Not Accessible'' or ''Unknown''"></textarea>
+                        <textarea id="accessibility_info" name="accessibility_info" placeholder="e.g., wheelchair accessible, designated parking..."></textarea>
                     </div>
-
                     <div class="form-group">
-                        <label for="documents_required">Documents Required</label>
-                        <input type="text" id="documents_required" name="documents_required" placeholder="e.g., ID required for all household members (new clients), or proof of residence.">
+                        <label for="documents_required">Documents required</label>
+                        <input type="text" id="documents_required" name="documents_required" placeholder="e.g., ID required for all household members">
                     </div>
-
                     <div class="form-group">
                         <label for="fees">Fees</label>
                         <input type="text" id="fees" name="fees" placeholder="e.g., Free, $5 per service, variable">
                     </div>
-
                     <div class="form-group">
                         <label for="eligibility">Eligibility</label>
-                        <textarea id="eligibility" name="eligibility" placeholder="e.g., Residents of Scarborough, Postal codes beginning with M1B, Individuals and families in need, Priority given to Black residents, Chinese seniors, etc."></textarea>
+                        <textarea id="eligibility" name="eligibility" placeholder="e.g., Residents of Scarborough, Postal codes beginning with M1B..."></textarea>
                     </div>
-
-
                 </div>
 
                 <!-- Contact Person -->
                 <div class="form-section">
                     <h2>Contact Person (for review purposes only)</h2>
                     <p>We collect your information to contact you in case of errors or missing details. This will not be made public.</p>
-                    
                     <div class="form-group">
-                        <label for="contactName">Your Name <span class="required">*</span></label>
+                        <label for="contactName">Your name*</label>
                         <input type="text" id="contactName" name="contact_name" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="contactEmail">Your Email <span class="required">*</span></label>
-                        <input type="email" id="contactEmail" name="contact_email" required>
+                        <label for="contactEmail">Your email*</label>
                         <span class="helper-text">We'll use this to contact you about your submission.</span>
+                        <input type="email" id="contactEmail" name="contact_email" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="contactPhone">Your Phone Number</label>
+                        <label for="contactPhone">Your phone number</label>
                         <input type="tel" id="contactPhone" name="contact_phone">
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="submit-section">
-                    <button type="submit" class="submit-btn">Submit Your Listing</button>
-                    <p style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;">
-                        Your submission will be reviewed before appearing on the map. We'll contact you if we need more information.
-                    </p>
+                    <button type="submit" class="submit-btn">Submit your listing</button>
+                    <p>Your submission will be reviewed before appearing on the map. We'll contact you if we need more information.</p>
                 </div>
             </form>
         </div>
     </div>
 
-    
-    <!-- Load in how forms are being handled -->
+    <!-- Figma Footer -->
+    <footer class="figma-footer">
+      <div class="footer-black">
+        <div class="footer-links">
+          <div class="footer-links-list">
+            <a href="find-services.html">Find Services</a>
+            <a href="community.html">Community Posts</a>
+            <a href="https://www.thestorefront.org/" target="_blank">The East Scarborough Storefront</a>
+          </div>
+          <div class="footer-contact">
+            <p>togetherkgo@gmail.com</p>
+            <p>(416) XXX-XXXX</p>
+            <p>Serving the KGO community</p>
+          </div>
+        </div>
+        <div class="footer-right">
+          <p class="footer-desc">KGO is already known for its strong community connections. TogetherKGO builds on this strength by improving access to resources and strengthening communication across service users, grassroots groups, and nonprofit organizations.</p>
+          <p class="footer-tagline">Supporting a more connected, coordinated and resilient community in Kingston-Galloway Orton-Park</p>
+          <p class="footer-copy">© 2026 TogetherKGO</p>
+        </div>
+      </div>
+      <div class="footer-green-bar">
+        <div class="green-strip"></div>
+        <span class="footer-brand">Together KGO</span>
+      </div>
+    </footer>
+
     <script src="components/form-utils.js"></script>
-
     <script>
-        // Wait until the DOM is fully loaded before running any JS
-        // This ensures all form elements exist before we try to access them
         document.addEventListener('DOMContentLoaded', function () {
-            
-            // Attach submit handler from components/form-utils,js
-            const form = document.getElementById('listingForm');
+            // Populate service checkboxes from HOME_TAGS
+            var container = document.getElementById('serviceCheckboxes');
+            var tags = window.CONSTANTS.HOME_TAGS;
+            Object.keys(tags).forEach(function(key) {
+                var div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.innerHTML = '<input type="checkbox" id="service_' + key + '" name="services" value="' + key + '">' +
+                    '<label for="service_' + key + '">' + tags[key] + '</label>';
+                container.appendChild(div);
+            });
 
+            // Form submit handler
+            var form = document.getElementById('listingForm');
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 submitForm(form, 'successMessage');
             });
 
-        });
-    </script>
+            // Quick-fill hours
+            var fillButton = document.getElementById('fillNineToFive');
+            var clearButton = document.getElementById('clearTimes');
+            var dayHours = document.querySelectorAll('.day-hours');
 
-    <script>
-        // Fill operating Hours 9-5 auto
-          document.addEventListener('DOMContentLoaded', () => {
-        const fillButton = document.getElementById('fillNineToFive');
-        const clearButton = document.getElementById('clearTimes');
+            fillButton.addEventListener('click', function () {
+                dayHours.forEach(function (day) {
+                    var o = day.querySelector('input[name$="[open]"]');
+                    var c = day.querySelector('input[name$="[close]"]');
+                    if (o) { o.type = 'time'; o.value = "09:00"; }
+                    if (c) { c.type = 'time'; c.value = "17:00"; }
+                });
+            });
 
-        const dayHours = document.querySelectorAll('.day-hours');
-
-        fillButton.addEventListener('click', () => {
-        dayHours.forEach(day => {
-            const openInput = day.querySelector('input[name$="[open]"]');
-            const closeInput = day.querySelector('input[name$="[close]"]');
-            if(openInput) openInput.value = "09:00";
-            if(closeInput) closeInput.value = "17:00";
+            clearButton.addEventListener('click', function () {
+                dayHours.forEach(function (day) {
+                    var o = day.querySelector('input[name$="[open]"]');
+                    var c = day.querySelector('input[name$="[close]"]');
+                    if (o) { o.value = ""; o.type = 'text'; }
+                    if (c) { c.value = ""; c.type = 'text'; }
+                });
+            });
         });
-        });
-
-        clearButton.addEventListener('click', () => {
-        dayHours.forEach(day => {
-            const openInput = day.querySelector('input[name$="[open]"]');
-            const closeInput = day.querySelector('input[name$="[close]"]');
-            if(openInput) openInput.value = "";
-            if(closeInput) closeInput.value = "";
-        });
-        });
-    });
     </script>
     <script src="components/translation.js"></script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

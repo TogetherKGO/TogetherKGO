@@ -244,14 +244,15 @@ collections:
           multiple: true
           required: false
           options:
-            - { label: "Food Bank", value: "food_bank" }
-            - { label: "Hot Meals", value: "hot_meals" }
-            - { label: "Community Support", value: "community_support" }
-            - { label: "Youth Programs", value: "youth_programs" }
-            - { label: "Family Support", value: "family_support" }
-            - { label: "Health Services", value: "health_services" }
-            - { label: "Social Services", value: "social_services" }
-            - { label: "Housing Support", value: "housing_support" }
+            - { label: "Food Support", value: "food_support" }
+            - { label: "Community Pantry", value: "community_pantry" }
+            - { label: "Meal Program", value: "meal_program" }
+            - { label: "Community Market", value: "community_market" }
+            - { label: "Employment", value: "employment" }
+            - { label: "Housing", value: "housing" }
+            - { label: "Community Health", value: "community_health" }
+            - { label: "Youth", value: "youth" }
+            - { label: "Newcomer", value: "newcomer" }
 
     # FOR MAP ASSIGNMENT
     - label: "For Mapping"
@@ -428,7 +429,7 @@ collections:
       name: "meta"
       widget: "object"
       fields:
-        - label: "Tags"
+        - label: "Additional Tags"
           name: "tags"
           widget: "select"
           multiple: true
