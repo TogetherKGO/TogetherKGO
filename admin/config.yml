@@ -87,6 +87,11 @@ collections:
         widget: "datetime"
         required: true
 
+      - label: "Featured Image"
+        name: "thumbnail"
+        widget: "image"
+        choose_url: true
+
   # Location Information
   - label: "Location Information"
     name: "location"
@@ -133,12 +138,22 @@ collections:
 
       - label: "Recurring Schedule"
         name: "recurringDates"
-        widget: "string"
-        hint: "Example: Every Monday & Thursday 2-4pm"
+        widget: "object"
+        fields:
+          - { label: "Monday", name: "mon", widget: "object", hint: "format = 2:00pm - If there are multiple open and closes each day please write each time separated by a comma ',', i.e., in open 10:00am,2:00pm and in close 12:00pm,4:00pm", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+          - { label: "Tuesday", name: "tue", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+          - { label: "Wednesday", name: "wed", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+          - { label: "Thursday", name: "thu", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+          - { label: "Friday", name: "fri", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+          - { label: "Saturday", name: "sat", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
+          - { label: "Sunday", name: "sun", widget: "object", fields: [ {label: "Open", name: "open", widget: "string", required: false}, {label: "Close", name: "close", widget: "string", required: false} ] }
         required: false
         conditional:
           field: type
           value: "recurring_event"
+
+
+      
 
   # Food Event
   - label: "Food"
@@ -161,6 +176,8 @@ collections:
         conditional:
           field: type
           value: "food_available"
+
+
 
 # !!! ADD SERVICES LISTINGS - COLLECTION CONFIG !!!
 - name: "service_listings"

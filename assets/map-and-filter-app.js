@@ -206,8 +206,22 @@ window.__APP = (function () {
           <div style="max-width:300px; padding: 8px;">
             <strong style="font-size: 16px;">${item.name}</strong><br/>
             <div style="margin: 8px 0; color: #555;">${item.address}</div>
-            <div style="margin: 8px 0;">
-              <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 12px; font-size: 12px;">${item.type.replace('_', ' ')}</span>
+            <div style="margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px;">
+
+              <!-- Organization Type -->
+              ${item.type ? `
+                <span style="background: #22c55e; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">
+                  ${(window.CONSTANTS.ORGANIZATION_TYPES[item.type] || item.type)}
+                </span>
+              ` : ''}
+
+              <!-- Tags -->
+              ${(item.tags || []).map(t => `
+                <span style="background: #22c55e; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">
+                  ${t.replace(/_/g, ' ')}
+                </span>
+              `).join('')}
+
             </div>
             ${item.description ? `  <div style="margin: 8px 0; color:#444;">     ${item.description}   </div> ` : ''}
             <div class="subtle"><strong>Hours:</strong> ${item.hours ? renderHours(item.hours) : "Contact for hours"}</div>
@@ -300,7 +314,10 @@ window.__APP = (function () {
         '<div class="result-details" id="' + detailsId + '">' +
           '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
           '<div class="result-tags">' +
-            (it.tags || []).map(function(t) { return '<span class="tag">' + t.replace(/_/g, ' ') + '</span>'; }).join('') +
+          // Organization type FIRST
+          (it.type ? '<span class="tag tag-type">' + (window.CONSTANTS.ORGANIZATION_TYPES[it.type] || it.type) + '</span>' : '') +
+          // Service type SECOND
+          (it.tags || []).map(function(t) { return '<span class="tag">' + t.replace(/_/g, ' ') + '</span>'; }).join('') +
           '</div>' +
           '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
           '<div class="result-hours"><strong>Hours:</strong> ' + (it.hours ? renderHours(it.hours) : 'Contact for hours') + '</div>' +
