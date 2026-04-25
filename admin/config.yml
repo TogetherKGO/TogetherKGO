@@ -91,6 +91,7 @@ collections:
         name: "thumbnail"
         widget: "image"
         choose_url: true
+        required: false
 
   # Location Information
   - label: "Location Information"
