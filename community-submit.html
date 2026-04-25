@@ -5,234 +5,244 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Submit Community Update - TogetherKGO</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Navbar -->
-  <link rel="stylesheet" href="components/navbar.css">
-  <!-- Page -->
+  <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/submit.css">
-
-  <!-- Constants & Populate Forms -->
   <script src="assets/constants.js"></script>
   <script src="assets/populateforms.js"></script>
-
 </head>
-
 <body>
-  <!-- Navigation -->
-  <div id="navbar"></div>
+  <div id="google_translate_element" style="display:none;"></div>
 
-  <script>
-    fetch("components/navbar.html")
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("navbar").innerHTML = data;
-    })
-    .catch(error => console.error("Error loading navbar:", error));
-  </script>
+  <!-- Figma Nav -->
+  <nav class="figma-nav">
+    <a href="index.html" class="nav-logo">Together KGO</a>
+    <a href="index.html" class="nav-home">Home</a>
+  </nav>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <a href="community.html" class="tab-inactive">Community Board</a>
+    <a href="community-submit.html" class="tab-active">Submit</a>
+  </div>
 
   <div class="main-container">
     <div class="success-message" id="successMessage">
-      <h3>✅ Success!</h3>
-      <p>Your update has been submitted and is pending approval. It will appear on the community board once reviewed by our admin team.</p>
+      <h3>Thank You for Your Submission!</h3>
+      <p>Your update has been submitted and is pending approval. It will appear on the community board once reviewed.</p>
     </div>
-    <!-- Page Header -->
+
     <div class="page-header">
-      <h1>Submit Community Update</h1>
-      <p>Use this form to share important updates, events, and notices with the KGO community. All submissions will be reviewed by our admin team before appearing on the community board.</p>
+      <p>Use this form to share important updates, events, and notices with the KGO community. All submissions will be reviewed before appearing on the community board.</p>
     </div>
 
-    <!-- Submission Form -->
-    <div class="form-container"> 
-
-      <!-- Netlify Form -->
-      <form name="community-update" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="communityUpdateForm">
-        <!-- Hidden fields for Netlify -->
+    <div class="form-container">
+      <form name="community-update" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" id="communityUpdateForm">
         <input type="hidden" name="form-name" value="community-update" />
-        <p style="display:none;">
-          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-        </p>
+        <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
-        <!-- Core information-->
+        <!-- Basic Information -->
         <div class="form-section">
           <h2>Basic Information</h2>
-          <!-- Organization/Username -->
           <div class="form-group">
-            <label for="organization"> Name <span class="required">*</span></label>
-            <input type="text" id="organization" name="organization" required placeholder="Enter the organization or name you would like to be shown publicly" />
+            <label for="organization">Name*</label>
+            <span class="helper-text">Enter the organization or name shown publicly</span>
+            <input type="text" id="organization" name="organization" required>
           </div>
-
-          <!-- Contact Name -->
           <div class="form-group">
-            <label for="contactName">Your Name <span class="required">*</span></label>
-            <input type="text" id="contactName" name="contactName" required placeholder="Jane Doe" />
-            <div class="form-hint">This is for verification purposes only and won't be displayed publicly</div>
+            <label for="contactName">Your Name*</label>
+            <span class="helper-text">For verification only, won't be displayed publicly</span>
+            <input type="text" id="contactName" name="contactName" required>
           </div>
-
-          <!-- Contact Email -->
           <div class="form-group">
-            <label for="contactEmail">Your Email <span class="required">*</span></label>
-            <input type="email" id="contactEmail" name="contactEmail" required placeholder="jane@organization.org" />
-            <div class="form-hint">We'll use this to contact you if we have questions about your submission</div>
+            <label for="contactEmail">Your Email*</label>
+            <span class="helper-text">We'll use this to contact you about your submission</span>
+            <input type="email" id="contactEmail" name="contactEmail" required>
           </div>
         </div>
 
         <!-- Post Information -->
         <div class="form-section">
           <h2>Post Information</h2>
-
-          <!-- Update Type Dropdown (Dynamic) -->
           <div class="form-group">
-            <label for="postType">Update Type <span class="required">*</span></label>
-            <select id="postType" name="postType" required>
-              <!-- Options dynamically populated via JS -->
-            </select>
+            <label for="postType">Update Type*</label>
+            <select id="postType" name="postType" required></select>
           </div>
 
-          <!-- Conditional Fields -->
-
-          <!-- Title (all types) -->
           <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
-            <label for="title">Update Title <span class="required">*</span></label>
-            <input type="text" id="title" name="title" maxlength="100" placeholder="Fresh Produce Available Today" />
-            <div class="form-hint">Short and descriptive (max 100 chars)</div>
+            <label for="title">Update Title*</label>
+            <span class="helper-text">Short and descriptive (max 100 chars)</span>
+            <input type="text" id="title" name="title" maxlength="100">
           </div>
 
-          <!-- Message (all types) -->
           <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
-            <label for="message">Message <span class="required">*</span></label>
-            <textarea id="message" name="message" placeholder="Provide details about your update"></textarea>
-            <div class="form-hint">Details about your update, please include any restrictions like residency requirements, costs, language, eligibility or accessibility information here.</div>
+            <label for="message">Message*</label>
+            <span class="helper-text">Details about your update, include restrictions, eligibility, accessibility info.</span>
+            <textarea id="message" name="message"></textarea>
           </div>
 
-          <!-- Public Contact Info (update, food_available optional) -->
           <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
             <label for="publicContact">Public Contact Info (Optional)</label>
-            <input type="text" id="publicContact" name="publicContact" placeholder="Phone or email" />
+            <input type="text" id="publicContact" name="publicContact" placeholder="Phone or email">
           </div>
 
-          <!-- Location (event, recurring_event, food_available) -->
           <div class="form-group conditional-field" data-post-type="event,recurring_event,food_available">
-            <label for="location">Location <span class="required">*</span></label>
-            <input type="text" id="location" name="location" placeholder="Enter location" />
+            <label for="location">Location*</label>
+            <input type="text" id="location" name="location">
           </div>
 
-          <!-- Event Date (event) -->
           <div class="form-group conditional-field" data-post-type="event">
-            <label for="eventDate">Event Date <span class="required">*</span></label>
-            <input type="date" id="eventDate" name="eventDate" />
+            <label for="eventDate">Event Date*</label>
+            <input type="date" id="eventDate" name="eventDate">
           </div>
 
-          
-          <!-- Start of Recurring Event Dates (recurring_event) -->
           <div class="form-group conditional-field" data-post-type="recurring_event">
-            <label for="startRecurringDates">Start Date for Recurring Events<span class="required">*</span></label>
-            <input type="date" id="startRecurringDates" name="startRecurringDates" />
-            <div class="form-hint">Provide the starting date for this recurring event</div>
+            <label for="startRecurringDates">Start Date for Recurring Events*</label>
+            <input type="date" id="startRecurringDates" name="startRecurringDates">
           </div>
 
-          <!-- Recurring Event Dates (recurring_event) -->
           <div class="form-group conditional-field" data-post-type="recurring_event">
-            <label for="recurringDates">Recurring Dates <span class="required">*</span></label>
-            <input type="text" id="recurringDates" name="recurringDates" placeholder="Every Monday & Thursday, 2-4pm" />
-            <div class="form-hint">List multiple dates or describe recurrence pattern</div>
+            <label for="recurringDates">Recurring Dates*</label>
+            <span class="helper-text">List multiple dates or describe recurrence pattern</span>
+            <input type="text" id="recurringDates" name="recurringDates" placeholder="Every Monday & Thursday, 2-4pm">
           </div>
 
-          <!-- Time Window (food_available) -->
           <div class="form-group conditional-field" data-post-type="food_available">
-            <label for="timeWindow">Time Window <span class="required">*</span></label>
-            <input type="text" id="timeWindow" name="timeWindow" placeholder="e.g., 2-4pm" />
+            <label for="timeWindow">Time Window*</label>
+            <input type="text" id="timeWindow" name="timeWindow" placeholder="e.g., 2-4pm">
           </div>
 
-          <!-- What’s Available (food_available) -->
           <div class="form-group conditional-field" data-post-type="food_available">
-            <label for="availableItems">What’s Available <span class="required">*</span></label>
-            <input type="text" id="availableItems" name="availableItems" placeholder="e.g., Fresh vegetables, fruits" />
+            <label for="availableItems">What's Available*</label>
+            <input type="text" id="availableItems" name="availableItems" placeholder="e.g., Fresh vegetables, fruits">
           </div>
 
-          <!-- Expires Date (all types except optional public contact only) -->
           <div class="form-group conditional-field" data-post-type="update,event,urgent,recurring_event,food_available">
-            <label for="expiresDate">Post Expires On <span class="required">*</span></label>
-            <input type="date" id="expiresDate" name="expiresDate" />
+            <label for="expiresDate">Post Expires On*</label>
+            <input type="date" id="expiresDate" name="expiresDate">
           </div>
+        </div>
 
+        <!-- File Upload -->
+        <div class="form-section">
+          <h2>Upload Image or Flyer</h2>
+          <span class="helper-text">Upload a JPEG, PNG, or PDF file (max 5MB). This will be displayed with your community post.</span>
+          <div class="form-group">
+            <label for="postImage">Choose File</label>
+            <input type="file" id="postImage" name="postImage" accept=".jpg,.jpeg,.png,.pdf" style="padding: 10px 0 10px 10px;">
+            <div id="filePreview" style="margin-top: 10px;"></div>
+          </div>
         </div>
 
         <input type="hidden" id="submissionTime" name="submissionTime" />
 
-        <button type="submit" class="submit-btn">Submit Update for Approval</button>
+        <div class="submit-section">
+          <button type="submit" class="submit-btn">Submit Update for Approval</button>
+          <p>Your submission will be reviewed before appearing on the community board.</p>
+        </div>
       </form>
-
-      <div class="next-steps">
-        <h4>What happens next?</h4>
-        <ol>
-          <li>Your submission is received and stored securely</li>
-          <li>Our admin team reviews your update (usually within 24 hours)</li>
-          <li>If approved, your post appears on the Community Board</li>
-          <li>Community members can see your update on the website</li>
-        </ol>
-      </div>
-
     </div>
   </div>
 
-  <!-- Load in how forms are being handled -->
+  <!-- Figma Footer -->
+  <footer class="figma-footer">
+    <div class="footer-black">
+      <div class="footer-links">
+        <div class="footer-links-list">
+          <a href="find-services.html">Find Services</a>
+          <a href="community.html">Community Posts</a>
+          <a href="https://www.thestorefront.org/" target="_blank">The East Scarborough Storefront</a>
+        </div>
+        <div class="footer-contact">
+          <p>togetherkgo@gmail.com</p>
+          <p>(416) XXX-XXXX</p>
+          <p>Serving the KGO community</p>
+        </div>
+      </div>
+      <div class="footer-right">
+        <p class="footer-desc">KGO is already known for its strong community connections. TogetherKGO builds on this strength by improving access to resources and strengthening communication across service users, grassroots groups, and nonprofit organizations.</p>
+        <p class="footer-tagline">Supporting a more connected, coordinated and resilient community in Kingston-Galloway Orton-Park</p>
+        <p class="footer-copy">© 2026 TogetherKGO</p>
+      </div>
+    </div>
+    <div class="footer-green-bar">
+      <div class="green-strip"></div>
+      <span class="footer-brand">Together KGO</span>
+    </div>
+  </footer>
+
   <script src="components/form-utils.js"></script>
-
   <script>
-    // Wait until the DOM is fully loaded before running any JS
-    // This ensures all form elements exist before we try to access them
     document.addEventListener('DOMContentLoaded', function () {
-
       // Set submission time
-      const submissionTime = document.getElementById('submissionTime');
-      if (submissionTime) {
-        submissionTime.value = new Date().toISOString();
+      var submissionTime = document.getElementById('submissionTime');
+      if (submissionTime) submissionTime.value = new Date().toISOString();
+
+      // Form submit
+      var form = document.getElementById('communityUpdateForm');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          // Validate file size
+          var fileInput = document.getElementById('postImage');
+          if (fileInput && fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+              alert('File is too large. Maximum size is 5MB.');
+              return;
+            }
+          }
+
+          submitForm(form, 'successMessage');
+        });
       }
 
-      // Attach submit handler from components/form-utils,js
-      const communityForm = document.getElementById('communityUpdateForm');
-
-      if (!communityForm) return;
-
-      communityForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        submitForm(communityForm, 'successMessage');
-      });
-
-    });
-  </script>
-
-  <!--- This script handles dynamic fields for submitting events-->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-      const postTypeSelect = document.getElementById('postType');
-      const conditionalFields = document.querySelectorAll('.conditional-field');
+      // Conditional fields
+      var postTypeSelect = document.getElementById('postType');
+      var conditionalFields = document.querySelectorAll('.conditional-field');
 
       function updateConditionalFields() {
-        const selectedType = postTypeSelect.value;
-
-        conditionalFields.forEach(field => {
-          const types = field.dataset.postType.split(',');
+        var selectedType = postTypeSelect.value;
+        conditionalFields.forEach(function(field) {
+          var types = field.dataset.postType.split(',');
+          var input = field.querySelector('input, textarea');
           if (types.includes(selectedType)) {
             field.style.display = 'block';
-            field.querySelector('input, textarea').required = true;
+            if (input) input.required = true;
           } else {
             field.style.display = 'none';
-            field.querySelector('input, textarea').required = false;
+            if (input) input.required = false;
           }
         });
       }
 
-      // Initial run (in case form is pre-filled)
       updateConditionalFields();
-
-      // Update whenever the post type changes
       postTypeSelect.addEventListener('change', updateConditionalFields);
 
+      // File preview
+      var fileInput = document.getElementById('postImage');
+      var previewDiv = document.getElementById('filePreview');
+      if (fileInput) {
+        fileInput.addEventListener('change', function() {
+          previewDiv.innerHTML = '';
+          if (this.files && this.files[0]) {
+            var file = this.files[0];
+            if (file.type.startsWith('image/')) {
+              var img = document.createElement('img');
+              img.src = URL.createObjectURL(file);
+              img.style.maxWidth = '300px';
+              img.style.maxHeight = '200px';
+              img.style.borderRadius = '6px';
+              previewDiv.appendChild(img);
+            } else {
+              previewDiv.textContent = 'Selected: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+            }
+          }
+        });
+      }
     });
   </script>
-  
-<script src="components/translation.js"></script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+  <script src="components/translation.js"></script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

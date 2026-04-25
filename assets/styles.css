@@ -164,11 +164,18 @@ textarea:focus {
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .primary:hover {
   background: var(--accent-hover);
+  box-shadow: 0 8px 18px rgba(15, 222, 0, 0.28);
+  transform: translateY(-1px);
+}
+
+.primary:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
 }
 
 .ghost {
@@ -577,10 +584,10 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4);
 }
 
-/* =========================================
+/* 
    HOME PAGE STYLES (index.html)
    Figma: Desktop 1440×844 | Mobile 390×844
-========================================= */
+ */
 
 /* PP Mori font */
 @font-face {
@@ -747,7 +754,8 @@ textarea:focus {
 }
 
 .home .tag-lang {
-    background: #7DBFE8;
+    background: #000;
+    color: #fff;
 }
 
 .home .tag-lang:hover {
@@ -830,17 +838,17 @@ body {
 .home {
     margin-top: 0 !important;
 }
-/* =========================================
+/* 
    NO-TRANSLATE UTILITY
-========================================= */
+ */
 .notranslate,
 .notranslate * {
     translate: no !important;
 }
 
-/* =========================================
+/* 
    SHARED COMPONENTS – Nav, Tabs, Footer
-========================================= */
+ */
 
 /* --- Figma Nav Bar --- */
 .figma-nav {
@@ -927,9 +935,9 @@ body {
 .footer-green-bar .green-strip { background: #0FDE00; height: 142px; width: 100%; }
 .footer-green-bar .footer-brand { position: absolute; top: 88px; left: 20px; font-size: 55px; font-weight: 600; color: #000; line-height: normal; }
 
-/* =========================================
+/* 
    FIND SERVICES PAGE – Figma Layout
-========================================= */
+*/
 
 body:has(.figma-nav) .layout {
     display: grid;
@@ -969,7 +977,7 @@ body:has(.figma-nav) .results-section #resultCount {
     font-weight: 600;
     color: #000;
     line-height: 22px;
-    padding-bottom: 10px;
+    padding-bottom: 25px;
     border-bottom: 2px solid #fff;
     margin-bottom: 0;
 }
@@ -1047,6 +1055,18 @@ body:has(.figma-nav) .actions .primary {
     font-size: 17px;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+body:has(.figma-nav) .actions .primary:hover {
+    background: #11c900;
+    box-shadow: 0 8px 18px rgba(15, 222, 0, 0.28);
+    transform: translateY(-1px);
+}
+
+body:has(.figma-nav) .actions .primary:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 3px;
 }
 
 body:has(.figma-nav) .actions .ghost {
@@ -1063,9 +1083,9 @@ body:has(.figma-nav) .actions .ghost {
 
 body:has(.figma-nav) .card h2[data-i18n="search_filters"] { display: none; }
 
-/* =========================================
+/* 
    RESULT ITEMS – Figma Style
-========================================= */
+ */
 
 body:has(.figma-nav) #resultCount {
     font-family: 'PP Mori', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1076,14 +1096,14 @@ body:has(.figma-nav) #resultCount {
 }
 
 body:has(.figma-nav) #results { list-style: none; padding: 0; margin: 0; }
-body:has(.figma-nav) .results-section li { background: transparent !important; padding: 0; border: none; list-style: none; }
+body:has(.figma-nav) .results-section li { background: transparent !important; border: none; list-style: none; }
 body:has(.figma-nav) .results-section li:hover { background: transparent !important; }
 
 .result-item {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 20px 0 10px;
+    padding: 20px 0 15px;
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
     cursor: pointer;
@@ -1213,9 +1233,9 @@ body:has(.figma-nav) .results-section li:hover { background: transparent !import
 
 .about-cta-big { font-size: 70px; font-weight: 600; color: #000; line-height: 63px; text-transform: uppercase; }
 
-/* =========================================
+/* 
    SUBMIT PAGE – Form field borders fix
-========================================= */
+*/
 
 body:has(.figma-nav) .form-container input,
 body:has(.figma-nav) .form-container select,
@@ -1231,9 +1251,9 @@ body:has(.figma-nav) .form-container textarea {
 /* Remove bubble/success message by default */
 .success-message { display: none; }
 
-/* =========================================
+/* 
    MOBILE FIXES
-========================================= */
+ */
 
 @media (max-width: 960px) {
     .figma-nav { height: auto; padding: 10px; }
@@ -1282,3 +1302,65 @@ body:has(.figma-nav) .form-container textarea {
 .lang-tags.show { display: flex !important; }
 .lang-label { cursor: pointer; }
 .lang-label:hover { opacity: 0.7; }
+
+/* 
+   RESOURCES PAGE – Same as Find Services but
+   results take over map position (no map)
+ */
+
+.resources-layout {
+    display: grid;
+    grid-template-columns: 560px 1fr;
+    max-width: 100%;
+    padding: 0;
+    gap: 0;
+    background: #E6E6E6 !important;
+}
+
+.resources-layout .resources-content {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 25px 20px 50px;
+    overflow-y: auto;
+}
+
+.resources-layout .results-section #resultCount {
+    font-family: 'PP Mori', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    line-height: 22px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #fff;
+    margin-bottom: 0;
+}
+
+.resources-layout .results-section #results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resources-layout .results-section li {
+    background: transparent !important;
+    border: none;
+    list-style: none;
+}
+
+.resources-layout .results-section li.result-item {
+    padding: 20px 0 15px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+}
+
+/* Resources mobile */
+@media (max-width: 960px) {
+    .resources-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .resources-layout .resources-content {
+        padding: 20px 10px 50px;
+    }
+}

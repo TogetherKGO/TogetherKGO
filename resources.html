@@ -4,130 +4,93 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TogetherKGO – Resources</title>
-
-    <!-- CSS -->
     <link rel="stylesheet" href="assets/styles.css" />
-    <link rel="stylesheet" href="components/navbar.css"/>
-
-    <!-- Load config FIRST (this contains API KEY) -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="config.js"></script>
-
-    <!-- App scripts -->
+    <script src="assets/constants.js"></script>
+    <script src="assets/populateforms.js"></script>
     <script defer src="assets/i18n.js"></script>
     <script defer src="assets/resources-app.js"></script>
   </head>
 
   <body>
-    <!-- Navigation -->
-    <div id="navbar"></div>
+    <div id="google_translate_element" style="display:none;"></div>
 
-    <main class="layout">
+    <!-- Figma Nav -->
+    <nav class="figma-nav">
+      <a href="index.html" class="nav-logo">Together KGO</a>
+      <a href="index.html" class="nav-home">Home</a>
+    </nav>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <a href="resources.html" class="tab-active">Resources</a>
+      <a href="submit-resources.html" class="tab-inactive">Submit</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="layout resources-layout">
       <aside class="sidebar">
+        <section class="card">
+          <h2 data-i18n="search_filters">Search & Filters</h2>
 
-        <!-- Search & Filters — identical to find-services.html -->
-        <section class="card filters-card">
-          <h2 data-i18n="search_filters">Search &amp; Filters</h2>
+          <label class="label" for="q" data-i18n="search_label">Search by name, keywords</label>
+          <input id="q" type="search" placeholder="food bank, community support…" />
 
-          <label class="label" for="q" data-i18n="search_label">Search by name, type, keywords</label>
-          <input id="q" type="search" placeholder="Search grants, funding, toolkits, tax help, fianance... " />
+          <select id="radius" style="display: none;">
+            <option value="99999" selected>All Locations</option>
+          </select>
 
-          <div class="grid2">
-            <div>
-              <label class="label" for="type">Type</label>
-              <select id="type">
-                <option value="">Any</option>
-                <option value="grant">Grant / Funding</option>
-                <option value="microgrant">Microgrant</option>
-                <option value="directory">Directory / Resource List</option>
-                <option value="toolkit">Toolkit / Guide</option>
-                <option value="certification_support">Certification / Subsidy Support</option>
-                <option value="training">Training / Workshop</option>
-                <option value="program">Community Program</option>
-                <option value="greening">Greening / Environmental Support</option>
-                <option value="general">General Resource</option>
-                <option value="education_library">Education & Library</option>
-                <option value="tax_finance">Tax & Finance</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
+          <label class="label" for="resourceType">Resource types</label>
+          <select id="resourceType"><option value="">Any</option></select>
 
-            <div>
-              <label class="label" for="region">Region Served</label>
-              <select id="region">
-                <option value="">All regions</option>
-                <option value="toronto">Toronto</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- RADIUS FEATURE COMMENTED OUT (UI Hidden, but field kept for JavaScript compatibility)
-          <div>
-            <label class="label" for="radius">Search Radius</label>
-          -->
-            <select id="radius" style="display: none;">
-              <option value="99999" selected>All Locations</option>
-              <option value="1000">Within 1 km</option>
-              <option value="2000">Within 2 km</option>
-              <option value="3000">Within 3 km</option>
-              <option value="5000">Within 5 km</option>
-            </select>
-          <!--
-          </div>
-          -->
+          <label class="label" for="regionServedFilter">Region Served</label>
+          <select id="regionServedFilter"><option value="">All regions</option></select>
 
           <div class="actions">
-            <button id="applyBtn" class="primary">Apply Filters</button>
+            <button id="applyBtn" class="primary">Apply filters</button>
             <button id="resetBtn" class="ghost">Reset</button>
           </div>
         </section>
-
-        <!-- Info Card — identical to find-services.html, inline styles replaced with classes -->
-        <section class="card info-card">
-          <h3>About Community Resources</h3>
-          <p class="subtle">Find grants, toolkits, directories, certification supports, and other community resources that can help residents and grassroots groups start projects, access funding, and support local initiatives in the Kingston-Galloway-Orton Park and Toronto area.</p>
-
-          <!-- .quick-contact already has margin-top, padding-top, border-top in styles.css -->
-          <div class="quick-contact">
-            <strong>Want to contribute?</strong>
-            <p class="subtle small">Click the "Submit a Resource" button below to share a grant, toolkit, directory, certification support, or other helpful resource. We ask that submissions follow our <a href="assets/ToS.pdf" target="_blank" class="info-card__link">Terms of Service</a> and <a href="assets/Community-guidelines.pdf" target="_blank" class="info-card__link">community guidelines</a>. Note that submissions are first moderated, then added to a scheduled update that occurs bi-weekly on <strong>Mondays and Thursdays.</strong></p>
-          </div>
-
-          <div class="quick-contact">
-            <strong>Need Help?</strong>
-            <p class="subtle small">If you're unsure how to access a resource or apply for a program, visit the official website linked in the listing or contact the organization directly for more information</p>
-          </div>
-
-          <div class="quick-contact">
-            <a href="submit-resources.html" class="btn-submit-listing">Submit a Resource</a>
-            <p class="subtle small info-card__hint">Know a community resource? Add it here!</p>
-          </div>
-        </section>
-
       </aside>
 
-      <!-- Content — same as find-services.html with map removed -->
-      <section class="content">
-        <section class="list card">
-          <h2>Community Resources in KGO Area</h2>
+      <!-- Results take over full right side (no map) -->
+      <section class="content resources-content">
+        <section class="results-section">
           <div id="resultCount" class="subtle"></div>
           <ul id="results"></ul>
         </section>
       </section>
     </main>
 
-    <script>
-      fetch("components/navbar.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("navbar").innerHTML = data;
-      })
-      .catch(error => console.error("Error loading navbar:", error));
-    </script>
-    <script src="components/translation.js"></script>
-    
-      
+    <!-- Figma Footer -->
+    <footer class="figma-footer">
+      <div class="footer-black">
+        <div class="footer-links">
+          <div class="footer-links-list">
+            <a href="find-services.html">Find Services</a>
+            <a href="community.html">Community Posts</a>
+            <a href="https://www.thestorefront.org/" target="_blank">The East Scarborough Storefront</a>
+          </div>
+          <div class="footer-contact">
+            <p>togetherkgo@gmail.com</p>
+            <p>(416) XXX-XXXX</p>
+            <p>Serving the KGO community</p>
+          </div>
+        </div>
+        <div class="footer-right">
+          <p class="footer-desc">KGO is already known for its strong community connections. TogetherKGO builds on this strength by improving access to resources and strengthening communication across service users, grassroots groups, and nonprofit organizations.</p>
+          <p class="footer-tagline">Supporting a more connected, coordinated and resilient community in Kingston-Galloway Orton-Park</p>
+          <p class="footer-copy">© 2026 TogetherKGO</p>
+        </div>
+      </div>
+      <div class="footer-green-bar">
+        <div class="green-strip"></div>
+        <span class="footer-brand">Together KGO</span>
+      </div>
+    </footer>
 
+    <script src="components/translation.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </body>
 </html>

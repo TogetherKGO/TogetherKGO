@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,356 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community Board - TogetherKGO</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <link rel="stylesheet" href="components/navbar.css">
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/community.css">
     <script src="assets/constants.js"></script>
     <script src="assets/populateforms.js"></script>
- <style>
-
-/* ===============================
-   GLOBAL STYLES
-================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    color: var(--text-dark);
-    line-height: 1.6;
-    background: var(--pale-blue);
-}
-
-
-/* ===============================
-   PAGE HEADER
-================================= */
-.page-header {
-    background: linear-gradient(135deg, var(--sky-blue) 0%, var(--light-blue) 100%);
-    padding: 3rem 2rem;
-    text-align: center;
-}
-
-.page-header h1 {
-    font-size: 2.5rem;
-    color: var(--text-dark);
-    margin-bottom: 1rem;
-}
-
-.page-header p {
-    font-size: 1.15rem;
-    color: var(--text-light);
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* ===============================
-   MAIN CONTAINER
-================================= */
-.container {
-    max-width: 1200px;
-    margin: 3rem auto;
-    padding: 0 2rem;
-}
-
-/* ===============================
-   FILTER SECTION
-================================= */
-.filter-section {
-    background: var(--white);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-.filter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.filter-group label {
-    display: block;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-}
-
-.filter-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid var(--light-blue);
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s;
-}
-
-.filter-group select:focus {
-    outline: none;
-    border-color: var(--primary-blue);
-}
-
-/* ===============================
-   POSTS GRID
-================================= */
-.posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-}
-
-/* Post Card */
-.post-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s;
-    border-left: 4px solid var(--primary-blue);
-}
-
-.post-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-.post-card.urgent {
-    border-left-color: #EF4444;
-    background: #FEF2F2;
-}
-
-.post-card.event {
-    border-left-color: #F59E0B;
-    background: #FFFBEB;
-}
-
-.post-card.food_available {
-    border-left-color: #10B981;
-    background: #F0FDF4;
-}
-
-.post-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 1rem;
-}
-
-.post-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-}
-
-.post-type {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.post-type.update {
-    background: var(--light-blue);
-    color: var(--dark-blue);
-}
-
-.post-type.urgent {
-    background: #FEE2E2;
-    color: #DC2626;
-}
-
-.post-type.event {
-    background: #FEF3C7;
-    color: #D97706;
-}
-
-.post-type.food_available {
-    background: #D1FAE5;
-    color: #059669;
-}
-
-.post-meta {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-bottom: 1rem;
-}
-
-.post-location {
-    font-weight: 600;
-    color: var(--primary-blue);
-}
-
-.post-message {
-    color: var(--text-dark);
-    line-height: 1.7;
-    margin-bottom: 1rem;
-}
-
-.post-contact {
-    padding-top: 1rem;
-    border-top: 1px solid var(--light-blue);
-    font-size: 0.9rem;
-    color: var(--text-light);
-}
-
-/* ===============================
-   NO POSTS MESSAGE
-================================= */
-.no-posts {
-    background: var(--white);
-    padding: 3rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.no-posts h3 {
-    font-size: 1.5rem;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-}
-
-/* ===============================
-   LOADING
-================================= */
-.loading {
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-light);
-}
-
-/* ===============================
-   FLOATING LANGUAGE BUTTON
-================================= */
-.floating-lang-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 9999;
-    background: linear-gradient(135deg, #7DBFE8 0%, #5BA3D0 100%);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 16px;
-    border: none;
-    transition: all 0.3s;
-}
-
-.floating-lang-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-}
-
-.floating-lang-menu {
-    position: fixed;
-    bottom: 90px;
-    right: 30px;
-    z-index: 9998;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    min-width: 250px;
-    max-height: 400px;
-    overflow-y: auto;
-    display: none;
-}
-
-.floating-lang-menu.show {
-    display: block;
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.floating-lang-menu a {
-    display: block;
-    padding: 12px 20px;
-    color: #1F2937;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s;
-    border-bottom: 1px solid #E5E7EB;
-}
-
-.floating-lang-menu a:hover {
-    background: #E3F2FD;
-    color: #7DBFE8;
-}
-
-.floating-lang-menu a:last-child {
-    border-bottom: none;
-}
-
-/* ===============================
-   RESPONSIVE
-================================= */
-@media (max-width: 768px) {
-    .page-header h1 {
-        font-size: 2rem;
-    }
-
-    .posts-grid {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
-    <!-- Navigation -->
-    <div id="navbar"></div>
 
-    <script>
-      fetch("components/navbar.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("navbar").innerHTML = data;
-      })
-      .catch(error => console.error("Error loading navbar:", error));
-    </script>
-    
-    <!-- Page Header -->
-    <div class="page-header">
-        <h1>Community Board</h1>
-        <p>Stay updated with the latest news, events, and updates from food banks and community organizations in the KGO area.</p>
+    <!-- Figma Nav -->
+    <nav class="figma-nav">
+      <a href="index.html" class="nav-logo">Together KGO</a>
+      <a href="index.html" class="nav-home">Home</a>
+    </nav>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <a href="community.html" class="tab-active">Community Board</a>
+      <a href="community-submit.html" class="tab-inactive">Submit</a>
     </div>
 
-    <!-- Submit Community Update CTA -->
-    <div class="container" style="margin-bottom: 2rem;">
-        <div style="background: linear-gradient(135deg, #BAE6FD 0%, #E3F2FD 100%); padding: 24px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-            <h3 style="margin: 0 0 12px 0; color: #1F2937;">Have an update to share?</h3>
-            <p style="margin: 0 0 16px 0; color: #6B7280;">Share updates about your services, special events, or important notices with the community.</p>
-            <a href="community-submit.html" style="display: inline-block; background: #BAE6FD; color: #1F2937; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.15);" onmouseover="this.style.background='#7DBFE8'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#BAE6FD'; this.style.transform='translateY(0)'">Submit Community Update</a>
+    <!-- Main Content -->
+    <div class="community-container">
+        <!-- Header -->
+        <div class="community-header">
+            <p>Stay updated with the latest news, events, and updates from food banks and community organizations in the KGO area.</p>
         </div>
-    </div>
 
-    <!-- Main Container -->
-    <div class="container">
         <!-- Filters -->
-        <div class="filter-section">
-            <h2 style="margin-bottom: 1rem;">Filter Posts</h2>
-            <div class="filter-grid">
+        <div class="community-filters">
+            <div class="filter-row">
                 <div class="filter-group">
                     <label for="filterOrganization">Organization</label>
                     <select id="filterOrganization">
@@ -364,19 +43,28 @@ body {
                 </div>
                 <div class="filter-group">
                     <label for="orgType">Organization Type</label>
-                    <select id="orgType" data-source="services"></select> <!-- Only load types that actually exist-->
-                        <!-- options will be populated dynamically -->
+                    <select id="orgType" data-source="services">
+                        <option value="">Select type...</option>
                     </select>
                 </div>
-
                 <div class="filter-group">
-                    <label for="postType">Post Type</label>
+                    <label for="postType">Post type</label>
                     <select id="postType">
-                        <!-- options will be populated dynamically -->
+                        <option value="">Select type...</option>
                     </select>
                 </div>
             </div>
+            <div class="filter-actions">
+                <label class="urgency-check">
+                    <input type="checkbox" id="urgencyFilter"> Urgency: Needed today
+                </label>
+                <button id="applyBtn" class="primary" onclick="filterPosts()">Apply filters</button>
+                <button id="resetBtn" class="ghost" onclick="resetFilters()">Reset</button>
+            </div>
         </div>
+
+        <!-- Result Count -->
+        <div id="resultCount" class="community-count"></div>
 
         <!-- Loading State -->
         <div id="loading" class="loading">
@@ -392,30 +80,60 @@ body {
             <p>Check back soon for updates from local individuals and organizations in the KGO region!</p>
         </div>
     </div>
-    
-    
-    <!-- Floating Language Button -->
-    <button class="floating-lang-btn" onclick="toggleFloatingLangMenuCommunity(event)">
-        🌐 Translate
-    </button>
 
-    <div class="floating-lang-menu" id="floatingLangMenuCommunity">
-        <a href="#" onclick="translatePageFloatingCommunity('en')">English</a>
-        <a href="#" onclick="translatePageFloatingCommunity('ta')">தமிழ் (Tamil)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('bn')">বাংলা (Bengali)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('tl')">Tagalog (Filipino)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('gu')">ગુજરાતી (Gujarati)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('ur')">اردو (Urdu)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('fa')">فارسی (Persian/Farsi)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('es')">Español (Spanish)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('fr')">Français (French)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('hi')">हिन्दी (Hindi)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('ar')">العربية (Arabic)</a>
-        <a href="#" onclick="translatePageFloatingCommunity('zh-CN')">中文 (Chinese)</a>
+    <!-- Post Detail Modal -->
+    <div id="postModal" class="post-modal" style="display:none;">
+        <div class="post-modal-overlay" onclick="closePostModal()"></div>
+        <div class="post-modal-content">
+            <div class="post-modal-header">
+                <span id="modalPostedDate"></span>
+                <button class="post-modal-close" onclick="closePostModal()">Hide details &nbsp;—</button>
+            </div>
+            <div class="post-modal-body">
+                <div class="post-modal-left">
+                    <div class="post-modal-number" id="modalNumber"></div>
+                    <h2 id="modalTitle" class="notranslate"></h2>
+                    <p id="modalOrg" class="notranslate post-modal-org"></p>
+                    <div id="modalTag" class="post-modal-tag"></div>
+                    <div id="modalDetails" class="post-modal-details"></div>
+                    <div id="modalContact" class="post-modal-contact-section"></div>
+                </div>
+                <div class="post-modal-right">
+                    <img id="modalImage" src="" alt="" class="post-modal-img">
+                </div>
+            </div>
+        </div>
     </div>
-    
-<script src="assets/community-board.js"></script>
-<script src="components/translation.js"></script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Figma Footer -->
+    <footer class="figma-footer">
+      <div class="footer-black">
+        <div class="footer-links">
+          <div class="footer-links-list">
+            <a href="find-services.html">Find Services</a>
+            <a href="community.html">Community Posts</a>
+            <a href="https://www.thestorefront.org/" target="_blank">The East Scarborough Storefront</a>
+          </div>
+          <div class="footer-contact">
+            <p>togetherkgo@gmail.com</p>
+            <p>(416) XXX-XXXX</p>
+            <p>Serving the KGO community</p>
+          </div>
+        </div>
+        <div class="footer-right">
+          <p class="footer-desc">KGO is already known for its strong community connections. TogetherKGO builds on this strength by improving access to resources and strengthening communication across service users, grassroots groups, and nonprofit organizations.</p>
+          <p class="footer-tagline">Supporting a more connected, coordinated and resilient community in Kingston-Galloway Orton-Park</p>
+          <p class="footer-copy">© 2026 TogetherKGO</p>
+        </div>
+      </div>
+      <div class="footer-green-bar">
+        <div class="green-strip"></div>
+        <span class="footer-brand">Together KGO</span>
+      </div>
+    </footer>
+
+    <script src="assets/community-board.js"></script>
+    <script src="components/translation.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

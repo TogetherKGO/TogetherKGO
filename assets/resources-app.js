@@ -1,125 +1,149 @@
 // TogetherKGO - Resources Page App
 
-const REGIONS = Object.freeze({
-  ANY: "",
-  TORONTO: "toronto",
-  OTHER: "other"
-});
-
 window.__RESOURCES_APP = (function () {
-  let resources = [];
+  var resources = [];
 
-  const el = (id) => document.getElementById(id);
+  var el = function(id) { return document.getElementById(id); };
 
-  async function loadData() {
-    try {
-      const resp = await fetch("data/resources.json");
-      resources = await resp.json();
-      applyFilters();
-    } catch (err) {
-      console.error("Failed to load resources.json", err);
-      const results = el("results");
-      if (results) {
-        results.innerHTML =
-          '<li style="padding: 20px; text-align: center; color: #888;">Unable to load resources. Please refresh the page.</li>';
-      }
-    }
+  function normalizeRegion(value) {
+    return String(value || "").trim().toLowerCase();
+  }
+
+  function classifyRegion(value) {
+    var normalized = normalizeRegion(value);
+    if (!normalized) return "";
+    if (normalized === "toronto") return "toronto";
+    return "other";
+  }
+
+  function populateSelect(selectId, options, defaultLabel) {
+    var select = el(selectId);
+    if (!select) return;
+
+    select.innerHTML = '<option value="">' + defaultLabel + "</option>";
+
+    Object.keys(options || {}).forEach(function(key) {
+      var option = document.createElement("option");
+      option.value = key;
+      option.textContent = options[key];
+      select.appendChild(option);
+    });
+  }
+
+  function loadData() {
+    fetch("data/resources.json")
+      .then(function(resp) { return resp.json(); })
+      .then(function(data) {
+        resources = data;
+        applyFilters();
+      })
+      .catch(function(err) {
+        console.error("Failed to load resources.json", err);
+        var results = el("results");
+        if (results) {
+          results.innerHTML = '<li class="result-empty">Unable to load resources. Please refresh the page.</li>';
+        }
+      });
+  }
+
+  function populateFilters() {
+    var constants = window.CONSTANTS || {};
+    populateSelect("resourceType", constants.RESOURCE_TYPES || {}, "Any");
+    populateSelect("regionServedFilter", constants.RESOURCE_REGIONS || {}, "All regions");
   }
 
   function listResults(items) {
-    const ul = el("results");
-    const countEl = el("resultCount");
-
+    var ul = el("results");
+    var countEl = el("resultCount");
     if (!ul) return;
-
     ul.innerHTML = "";
 
     if (countEl) {
-      countEl.textContent = `${items.length} resource${items.length !== 1 ? "s" : ""} found`;
+      countEl.textContent = "We found " + items.length + " results:";
     }
 
     if (items.length === 0) {
-      ul.innerHTML =
-        '<li style="padding: 20px; text-align: center; color: #888;">No resources match your search criteria. Try adjusting your filters.</li>';
+      ul.innerHTML = '<li class="result-empty">No resources match your search criteria. Try adjusting your filters.</li>';
       return;
     }
 
-    items.forEach((item) => {
-      const li = document.createElement("li");
+    items.forEach(function(item, index) {
+      var li = document.createElement("li");
+      li.className = "result-item";
+      var detailsId = "details-" + index;
 
-      li.innerHTML = `
-        <div><strong>${item.title || ""}</strong></div>
-        <div class="subtle">${item.organization || ""}</div>
-        <div style="margin: 8px 0;">
-          ${(item.tags || [])
-            .map((tag) => `<span class="badge">${tag.replace(/_/g, " ")}</span>`)
-            .join("")}
-        </div>
-        <div class="subtle">${item.description || ""}</div>
-        <div class="subtle" style="margin-top: 6px;">
-          ${item.website ? `<a href="${item.website}" target="_blank" style="color: #22c55e;">🌐 Website</a>` : ""}
-          ${item.additional_link ? ` • <a href="${item.additional_link}" target="_blank" style="color: #22c55e;">Additional Link</a>` : ""}
-        </div>
-      `;
+      li.innerHTML =
+        '<div class="result-number"><span>' + (index + 1) + '</span></div>' +
+        '<div class="result-name notranslate">' + (item.title || "") + '</div>' +
+        '<div class="result-address notranslate">' + (item.organization || "") + '</div>' +
+        '<div class="result-toggle" onclick="document.getElementById(\'' + detailsId + '\').classList.toggle(\'show\'); this.querySelector(\'span\').textContent = document.getElementById(\'' + detailsId + '\').classList.contains(\'show\') ? \'Hide details  −\' : \'Show details  +\'">' +
+          '<span>Show details  +</span>' +
+        '</div>' +
+        '<div class="result-details" id="' + detailsId + '">' +
+          '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
+          '<div class="result-tags">' +
+            (item.tags || []).map(function(tag) { return '<span class="tag">' + tag.replace(/_/g, ' ') + '</span>'; }).join('') +
+          '</div>' +
+          '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
+          '<div class="result-hours">' + (item.description || "") + '</div>' +
+          '<hr style="border:none;border-top:2px solid #fff;margin:0;">' +
+          '<div class="result-contact">' +
+            (item.website ? '<a class="result-btn" href="' + item.website + '" target="_blank">🌐 Website</a>' : '') +
+            (item.additional_link ? '<a class="result-btn" href="' + item.additional_link + '" target="_blank">🔗 Additional Link</a>' : '') +
+          '</div>' +
+        '</div>';
 
       ul.appendChild(li);
     });
   }
 
   function applyFilters() {
-    const qEl = el("q");
-    const typeEl = el("type");
-    const regionEl = el("region");
+    var qEl = el("q");
+    var resourceTypeEl = el("resourceType");
+    var regionEl = el("regionServedFilter");
 
-    if (!qEl || !typeEl || !regionEl) return;
+    if (!qEl) return;
 
-    const q = qEl.value.toLowerCase().trim();
-    const type = typeEl.value;
-    const selectedRegion = regionEl.value;
+    var q = qEl.value.toLowerCase().trim();
+    var resourceType = resourceTypeEl ? resourceTypeEl.value : "";
+    var regionServed = regionEl ? regionEl.value : "";
 
-    const filtered = resources.filter((resource) => {
-      const searchableText = [
+    var filtered = resources.filter(function(resource) {
+      var text = [
         resource.title || "",
         resource.organization || "",
         resource.description || "",
-        ...(resource.tags || []).map((tag) => tag.replace(/_/g, " "))
-      ]
+        resource.type || ""
+      ].concat((resource.tags || []).map(function(tag) { return tag.replace(/_/g, " "); }))
         .join(" ")
         .toLowerCase();
 
-      const matchesSearch = !q || searchableText.includes(q);
-      const matchesType = !type || resource.type === type;
+      var matchesSearch = !q || text.includes(q);
+      var matchesResourceType = !resourceType || resource.type === resourceType;
+      var matchesRegion = !regionServed || classifyRegion(resource.region_served) === regionServed;
 
-      let matchesRegion = true;
-
-      if (selectedRegion === REGIONS.TORONTO) {
-        matchesRegion = resource.region_served === REGIONS.TORONTO;
-      } else if (selectedRegion === REGIONS.OTHER) {
-        matchesRegion = resource.region_served === REGIONS.OTHER;
-      }
-
-      return matchesSearch && matchesType && matchesRegion;
+      return matchesSearch && matchesResourceType && matchesRegion;
     });
 
     listResults(filtered);
   }
 
   function resetFilters() {
-    const qEl = el("q");
-    const typeEl = el("type");
-    const regionEl = el("region");
+    var qEl = el("q");
+    var resourceTypeEl = el("resourceType");
+    var regionEl = el("regionServedFilter");
 
     if (qEl) qEl.value = "";
-    if (typeEl) typeEl.value = "";
-    if (regionEl) regionEl.value = REGIONS.ANY;
+    if (resourceTypeEl) resourceTypeEl.value = "";
+    if (regionEl) regionEl.value = "";
 
     applyFilters();
   }
 
   function setupEvents() {
-    const applyBtn = el("applyBtn");
-    const resetBtn = el("resetBtn");
-    const qEl = el("q");
+    var applyBtn = el("applyBtn");
+    var resetBtn = el("resetBtn");
+    var qEl = el("q");
 
     if (applyBtn) applyBtn.onclick = applyFilters;
     if (resetBtn) resetBtn.onclick = resetFilters;
@@ -127,6 +151,7 @@ window.__RESOURCES_APP = (function () {
   }
 
   function boot() {
+    populateFilters();
     setupEvents();
     loadData();
   }
@@ -139,5 +164,4 @@ window.__RESOURCES_APP = (function () {
 
   return {};
 })();
-
 
