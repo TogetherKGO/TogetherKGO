@@ -1,0 +1,13 @@
+{
+  "resource": {
+    "title": "Example",
+    "id": "",
+    "organization": "1",
+    "type": "education_library",
+    "description": "sdsdsds",
+    "website": "fake.net"
+  },
+  "coverage": {
+    "region_served": "toronto"
+  }
+}
