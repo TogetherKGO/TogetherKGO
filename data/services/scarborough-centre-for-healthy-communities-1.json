@@ -3,6 +3,7 @@
     "name": "Scarborough Centre for Healthy Communities",
     "phone": "(416) 642-9445",
     "address": "629 Markham Rd Unit 2, Scarborough, M1H 2A4",
+    "id": "SCHC629",
     "tags": [
       "food_support",
       "community_health",
@@ -11,7 +12,6 @@
     ],
     "type": "community_org",
     "website": "https://schcontario.ca/",
-    "id": "SCHC",
     "email": "info@schcontario.ca",
     "description": "SCHC provides comprehensive, focused health programs and services to improve the holistic overall health and well being for our community."
   },
